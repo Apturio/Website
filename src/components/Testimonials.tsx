@@ -1,9 +1,10 @@
 import { Star } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
+import { getTranslations } from "next-intl/server";
 
-export function Testimonials() {
-  const { t } = useLanguage();
-  const reviews = t('testimonials.items') as any[];
+// Static masonry layout (no carousel in the current design) → Server Component.
+export async function Testimonials() {
+  const t = await getTranslations();
+  const reviews = t.raw('testimonials.items') as { text: string; name: string }[];
 
   return (
     <section className="py-24 bg-card/30 relative">

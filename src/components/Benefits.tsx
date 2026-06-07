@@ -1,9 +1,9 @@
 import { CheckCircle2 } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
+import { getTranslations } from "next-intl/server";
 
-export function Benefits() {
-  const { t } = useLanguage();
-  const benefits = t('benefits.items') as any[];
+export async function Benefits() {
+  const t = await getTranslations();
+  const benefits = t.raw('benefits.items') as { title: string; description: string }[];
   return (
     <section id="benefits" className="py-24 bg-background relative">
       <div className="container mx-auto px-4">

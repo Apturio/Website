@@ -1,9 +1,7 @@
-import { useLanguage } from "@/context/LanguageContext";
-
-export function WhatsAppFloat() {
-  const { language, t } = useLanguage();
-
-  if (language !== 'es') return null;
+// Spanish-only floating WhatsApp CTA. No interactivity → Server Component;
+// the [lang] layout passes the active locale.
+export function WhatsAppFloat({ locale }: { locale: string }) {
+  if (locale !== 'es') return null;
 
   return (
     <a

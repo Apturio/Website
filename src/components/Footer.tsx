@@ -1,9 +1,10 @@
 import { Rocket } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
-import { Link } from "react-router-dom";
+import Link from "next/link";
+import { getTranslations, getLocale } from "next-intl/server";
 
-export function Footer() {
-  const { t, language } = useLanguage();
+export async function Footer() {
+  const t = await getTranslations();
+  const language = await getLocale();
 
   return (
     <footer className="border-t border-border bg-card pt-16 pb-8">
@@ -29,15 +30,15 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-border/50 text-sm text-slate-400">
-          <Link to="/" className="flex items-center gap-2">
+          <Link href={`/${language}`} className="flex items-center gap-2">
             <img src="https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png" alt="Apturio Logo" className="h-10 w-auto" />
           </Link>
 
           <div className="flex gap-4 md:gap-6 flex-wrap justify-center">
-            <Link to="/pay-per-use" className="hover:text-primary transition-colors">{t('footer.payPerUse') || 'Pay-Per-Use Pricing'}</Link>
-            <Link to="/add-ons" className="hover:text-primary transition-colors">{language === 'es' ? 'Precios de Add-Ons' : 'Add-Ons Pricing'}</Link>
-            <Link to="/privacy-policy" className="hover:text-primary transition-colors">{t('footer.privacy')}</Link>
-            <Link to="/terms-of-service" className="hover:text-primary transition-colors">{t('footer.terms')}</Link>
+            <Link href={`/${language}/pay-per-use`} className="hover:text-primary transition-colors">{t('footer.payPerUse')}</Link>
+            <Link href={`/${language}/add-ons`} className="hover:text-primary transition-colors">{language === 'es' ? 'Precios de Add-Ons' : 'Add-Ons Pricing'}</Link>
+            <Link href={`/${language}/privacy-policy`} className="hover:text-primary transition-colors">{t('footer.privacy')}</Link>
+            <Link href={`/${language}/terms-of-service`} className="hover:text-primary transition-colors">{t('footer.terms')}</Link>
           </div>
 
           <p>&copy; {new Date().getFullYear()} {t('footer.copyright')}. {t('footer.rights')}</p>

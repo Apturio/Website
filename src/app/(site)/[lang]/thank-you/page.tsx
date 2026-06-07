@@ -1,18 +1,39 @@
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { CheckCircle2 } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useEffect } from "react";
-import { useLanguage } from "@/context/LanguageContext";
-import { useSEO } from "@/hooks/use-seo";
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { CheckCircle2 } from 'lucide-react'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 
-const ThankYou = () => {
-  const { t } = useLanguage();
-  const steps = t('thankyou.steps') as string[];
-  useSEO(t('seo.thankyou.title'), t('seo.thankyou.description'));
+import { routing } from '@/i18n/routing'
+import { pageMetadata, type AppLocale } from '@/lib/site'
+import { Navbar } from '@/components/Navbar'
+import { Footer } from '@/components/Footer'
+import { Button } from '@/components/ui/button'
 
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+export function generateStaticParams() {
+  return routing.locales.map((lang) => ({ lang }))
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>
+}): Promise<Metadata> {
+  const { lang } = await params
+  const t = await getTranslations({ locale: lang, namespace: 'seo.thankyou' })
+  return pageMetadata({
+    locale: lang as AppLocale,
+    path: '/thank-you',
+    title: t('title'),
+    description: t('description'),
+    noindex: true,
+  })
+}
+
+export default async function ThankYouPage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params
+  setRequestLocale(lang)
+  const t = await getTranslations({ locale: lang })
+  const steps = t.raw('thankyou.steps') as string[]
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/30">
@@ -44,7 +65,7 @@ const ThankYou = () => {
           </div>
 
           <div className="pt-8">
-            <Link to="/">
+            <Link href={`/${lang}`}>
               <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 px-8 py-6 text-lg rounded-xl">
                 {t('thankyou.button')}
               </Button>
@@ -54,7 +75,5 @@ const ThankYou = () => {
       </main>
       <Footer />
     </div>
-  );
-};
-
-export default ThankYou;
+  )
+}

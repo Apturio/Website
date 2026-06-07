@@ -1,9 +1,9 @@
 import { TrendingDown, Clock, Layers, Bot, Settings, Activity, AlertTriangle } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
+import { getTranslations } from "next-intl/server";
 
-export function TheProblem() {
-  const { t } = useLanguage();
-  const problems = t('problem.items') as any[];
+export async function TheProblem() {
+  const t = await getTranslations();
+  const problems = t.raw('problem.items') as { title: string; description: string }[];
 
   const icons = [
     <TrendingDown className="h-8 w-8 text-primary" />,

@@ -1,9 +1,33 @@
-import { useSEO } from "@/hooks/use-seo";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CheckCircle2, Bot } from "lucide-react";
+import type { Metadata } from 'next'
+import { CheckCircle2, Bot } from 'lucide-react'
+import { setRequestLocale } from 'next-intl/server'
 
-const DemoThankYou = () => {
-  useSEO("¡Gracias! - Apturio", "Tu demo está en camino.", true);
+import { routing } from '@/i18n/routing'
+import { pageMetadata, type AppLocale } from '@/lib/site'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
+export function generateStaticParams() {
+  return routing.locales.map((lang) => ({ lang }))
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>
+}): Promise<Metadata> {
+  const { lang } = await params
+  return pageMetadata({
+    locale: lang as AppLocale,
+    path: '/demo-spanish/thank-you',
+    title: '¡Gracias! - Apturio',
+    description: 'Tu demo está en camino.',
+    noindex: true,
+  })
+}
+
+export default async function DemoThankYouPage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params
+  setRequestLocale(lang)
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4 selection:bg-primary/30">
@@ -30,7 +54,5 @@ const DemoThankYou = () => {
         </Card>
       </div>
     </div>
-  );
-};
-
-export default DemoThankYou;
+  )
+}

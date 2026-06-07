@@ -1,5 +1,4 @@
-import React from "react";
-import { useLanguage } from "@/context/LanguageContext";
+import { getTranslations } from "next-intl/server";
 
 const logos = [
   { name: "Sportsmed Academy", src: "https://vibe.filesafe.space/1775831502235366632/attachments/40dbb601-c692-4abc-b2a9-6b77e3b414ea.png", old: true },
@@ -12,8 +11,8 @@ const logos = [
   { name: "Dharma Health", src: "https://vibe.filesafe.space/1775831502235366632/attachments/b59b13fc-6550-45b1-8e9a-4ae25904dcf7.png", old: false },
 ];
 
-export const TrustedBy = () => {
-  const { t } = useLanguage();
+export const TrustedBy = async () => {
+  const t = await getTranslations();
 
   return (
     <section className="bg-[#000000] py-[60px]">

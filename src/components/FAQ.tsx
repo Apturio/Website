@@ -1,9 +1,12 @@
+"use client";
+
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { useLanguage } from "@/context/LanguageContext";
+import { useTranslations, useLocale } from "next-intl";
 
 export function FAQ() {
-  const { t, language } = useLanguage();
-  const faqItems = t('faq.items') as any[];
+  const t = useTranslations();
+  const language = useLocale();
+  const faqItems = t.raw('faq.items') as { q: string; a: string }[];
 
   return (
     <section id="faq" className="py-24 bg-background border-t border-border">
@@ -21,7 +24,7 @@ export function FAQ() {
                 {item.a.includes('[/pay-per-use]') ? (
                   <>
                     {item.a.split('[/pay-per-use]')[0]}
-                    <a href="/pay-per-use" className="text-primary hover:underline">
+                    <a href={`/${language}/pay-per-use`} className="text-primary hover:underline">
                       {language === 'es' ? 'desglose detallado de precios' : 'detailed pricing breakdown'}
                     </a>
                     {item.a.split('[/pay-per-use]')[1]}
@@ -29,7 +32,7 @@ export function FAQ() {
                 ) : item.a.includes('[/add-ons]') ? (
                   <>
                     {item.a.split('[/add-ons]')[0]}
-                    <a href="/add-ons" className="text-primary hover:underline">
+                    <a href={`/${language}/add-ons`} className="text-primary hover:underline">
                       {language === 'es' ? 'desglose detallado de precios' : 'detailed pricing breakdown'}
                     </a>
                     {item.a.split('[/add-ons]')[1]}

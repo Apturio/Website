@@ -1,59 +1,92 @@
-import { useParams, Link } from "react-router-dom";
-import { useEffect } from "react";
-import { Check, ArrowLeft, ShieldCheck } from "lucide-react";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-import { useLanguage } from "@/context/LanguageContext";
-import { useSEO } from "@/hooks/use-seo";
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { Check, ArrowLeft, ShieldCheck } from 'lucide-react'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 
-export default function Checkout() {
-  const { planId } = useParams();
-  const { language, t } = useLanguage();
-  useSEO(t('seo.checkout.title'), t('seo.checkout.description'));
+import { routing } from '@/i18n/routing'
+import { pageMetadata, type AppLocale } from '@/lib/site'
+import { Navbar } from '@/components/Navbar'
+import { Footer } from '@/components/Footer'
 
-  const plans = {
+const PLAN_IDS = ['foundation', 'engine', 'growth'] as const
+type PlanId = (typeof PLAN_IDS)[number]
+
+export function generateStaticParams() {
+  return routing.locales.flatMap((lang) =>
+    PLAN_IDS.map((planId) => ({ lang, planId })),
+  )
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>
+}): Promise<Metadata> {
+  const { lang } = await params
+  const t = await getTranslations({ locale: lang, namespace: 'seo.checkout' })
+  return pageMetadata({
+    locale: lang as AppLocale,
+    path: '/checkout',
+    title: t('title'),
+    description: t('description'),
+    noindex: true,
+  })
+}
+
+export default async function CheckoutPage({
+  params,
+}: {
+  params: Promise<{ lang: string; planId: string }>
+}) {
+  const { lang, planId } = await params
+  setRequestLocale(lang)
+  const t = await getTranslations({ locale: lang })
+  const es = lang === 'es'
+
+  const plans: Record<PlanId, {
+    name: string
+    price: string
+    features: string[]
+    setupFee: string
+    checkoutUrl: string
+  }> = {
     foundation: {
       name: t('pricing.plans.foundation.name'),
-      price: "$199",
-      description: t('pricing.plans.foundation.description'),
-      features: t('pricing.plans.foundation.features'),
-      setupFee: "$0",
-      checkoutUrl: language === 'es'
-        ? "https://links.apturio.com/payment-link/69e8b657557558e89e521e88"
-        : "https://links.apturio.com/payment-link/69e2176b7dd3512d92076d84",
+      price: '$199',
+      features: t.raw('pricing.plans.foundation.features') as string[],
+      setupFee: '$0',
+      checkoutUrl: es
+        ? 'https://links.apturio.com/payment-link/69e8b657557558e89e521e88'
+        : 'https://links.apturio.com/payment-link/69e2176b7dd3512d92076d84',
     },
     engine: {
       name: t('pricing.plans.engine.name'),
-      price: "$299",
-      description: t('pricing.plans.engine.description'),
-      features: t('pricing.plans.engine.features'),
+      price: '$299',
+      features: t.raw('pricing.plans.engine.features') as string[],
       setupFee: t('checkout.waived'),
-      checkoutUrl: language === 'es'
-        ? "https://links.apturio.com/payment-link/69e8b6e0557558e89e521e95"
-        : "https://links.apturio.com/payment-link/69ae32b51e61216a847af5d0",
+      checkoutUrl: es
+        ? 'https://links.apturio.com/payment-link/69e8b6e0557558e89e521e95'
+        : 'https://links.apturio.com/payment-link/69ae32b51e61216a847af5d0',
     },
     growth: {
       name: t('pricing.plans.growth.name'),
-      price: "$699",
-      description: t('pricing.plans.growth.description'),
-      features: t('pricing.plans.growth.features'),
+      price: '$699',
+      features: t.raw('pricing.plans.growth.features') as string[],
       setupFee: t('checkout.waived'),
-      checkoutUrl: language === 'es'
-        ? "https://links.apturio.com/payment-link/69e8b750557558e89e521eb2"
-        : "https://links.apturio.com/payment-link/69e4c8a97dd3512d9207747b",
-    }
-  };
+      checkoutUrl: es
+        ? 'https://links.apturio.com/payment-link/69e8b750557558e89e521eb2'
+        : 'https://links.apturio.com/payment-link/69e4c8a97dd3512d9207747b',
+    },
+  }
 
-  const plan = plans[planId as keyof typeof plans] || plans.engine;
-
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  const plan = plans[(planId as PlanId)] ?? plans.engine
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/30">
       <Navbar />
       <main className="flex-1 pt-32 pb-20">
         <div className="container mx-auto px-4 max-w-6xl">
-          <Link to="/#pricing" className="inline-flex items-center text-slate-400 hover:text-white mb-8 transition-colors">
+          <Link href={`/${lang}#pricing`} className="inline-flex items-center text-slate-400 hover:text-white mb-8 transition-colors">
             <ArrowLeft className="mr-2 h-4 w-4" />
             {t('checkout.back')}
           </Link>
@@ -66,18 +99,11 @@ export default function Checkout() {
               </div>
 
               <div className="space-y-6">
-                {plan.checkoutUrl ? (
-                  <iframe
-                    src={plan.checkoutUrl}
-                    className="w-full min-h-[800px] border-0 rounded-[20px] bg-white/5"
-                    title={`Checkout for ${plan.name}`}
-                  />
-                ) : (
-                  <div className="bg-card/50 border border-border rounded-[20px] p-12 text-center space-y-4">
-                    <h2 className="text-xl font-bold text-white">{t('checkout.comingSoon')}</h2>
-                    <p className="text-slate-400">{t('checkout.provideLink')}</p>
-                  </div>
-                )}
+                <iframe
+                  src={plan.checkoutUrl}
+                  className="w-full min-h-[800px] border-0 rounded-[20px] bg-white/5"
+                  title={`Checkout for ${plan.name}`}
+                />
                 <div className="flex items-center justify-center gap-2 text-sm text-slate-400 mt-4">
                   <ShieldCheck className="h-4 w-4 text-[#37ca37]" />
                   {t('checkout.secure')}
@@ -131,5 +157,5 @@ export default function Checkout() {
       </main>
       <Footer />
     </div>
-  );
+  )
 }

@@ -1,9 +1,11 @@
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Calendar, MessageCircle } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
+import { getTranslations, getLocale } from "next-intl/server";
 
-export function Hero() {
-  const { language, t } = useLanguage();
+export async function Hero() {
+  const t = await getTranslations();
+  const language = await getLocale();
 
   return (
     <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
@@ -55,10 +57,10 @@ export function Hero() {
               </Button>
             ) : (
               <Button asChild size="lg" variant="outline" className="w-full sm:w-auto h-14 px-8 text-lg font-bold bg-transparent text-white border-white/20 hover:bg-white/10 hover:text-white transition-all rounded-[20px]">
-                <a href="/strategy-call">
+                <Link href={`/${language}/strategy-call`}>
                   <Calendar className="mr-2 h-5 w-5" />
                   {t('hero.ctaSecondary')}
-                </a>
+                </Link>
               </Button>
             )}
           </div>
