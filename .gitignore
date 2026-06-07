@@ -11,6 +11,19 @@ dist
 dist-ssr
 *.local
 
+# Env / secrets
+.env
+.env*.local
+.env.development
+.env.production
+
+# Next.js / Payload
+.next
+out
+build
+.payload
+payload-generated-schema.ts
+
 # Editor
 .vscode/*
 !.vscode/extensions.json
