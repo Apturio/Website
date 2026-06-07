@@ -37,6 +37,7 @@ const App = () => (
             <Route path="/add-ons" element={<AddOns />} />
             <Route path="/demo-spanish" element={<DemoFunnel />} />
             <Route path="/demo-spanish/thank-you" element={<DemoThankYou />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
           <WhatsAppFloat />
