@@ -7,11 +7,333 @@ import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { useEffect } from "react";
 
+// Pricing data mirrors production apturio.com/pay-per-use. ES rendering only swaps
+// the decimal separator ("." -> ","); labels stay in English on both locales.
+const SECTIONS: { section: string; head: string[]; rows: string[][] }[] = [
+  {
+    "section": "Telecom (Phone & SMS)",
+    "head": [
+      "Service",
+      "Price"
+    ],
+    "rows": [
+      [
+        "Making calls per min (US/CAN)",
+        "$0.0560"
+      ],
+      [
+        "Receiving calls per min (US/CAN)",
+        "$0.0340"
+      ],
+      [
+        "Text messages per segment (US/CAN)",
+        "$0.0332"
+      ]
+    ]
+  },
+  {
+    "section": "Email",
+    "head": [
+      "Service",
+      "Price"
+    ],
+    "rows": [
+      [
+        "Send Email (per email)",
+        "$0.0030"
+      ],
+      [
+        "Email Verification (per email)",
+        "$0.0100"
+      ]
+    ]
+  },
+  {
+    "section": "WhatsApp",
+    "head": [
+      "Market",
+      "Marketing",
+      "Utility"
+    ],
+    "rows": [
+      [
+        "Argentina",
+        "$0.068145",
+        "$0.028665"
+      ],
+      [
+        "Colombia",
+        "$0.013755",
+        "$0.000840"
+      ],
+      [
+        "Mexico",
+        "$0.033600",
+        "$0.009345"
+      ],
+      [
+        "Spain",
+        "$0.067830",
+        "$0.022050"
+      ],
+      [
+        "North America (US/CAN)",
+        "$0.027615",
+        "$0.003780"
+      ],
+      [
+        "Rest of Latin America",
+        "$0.081585",
+        "$0.012495"
+      ]
+    ]
+  },
+  {
+    "section": "Workflow - Premium Features",
+    "head": [
+      "Feature",
+      "Price"
+    ],
+    "rows": [
+      [
+        "Workflow per execution",
+        "$0.0200"
+      ]
+    ]
+  },
+  {
+    "section": "AI Models",
+    "head": [
+      "Model",
+      "Input / 1M Tokens",
+      "Output / 1M Tokens"
+    ],
+    "rows": [
+      [
+        "OpenAI - Chat GPT-5",
+        "$1.3125",
+        "$10.5000"
+      ],
+      [
+        "OpenAI - Chat GPT-5 Mini",
+        "$0.2625",
+        "$2.1000"
+      ],
+      [
+        "OpenAI - Chat GPT-4.1",
+        "$2.1000",
+        "$8.4000"
+      ],
+      [
+        "OpenAI - Chat GPT-4.1 Mini",
+        "$0.4200",
+        "$1.6800"
+      ]
+    ]
+  },
+  {
+    "section": "AI Voice & TTS",
+    "head": [
+      "Provider / Service",
+      "Rate per min"
+    ],
+    "rows": [
+      [
+        "AI Voice Engine (Per-Minute Charge)",
+        "$0.04500"
+      ],
+      [
+        "OpenAI (TTS)",
+        "$0.01575"
+      ],
+      [
+        "Cartesia (TTS)",
+        "$0.01575"
+      ],
+      [
+        "ElevenLabs V3",
+        "$0.17850"
+      ],
+      [
+        "ElevenLabs V2.5",
+        "$0.03675"
+      ]
+    ]
+  },
+  {
+    "section": "External Voice Models",
+    "head": [
+      "Provider",
+      "Model",
+      "Price / 1M Tokens"
+    ],
+    "rows": [
+      [
+        "Google",
+        "Gemini 2.0 Flash",
+        "$0.1050"
+      ],
+      [
+        "Google",
+        "Gemini 2.0 Flash Lite",
+        "$0.0788"
+      ],
+      [
+        "Google",
+        "Gemini 2.5 Flash",
+        "$0.3150"
+      ],
+      [
+        "Google",
+        "Gemini 2.5 Flash Lite",
+        "$0.1050"
+      ],
+      [
+        "OpenAI",
+        "GPT 4o Mini",
+        "$0.1575"
+      ],
+      [
+        "OpenAI",
+        "GPT 4o",
+        "$2.6250"
+      ],
+      [
+        "OpenAI",
+        "GPT 4.1 Nano",
+        "$0.1050"
+      ],
+      [
+        "OpenAI",
+        "GPT 4.1 Mini",
+        "$0.4200"
+      ],
+      [
+        "OpenAI",
+        "GPT 4.1",
+        "$2.1000"
+      ],
+      [
+        "OpenAI",
+        "GPT 5 Nano",
+        "$0.0525"
+      ],
+      [
+        "OpenAI",
+        "GPT 5 Mini",
+        "$0.2625"
+      ],
+      [
+        "OpenAI",
+        "GPT 5",
+        "$1.3125"
+      ],
+      [
+        "Anthropic",
+        "Claude 4.5 Sonnet",
+        "$3.1500"
+      ],
+      [
+        "Anthropic",
+        "Claude 4.0 Sonnet",
+        "$3.1500"
+      ],
+      [
+        "Anthropic",
+        "Claude 3.7 Sonnet",
+        "$3.1500"
+      ],
+      [
+        "Anthropic",
+        "Claude 3.5 Haiku",
+        "$0.8400"
+      ]
+    ]
+  },
+  {
+    "section": "Agent Studio & AI Tools",
+    "head": [
+      "Feature",
+      "Price"
+    ],
+    "rows": [
+      [
+        "Web Search (Tavily)",
+        "$0.0105 / search"
+      ],
+      [
+        "Workflow AI Actions (Decision, Intent, Summarize, Translate)",
+        "$0.01 / execution"
+      ],
+      [
+        "Content AI - Image Generation",
+        "$0.06615 / image"
+      ],
+      [
+        "Content AI - Text Generation",
+        "$0.09923 / 1000 words"
+      ],
+      [
+        "Reviews AI",
+        "$0.0105 / review"
+      ]
+    ]
+  },
+  {
+    "section": "Multimodal & Specialized Models",
+    "head": [
+      "Type",
+      "Model",
+      "Price"
+    ],
+    "rows": [
+      [
+        "Video",
+        "Gemini Veo3 Fast",
+        "$0.16 / second"
+      ],
+      [
+        "Video",
+        "Gemini Veo3",
+        "$0.42 / second"
+      ],
+      [
+        "Image (Standard)",
+        "DALL-E 3 (1024x1024)",
+        "$0.04 / image"
+      ],
+      [
+        "Image (Standard)",
+        "DALL-E 3 (1024x1536 / 1536x1024)",
+        "$0.08 / image"
+      ],
+      [
+        "Image (HD)",
+        "DALL-E 3 HD (1024x1024)",
+        "$0.08 / image"
+      ],
+      [
+        "Image (HD)",
+        "DALL-E 3 HD (1024x1536 / 1536x1024)",
+        "$0.13 / image"
+      ],
+      [
+        "Speech (LLM+TTS)",
+        "OpenAI gpt-4o-mini-tts",
+        "$12.60 / 1M Token (Audio)"
+      ]
+    ]
+  }
+];
+
 export default function PayPerUse() {
   const { language } = useLanguage();
   useSEO("Pay-Per-Use Pricing - Apturio", "Detailed breakdown of our pay-per-use pricing.");
 
   useEffect(() => { window.scrollTo(0, 0); }, []);
+
+  const fmt = (cell: string) =>
+    language === "es" ? cell.replace(/\$(\d+)\.(\d+)/g, "$$$1,$2") : cell;
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
@@ -20,28 +342,41 @@ export default function PayPerUse() {
         <div className="container mx-auto px-4 max-w-4xl">
           <Link to="/" className="inline-flex items-center text-slate-400 hover:text-white mb-8">
             <ArrowLeft className="w-4 h-4 mr-2" />
-            {language === 'es' ? 'Volver al Inicio' : 'Back to Home'}
+            {language === "es" ? "Volver al Inicio" : "Back to Home"}
           </Link>
           <div className="mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">Pay-Per-Use Pricing</h1>
-            <p className="text-slate-400 text-lg">Detailed breakdown of variable costs (Updated May 2026).</p>
+            <p className="text-slate-400 text-lg">
+              {language === "es"
+                ? "Desglose detallado de costos variables (Actualizado Mayo 2026)."
+                : "Detailed breakdown of variable costs (Updated May 2026)."}
+            </p>
           </div>
 
           <div className="space-y-16">
-            <section>
-              <h2 className="text-2xl font-bold mb-6 text-white border-b border-border pb-2">Telecom (Phone & SMS)</h2>
-              <Table>
-                <TableHeader>
-                  <TableRow><TableHead>Service</TableHead><TableHead className="text-right">Price</TableHead></TableRow>
-                </TableHeader>
-                <TableBody>
-                  <TableRow><TableCell>Making calls per min (US/CAN)</TableCell><TableCell className="text-right">{language === 'es' ? '$0,0560' : '$0.0560'}</TableCell></TableRow>
-                  <TableRow><TableCell>Receiving calls per min (US/CAN)</TableCell><TableCell className="text-right">{language === 'es' ? '$0,0340' : '$0.0340'}</TableCell></TableRow>
-                  <TableRow><TableCell>Text messages per segment (US/CAN)</TableCell><TableCell className="text-right">{language === 'es' ? '$0,0332' : '$0.0332'}</TableCell></TableRow>
-                </TableBody>
-              </Table>
-            </section>
-            {/* Repite la misma estructura de <Table> para Email, WhatsApp, AI, etc. */}
+            {SECTIONS.map((s) => (
+              <section key={s.section}>
+                <h2 className="text-2xl font-bold mb-6 text-white border-b border-border pb-2">{s.section}</h2>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      {s.head.map((h, i) => (
+                        <TableHead key={i} className={i === s.head.length - 1 ? "text-right" : ""}>{h}</TableHead>
+                      ))}
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {s.rows.map((row, ri) => (
+                      <TableRow key={ri}>
+                        {row.map((cell, ci) => (
+                          <TableCell key={ci} className={ci === row.length - 1 ? "text-right" : ""}>{fmt(cell)}</TableCell>
+                        ))}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </section>
+            ))}
           </div>
         </div>
       </main>
