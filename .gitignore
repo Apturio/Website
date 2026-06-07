@@ -34,3 +34,6 @@ payload-generated-schema.ts
 *.njsproj
 *.sln
 *.sw?
+
+# TS build cache
+*.tsbuildinfo
