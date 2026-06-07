@@ -9,6 +9,11 @@ import sharp from 'sharp'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
+import { Posts } from './collections/Posts'
+import { Pages } from './collections/Pages'
+import { Categories } from './collections/Categories'
+import { Authors } from './collections/Authors'
+import { Faqs } from './collections/Faqs'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -29,12 +34,13 @@ export default buildConfig({
       baseDir: path.resolve(dirname, './app/(payload)'),
     },
   },
-  collections: [Users, Media],
+  collections: [Posts, Pages, Categories, Authors, Faqs, Media, Users],
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI,
       max: 3,
     },
+    migrationDir: path.resolve(dirname, './migrations'),
   }),
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

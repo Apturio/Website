@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "payload migrate && payload generate:importmap && payload generate:types && next build",
+    "build:next": "next build",
     "start": "next start",
     "lint": "next lint",
+    "seed": "payload run src/seed.ts",
     "generate:types": "payload generate:types",
     "generate:importmap": "payload generate:importmap"
   },
