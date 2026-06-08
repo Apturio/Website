@@ -234,6 +234,76 @@ const CATEGORY_PAIRS = [
   { en: 'Growth Strategy', es: 'Estrategia de Crecimiento' },
 ]
 
+/**
+ * Seed the two form-builder forms (idempotent: cleared + recreated each run).
+ * Field `name`s here MUST match src/lib/forms.ts and the front-end submit calls.
+ * Forms are NOT localized — user-facing labels are driven by the localized
+ * StrategyFormBlock.labels / blog i18n; these definitions hold canonical fields.
+ */
+const seedForms = async (payload: Awaited<ReturnType<typeof getPayload>>): Promise<void> => {
+  // Clear submissions first — form-submissions.form_id is NOT NULL, so deleting a
+  // referenced form otherwise throws a not-null violation.
+  const subs = await payload.find({
+    collection: 'form-submissions',
+    depth: 0,
+    limit: 1000,
+    pagination: false,
+  })
+  for (const d of subs.docs) await payload.delete({ collection: 'form-submissions', id: d.id })
+
+  const existing = await payload.find({ collection: 'forms', depth: 0, limit: 1000, pagination: false })
+  for (const d of existing.docs) await payload.delete({ collection: 'forms', id: d.id })
+
+  await payload.create({
+    collection: 'forms',
+    data: {
+      title: 'Strategy Call',
+      fields: [
+        { blockType: 'text', name: 'name', label: 'Full name', required: true, width: 50 },
+        { blockType: 'text', name: 'company', label: 'Company', required: false, width: 50 },
+        { blockType: 'email', name: 'email', label: 'Work email', required: true, width: 100 },
+        { blockType: 'textarea', name: 'message', label: 'Message', required: false, width: 100 },
+      ],
+      submitButtonLabel: 'Request my call',
+      confirmationType: 'message',
+      confirmationMessage: richTextRoot([
+        paragraph("Thanks — we'll be in touch within 1 business day."),
+      ]),
+    } as never,
+  })
+
+  await payload.create({
+    collection: 'forms',
+    data: {
+      title: 'Newsletter',
+      fields: [{ blockType: 'email', name: 'email', label: 'Email', required: true, width: 100 }],
+      submitButtonLabel: 'Subscribe',
+      confirmationType: 'message',
+      confirmationMessage: richTextRoot([paragraph('Thanks — you are subscribed.')]),
+    } as never,
+  })
+}
+
+/** Seed one example CMS redirect (idempotent). */
+const seedRedirects = async (payload: Awaited<ReturnType<typeof getPayload>>): Promise<void> => {
+  const existing = await payload.find({
+    collection: 'redirects',
+    depth: 0,
+    limit: 1000,
+    pagination: false,
+  })
+  for (const d of existing.docs) await payload.delete({ collection: 'redirects', id: d.id })
+
+  await payload.create({
+    collection: 'redirects',
+    data: {
+      from: '/en/old-demo',
+      to: { type: 'custom', url: '/en/automated-booking' },
+      type: '301',
+    } as never,
+  })
+}
+
 export const seed = async (): Promise<void> => {
   const payload = await getPayload({ config })
   payload.logger.info('[seed] starting…')
@@ -387,9 +457,9 @@ export const seed = async (): Promise<void> => {
       featured: true,
       publishedAt: new Date('2026-05-20T09:00:00Z').toISOString(),
       _status: 'published',
-      seo: {
-        metaTitle: 'Speed-to-Lead: Why the Fastest Reply Wins the Deal | Apturio',
-        metaDescription:
+      meta: {
+        title: 'Speed-to-Lead: Why the Fastest Reply Wins the Deal | Apturio',
+        description:
           'Responding to leads in under five minutes makes you 21x more likely to qualify them. Learn how to automate the first touch.',
       },
     } as never,
@@ -405,9 +475,9 @@ export const seed = async (): Promise<void> => {
         'El primer proveedor en responder a un nuevo lead gana la mayoría de las veces. Así logras que ese proveedor seas tú — automáticamente.',
       content: esContent,
       _status: 'published',
-      seo: {
-        metaTitle: 'Velocidad de respuesta: el primero en contestar gana la venta | Apturio',
-        metaDescription:
+      meta: {
+        title: 'Velocidad de respuesta: el primero en contestar gana la venta | Apturio',
+        description:
           'Responder a los leads en menos de cinco minutos te hace 21 veces más probable de calificarlos. Aprende a automatizar el primer contacto.',
       },
     } as never,
@@ -425,9 +495,9 @@ export const seed = async (): Promise<void> => {
       slug: 'home',
       layout: buildHomeLayout('en', enMessages),
       _status: 'published',
-      seo: {
-        metaTitle: enMessages.seo.home.title,
-        metaDescription: enMessages.seo.home.description,
+      meta: {
+        title: enMessages.seo.home.title,
+        description: enMessages.seo.home.description,
       },
     } as never,
   })
@@ -440,15 +510,20 @@ export const seed = async (): Promise<void> => {
       slug: 'home',
       layout: buildHomeLayout('es', esMessages),
       _status: 'published',
-      seo: {
-        metaTitle: esMessages.seo.home.title,
-        metaDescription: esMessages.seo.home.description,
+      meta: {
+        title: esMessages.seo.home.title,
+        description: esMessages.seo.home.description,
       },
     } as never,
   })
 
   // ---- Wave 2 — service pages (product pages + 4 template demos) ----
   const service = await seedServicePages(payload)
+
+  // ---- Phase 13 — form-builder forms + example redirect ----
+  await seedForms(payload)
+  await seedRedirects(payload)
+  payload.logger.info('[seed] forms (Strategy Call, Newsletter) + 1 redirect seeded')
 
   // ---- Report ----
   const [catCount, authorCount, postCount, pageCount] = await Promise.all([

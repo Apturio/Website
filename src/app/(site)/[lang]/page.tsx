@@ -32,8 +32,8 @@ export async function generateMetadata({
   return pageMetadata({
     locale: lang as AppLocale,
     path: '',
-    title: page?.seo?.metaTitle || t('title'),
-    description: page?.seo?.metaDescription || t('description'),
+    title: page?.meta?.title || t('title'),
+    description: page?.meta?.description || t('description'),
   })
 }
 

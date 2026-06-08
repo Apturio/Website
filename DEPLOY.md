@@ -36,22 +36,27 @@ Legend:
       serverless instances don't exhaust Neon's connection limit. No change needed.
 - [ ] [M] Confirm in Neon dashboard that the production branch connection limit
       gives headroom (target < 70% utilization under expected load).
-- [ ] [M] **Generate a tracked migration for a FRESH prod DB.** The dev Neon DB was
-      built incrementally via Payload dev schema-push, so only the *initial* migration
-      is tracked in `src/migrations/`; the Phase-8 collections + Phase-11 block schema
-      **and the Phase-12 native-localization schema** (the `*_locales` tables for
-      posts/pages/categories/authors/faqs, with `lang`/`relatedLocale` columns removed)
-      live in the dev DB but are NOT yet in a committed migration. On a clean production
-      Neon branch, before the first deploy, run against that branch:
-      `DATABASE_URI=<prod-branch-url> npx payload migrate:create` then commit the
-      generated file. NOTE: `migrate:create` is INTERACTIVE — drizzle-kit asks
-      "Is `_locales` enum created or renamed from another enum?"; choose **`+ _locales
-      create enum`** (the default), and accept the data-loss warnings. The build
-      command's `payload migrate` will then create the full localized schema (Users,
-      Media, Posts, Pages w/ layout blocks, Categories, Authors, Faqs — each with its
-      `*_locales` table) on fresh databases. (On the existing dev DB the schema is
-      already present via schema-push, so do NOT run a fresh migrate against it — it
-      would conflict.)
+- [ ] 🤖 **Tracked migrations cover the full schema (incl. Phase-13 plugins).**
+      `src/migrations/` now contains two tracked migrations:
+      `20260607_225402_initial` (Phase-8 collections, Phase-11 blocks, Phase-12 native
+      localization — the `*_locales` tables) and `20260608_044507_phase13_plugins`
+      (the **plugin schema**: `forms` + all `forms_blocks_*`/`forms_locales`,
+      `form_submissions` + `form_submissions_submission_data`, `redirects` +
+      `redirects_rels`, and the SEO migration `seo_*` → `meta_*` localized columns on
+      `posts_locales`/`pages_locales` and their `_v` version tables). The build
+      command's `payload migrate` applies both on a fresh prod Neon branch — no manual
+      `migrate:create` needed at deploy.
+- [ ] [M] **Dev DB caveat (push vs migrate).** The dev Neon DB was built via Payload
+      dev schema-push, so its `payload_migrations` table records only the *initial*
+      migration even though its live schema already matches Phase-13. Do **NOT** run
+      `payload migrate` against the dev DB — it would try to re-apply
+      `phase13_plugins` over an already-pushed schema and conflict. Migrations are for
+      **fresh/prod** branches only; dev stays on push.
+- [ ] [M] If you ever regenerate migrations from scratch, note `migrate:create` is
+      INTERACTIVE — drizzle-kit asks "Is `_locales` enum created or renamed?" (choose
+      the **`create`** default) and, for the `seo_*`→`meta_*` columns, "created or
+      renamed from another column?" (choose **`create column`**), then accept the
+      data-loss warning. Non-TTY automation can drive these with `expect`.
 
 **Why pooler:** each Vercel function holds its own pool; the PgBouncer pooler URL
 multiplexes them. The direct URL will hit `too many connections` under traffic.

@@ -515,6 +515,8 @@
     "newsBody": "Un playbook táctico en tu correo cada martes. Sin relleno.",
     "newsPlaceholder": "you@company.com",
     "newsSubscribe": "Suscribirme gratis",
-    "blog": "Blog"
+    "blog": "Blog",
+    "newsSuccess": "¡Listo! Te has suscrito.",
+    "newsError": "Ingresa un email válido."
   }
 }

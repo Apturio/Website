@@ -21,13 +21,13 @@ export function BlogPostJsonLd({ post, locale }: { post: Post; locale: AppLocale
   const author = asAuthor(post.author)
   const category = asCategory(post.category)
   const hero = asMedia(post.heroImage)
-  const ogImage = asMedia(post.seo?.ogImage) ?? hero
+  const ogImage = asMedia(post.meta?.image) ?? hero
 
   const blogPosting: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: post.title,
-    description: post.excerpt ?? post.seo?.metaDescription ?? undefined,
+    description: post.excerpt ?? post.meta?.description ?? undefined,
     inLanguage: locale,
     mainEntityOfPage: { '@type': 'WebPage', '@id': url },
     url,

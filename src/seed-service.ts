@@ -821,7 +821,7 @@ const createLocalizedPage = async (payload: Payload, spec: PageSpec): Promise<nu
       slug: spec.slug.en,
       layout: spec.build('en'),
       _status: 'published',
-      seo: { metaTitle: spec.metaTitle.en, metaDescription: spec.metaDescription.en },
+      meta: { title: spec.metaTitle.en, description: spec.metaDescription.en },
     } as never,
   })
 
@@ -834,7 +834,7 @@ const createLocalizedPage = async (payload: Payload, spec: PageSpec): Promise<nu
       slug: spec.slug.es,
       layout: spec.build('es'),
       _status: 'published',
-      seo: { metaTitle: spec.metaTitle.es, metaDescription: spec.metaDescription.es },
+      meta: { title: spec.metaTitle.es, description: spec.metaDescription.es },
     } as never,
   })
 

@@ -8,6 +8,7 @@ import { routing } from '@/i18n/routing'
 import { SITE_URL } from '@/lib/site'
 import { OrganizationJsonLd } from '@/components/JsonLd'
 import { WhatsAppFloat } from '@/components/WhatsAppFloat'
+import { LivePreviewListener } from '@/components/LivePreviewListener'
 import '../../globals.css'
 import '@/styles/service-blocks.css'
 
@@ -41,6 +42,7 @@ export default async function LocaleLayout({
     <html lang={lang} data-scroll-behavior="smooth">
       <body>
         <NextIntlClientProvider messages={messages}>
+          <LivePreviewListener />
           {children}
           <WhatsAppFloat locale={lang} />
         </NextIntlClientProvider>

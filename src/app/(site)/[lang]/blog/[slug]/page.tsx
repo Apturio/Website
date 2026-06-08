@@ -69,9 +69,9 @@ export async function generateMetadata({
     (loc, s) => `${SITE_URL}/${loc}/blog/${s}`,
   )
 
-  const title = post.seo?.metaTitle ?? `${post.title} | ${SITE_NAME}`
-  const description = post.seo?.metaDescription ?? post.excerpt ?? undefined
-  const ogImage = asMedia(post.seo?.ogImage) ?? asMedia(post.heroImage)
+  const title = post.meta?.title ?? `${post.title} | ${SITE_NAME}`
+  const description = post.meta?.description ?? post.excerpt ?? undefined
+  const ogImage = asMedia(post.meta?.image) ?? asMedia(post.heroImage)
 
   return {
     title,

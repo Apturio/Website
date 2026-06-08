@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { notFound } from 'next/navigation'
+import { notFound, permanentRedirect, redirect } from 'next/navigation'
 import { setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
 import { SITE_URL, localizedAlternates, type AppLocale } from '@/lib/site'
 import { getPageBySlug } from '@/lib/pages'
+import { findRedirect } from '@/lib/redirects'
 import { getLocalizedSlugMap } from '@/lib/blog'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { Navbar } from '@/components/Navbar'
@@ -56,22 +57,37 @@ export async function generateMetadata({
   )
 
   return {
-    title: page.seo?.metaTitle || page.title,
-    description: page.seo?.metaDescription || '',
+    title: page.meta?.title || page.title,
+    description: page.meta?.description || '',
     alternates: { canonical, languages },
   }
 }
 
 export default async function DynamicPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ lang: string; slug: string[] }>
+  searchParams: Promise<{ draft?: string }>
 }) {
   const { lang, slug } = await params
+  const { draft } = await searchParams
+  const isDraft = draft === 'true'
   setRequestLocale(lang)
 
-  const page = await getPageBySlug(lang, slug.join('/'))
-  if (!page || !page.layout || page.layout.length === 0) notFound()
+  const page = await getPageBySlug(lang, slug.join('/'), { draft: isDraft })
+
+  // No matching Page → honor a CMS-managed redirect before 404ing.
+  if (!page || !page.layout || page.layout.length === 0) {
+    const requestPath = `/${lang}/${slug.join('/')}`
+    const hit = await findRedirect(requestPath)
+    if (hit) {
+      // Permanent (301-class → Next emits 308) vs temporary (302-class → 307).
+      if (hit.type === '301' || hit.type === '308') permanentRedirect(hit.to)
+      redirect(hit.to)
+    }
+    notFound()
+  }
 
   // Drop the footer advantage card if the page already ends with a CtaBlock,
   // to avoid rendering the advantage band twice.

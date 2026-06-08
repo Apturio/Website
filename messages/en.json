@@ -515,6 +515,8 @@
     "newsBody": "One tactical playbook in your inbox every Tuesday. No fluff.",
     "newsPlaceholder": "you@company.com",
     "newsSubscribe": "Subscribe free",
-    "blog": "Blog"
+    "blog": "Blog",
+    "newsSuccess": "Thanks — you are subscribed.",
+    "newsError": "Please enter a valid email."
   }
 }

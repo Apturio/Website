@@ -3,6 +3,7 @@ import { Check } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 import type { AppLocale } from '@/lib/site'
+import { NewsletterForm } from '@/components/blog/NewsletterForm'
 
 /** Dark CRO offer card (sticky sidebar) — stays dark per design intent. */
 export async function CroCard({ locale }: { locale: AppLocale }) {
@@ -41,19 +42,19 @@ export async function CroCard({ locale }: { locale: AppLocale }) {
   )
 }
 
-/** Static newsletter capture (backend deferred to a later phase). */
+/** Newsletter capture — submits to the seeded "Newsletter" form via REST. */
 export async function NewsletterMini({ locale }: { locale: AppLocale }) {
   const t = await getTranslations({ locale, namespace: 'blog' })
   return (
     <div className="news-mini">
       <h4>{t('newsTitle')}</h4>
       <p>{t('newsBody')}</p>
-      <form>
-        <input className="fld" type="email" placeholder={t('newsPlaceholder')} style={{ marginBottom: 10 }} />
-        <button type="submit" className="btn btn-primary btn-block btn-pill">
-          {t('newsSubscribe')}
-        </button>
-      </form>
+      <NewsletterForm
+        placeholder={t('newsPlaceholder')}
+        submitLabel={t('newsSubscribe')}
+        successLabel={t('newsSuccess')}
+        errorLabel={t('newsError')}
+      />
     </div>
   )
 }

@@ -107,15 +107,8 @@ export const Posts: CollectionConfig = {
         description: 'Manual "Keep reading" cards on the single post (display limited to 3).',
       },
     },
-    {
-      name: 'seo',
-      type: 'group',
-      localized: true,
-      fields: [
-        { name: 'metaTitle', type: 'text' },
-        { name: 'metaDescription', type: 'textarea' },
-        { name: 'ogImage', type: 'upload', relationTo: 'media' },
-      ],
-    },
+    // SEO `meta` group (title/description/image, all localized) is injected by
+    // @payloadcms/plugin-seo — see src/payload.config.ts. Replaces the old manual
+    // `seo` group so there is a single source of truth for meta.
   ],
 }
