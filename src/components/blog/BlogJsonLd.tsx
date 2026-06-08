@@ -2,8 +2,9 @@ import type { Thing, WithContext } from 'schema-dts'
 
 import type { Post } from '@/payload-types'
 import type { AppLocale } from '@/lib/site'
-import { SITE_URL, SITE_NAME } from '@/lib/site'
+import { SITE_URL } from '@/lib/site'
 import { asAuthor, asCategory, asMedia } from '@/lib/blog'
+import { IDS } from '@/lib/schema/ids'
 import { JsonLdScript } from '@/components/JsonLdScript'
 
 // BlogPosting/BreadcrumbList are assembled as plain objects from CMS-sourced
@@ -36,12 +37,8 @@ export function BlogPostJsonLd({ post, locale }: { post: Post; locale: AppLocale
     dateModified: post.updatedAt,
     author: author
       ? { '@type': 'Person', name: author.name, url: `${SITE_URL}/${locale}/blog/author/${author.slug}` }
-      : { '@type': 'Organization', name: SITE_NAME },
-    publisher: {
-      '@type': 'Organization',
-      name: SITE_NAME,
-      url: SITE_URL,
-    },
+      : { '@id': IDS.organization },
+    publisher: { '@id': IDS.organization },
     ...(ogImage?.url ? { image: ogImage.url } : {}),
     ...(category ? { articleSection: category.title } : {}),
   }
