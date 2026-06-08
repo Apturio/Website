@@ -18,8 +18,8 @@ export interface CollectionPageInput {
 /**
  * CollectionPage for the blog index and category listing pages. Pure builder.
  *
- * Carries no stable `@id` of its own — it is a leaf listing page. `isPartOf` is an
- * `@id` cross-reference to the canonical WebSite node (Pitfall 5 — never inline a
+ * Carries no stable `@id` of its own — it is a leaf listing page. Belongs to the
+ * canonical WebSite via an `@id` cross-reference (Pitfall 5 — never inline a
  * WebSite object). `inLanguage` is driven by the required locale (Pitfall 7).
  */
 export function buildCollectionPage(input: CollectionPageInput): WithContext<CollectionPage> {
