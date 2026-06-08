@@ -12,6 +12,7 @@ import { getLocalizedSlugMap } from '@/lib/blog'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
+import { PageJsonLd } from '@/components/PageJsonLd'
 
 // ISR: pre-render known Pages at build, refresh at most hourly. Publishing in
 // admin fires the afterChange revalidate hook for instant updates.
@@ -100,6 +101,13 @@ export default async function DynamicPage({
         <RenderBlocks layout={page.layout} lang={lang} />
       </main>
       <Footer showAdvantage={!hasCta} />
+      {/* WebPage + Breadcrumb + Service (inference), +FAQPage if a faq block is present. */}
+      <PageJsonLd
+        kind="payload-page"
+        locale={lang as AppLocale}
+        url={`${SITE_URL}/${lang}/${slug.join('/')}`}
+        page={page}
+      />
     </div>
   )
 }
