@@ -6,7 +6,8 @@ import { notFound } from 'next/navigation'
 
 import { routing } from '@/i18n/routing'
 import { SITE_URL } from '@/lib/site'
-import { OrganizationJsonLd } from '@/components/JsonLd'
+import type { AppLocale } from '@/lib/site'
+import { GlobalJsonLd } from '@/components/GlobalJsonLd'
 import { WhatsAppFloat } from '@/components/WhatsAppFloat'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import '../../globals.css'
@@ -46,7 +47,7 @@ export default async function LocaleLayout({
           {children}
           <WhatsAppFloat locale={lang} />
         </NextIntlClientProvider>
-        <OrganizationJsonLd />
+        <GlobalJsonLd locale={lang as AppLocale} />
       </body>
     </html>
   )
