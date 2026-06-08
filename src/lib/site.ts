@@ -5,6 +5,12 @@ import type { Metadata } from 'next'
 export const SITE_URL = 'https://apturio.com'
 export const SITE_NAME = 'Apturio'
 
+// Guard every JSON-LD `@id` (built in @/lib/schema/ids) against double-slash
+// corruption: a trailing slash on SITE_URL would yield `https://apturio.com//#organization`.
+if (process.env.NODE_ENV !== 'test' && SITE_URL.endsWith('/')) {
+  throw new Error('SITE_URL must not have a trailing slash — got: ' + SITE_URL)
+}
+
 export type AppLocale = 'en' | 'es'
 
 interface PageMetaInput {
