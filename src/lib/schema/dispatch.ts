@@ -11,6 +11,7 @@ import { buildProduct, type PricingPlan } from './builders/product'
 import { buildProfilePage, type AuthorInput } from './builders/profile'
 import { buildService } from './builders/service'
 import { buildWebPage } from './builders/webpage'
+import { applyJsonLdOverride } from './merge'
 
 /**
  * Discriminated union of every page kind wired this phase. The route reads its locale from
@@ -75,8 +76,13 @@ export function resolvePageSchemas(props: PageJsonLdProps): WithContext<Thing>[]
 
     case 'payload-page': {
       const { page } = props
+      // Apply the editor override to the WebPage PRIMARY node only (override wins,
+      // arrays replaced). The breadcrumb/Service/FAQPage nodes below stay auto-generated.
       schemas.push(
-        buildWebPage({ locale, url, title: page.title, description: page.meta?.description ?? undefined }),
+        applyJsonLdOverride(
+          buildWebPage({ locale, url, title: page.title, description: page.meta?.description ?? undefined }),
+          page.jsonLdOverride,
+        ),
       )
       schemas.push(
         buildBreadcrumbList([homeCrumb(locale), { name: page.title, url }], locale),

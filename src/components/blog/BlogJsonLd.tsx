@@ -4,6 +4,7 @@ import { SITE_URL } from '@/lib/site'
 import { asAuthor, asCategory, asMedia } from '@/lib/blog'
 import { countWordsInLexical } from '@/lib/hooks'
 import { buildBlogPosting } from '@/lib/schema/builders/article'
+import { applyJsonLdOverride } from '@/lib/schema/merge'
 import {
   buildBreadcrumbList,
   HOME_LABEL,
@@ -49,6 +50,10 @@ export function BlogPostJsonLd({ post, locale }: { post: Post; locale: AppLocale
     wordCount: wordCount > 0 ? wordCount : undefined,
   })
 
+  // Apply the editor override to the BlogPosting PRIMARY node (override wins, arrays
+  // replaced). Serialization still routes only through JsonLdScript/safeSerialize.
+  const merged = applyJsonLdOverride(blogPosting, post.jsonLdOverride)
+
   // Home-first breadcrumb: Home → Blog → Category? → Post (caller builds the full list).
   const items: BreadcrumbItem[] = [
     { name: HOME_LABEL[locale], url: `${SITE_URL}/${locale}` },
@@ -62,7 +67,7 @@ export function BlogPostJsonLd({ post, locale }: { post: Post; locale: AppLocale
 
   return (
     <>
-      <JsonLdScript data={blogPosting} />
+      <JsonLdScript data={merged} />
       <JsonLdScript data={breadcrumb} />
     </>
   )
