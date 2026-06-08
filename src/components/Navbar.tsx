@@ -22,9 +22,27 @@ export function Navbar() {
 
   const handleLanguageChange = (lang: 'en' | 'es') => {
     if (lang === language) return;
-    // Swap the leading locale segment: /en/pay-per-use -> /es/pay-per-use
-    const newPath = pathname.replace(new RegExp(`^/${language}`), `/${lang}`);
-    router.push(newPath);
+    // Prefer the localized counterpart URL emitted as an hreflang <link> by the
+    // page's generateMetadata — handles localized slugs (e.g. /en/automated-booking
+    // -> /es/agendamiento-automatizado). Fall back to swapping the locale prefix.
+    let target: string | null = null;
+    if (typeof document !== 'undefined') {
+      const alt = document.querySelector<HTMLLinkElement>(
+        `link[rel="alternate"][hreflang="${lang}"]`,
+      );
+      if (alt?.href) {
+        try {
+          const u = new URL(alt.href);
+          target = u.pathname + u.search + u.hash;
+        } catch {
+          /* ignore malformed */
+        }
+      }
+    }
+    if (!target) {
+      target = pathname.replace(new RegExp(`^/${language}`), `/${lang}`);
+    }
+    router.push(target);
   };
 
   useEffect(() => {
