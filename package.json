@@ -11,7 +11,8 @@
     "lint": "next lint",
     "seed": "payload run src/seed.ts",
     "generate:types": "payload generate:types",
-    "generate:importmap": "payload generate:importmap"
+    "generate:importmap": "payload generate:importmap",
+    "validate:schema": "node scripts/validate-jsonld.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -79,6 +80,7 @@
     "zod": "^3.25.76"
   },
   "devDependencies": {
+    "@adobe/structured-data-validator": "1.7.0",
     "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^22.16.5",
     "@types/react": "19.2.17",
