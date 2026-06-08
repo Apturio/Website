@@ -5,7 +5,7 @@ import { Bell, Globe } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { pageMetadata, type AppLocale } from '@/lib/site'
+import { SITE_URL, pageMetadata, type AppLocale } from '@/lib/site'
 import {
   asCategory,
   asMedia,
@@ -15,6 +15,8 @@ import {
 } from '@/lib/blog'
 import { BlogCard } from '@/components/blog/BlogCard'
 import { CroCard, NewsletterMini } from '@/components/blog/Sidebar'
+import { PageJsonLd } from '@/components/PageJsonLd'
+import type { AuthorInput } from '@/lib/schema/builders/profile'
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -67,6 +69,20 @@ export default async function AuthorPage({
   const reads = author.stats?.reads
   const avatar = asMedia(author.avatar)
   const socials = author.socials
+
+  // Map the `socials` GROUP { linkedin, x, website } to a filtered, non-empty
+  // sameAs[] (T-15-15 — only the author's own profile URLs, no free-form input).
+  const sameAs = [socials?.linkedin, socials?.x, socials?.website].filter(
+    (v): v is string => typeof v === 'string' && v.length > 0,
+  )
+  const authorInput: AuthorInput = {
+    name: author.name,
+    slug: author.slug,
+    bio: author.bio ?? undefined,
+    avatarUrl: avatar?.url ?? undefined,
+    role: author.role ?? undefined,
+    ...(sameAs.length > 0 ? { sameAs } : {}),
+  }
 
   const readsLabel =
     typeof reads === 'number' ? (reads >= 1000 ? `${Math.round(reads / 100) / 10}k` : `${reads}`) : '—'
@@ -179,6 +195,14 @@ export default async function AuthorPage({
           </aside>
         </div>
       </section>
+
+      {/* ProfilePage + Person (sameAs from socials group) + [Home, Blog, Author]. */}
+      <PageJsonLd
+        kind="author"
+        locale={lang}
+        url={`${SITE_URL}/${lang}/blog/author/${author.slug}`}
+        author={authorInput}
+      />
     </main>
   )
 }
