@@ -6,6 +6,7 @@ import type {
 } from 'payload'
 import { revalidatePath } from 'next/cache'
 
+import { routing } from '@/i18n/routing'
 import { slugify } from '@/lib/slugify'
 
 /**
@@ -185,13 +186,25 @@ export const revalidatePostPaths: CollectionAfterChangeHook = async ({ doc, req 
   const catSlugs = catId ? await getLocalizedSlugs('categories', catId, req.payload) : {}
   const authorSlug = authorId ? await getSingleSlug('authors', authorId, req.payload) : null
 
+  // The post's OWN localized URLs + blog index, keyed off the post's slug map.
   for (const [locale, slug] of Object.entries(slugs)) {
     safeRevalidate(`/${locale}/blog/${slug}`)
     safeRevalidate(`/${locale}/blog`)
+  }
 
-    const catSlug = catSlugs[locale]
+  // Category + author LISTING revalidation is decoupled from the post's slug map
+  // (WR-03): a listing page can exist in a locale where THIS post has no slug, so
+  // keying off `slugs` would silently skip it and serve stale schema until the 1h
+  // ISR fallback. Category slugs are localized (revalidate every locale present in
+  // the category's own slug map); author slugs are shared across locales (revalidate
+  // the one shared path for every routing locale).
+  for (const [locale, catSlug] of Object.entries(catSlugs)) {
     if (catSlug) safeRevalidate(`/${locale}/blog/category/${catSlug}`)
-    if (authorSlug) safeRevalidate(`/${locale}/blog/author/${authorSlug}`)
+  }
+  if (authorSlug) {
+    for (const locale of routing.locales) {
+      safeRevalidate(`/${locale}/blog/author/${authorSlug}`)
+    }
   }
 
   safeRevalidate('/sitemap.xml')
