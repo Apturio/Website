@@ -2,9 +2,10 @@ import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { pageMetadata, type AppLocale } from '@/lib/site'
+import { pageMetadata, SITE_URL, type AppLocale } from '@/lib/site'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
+import { PageJsonLd } from '@/components/PageJsonLd'
 
 export function generateStaticParams() {
   return routing.locales.map((lang) => ({ lang }))
@@ -48,6 +49,12 @@ export default async function TermsOfServicePage({ params }: { params: Promise<{
         </div>
       </main>
       <Footer />
+      <PageJsonLd
+        kind="legal"
+        locale={lang as AppLocale}
+        url={`${SITE_URL}/${lang}/terms-of-service`}
+        title={t('terms.title')}
+      />
     </div>
   )
 }

@@ -4,9 +4,11 @@ import { ArrowLeft } from 'lucide-react'
 import { setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { pageMetadata, type AppLocale } from '@/lib/site'
+import { pageMetadata, SITE_URL, type AppLocale } from '@/lib/site'
+import type { PricingPlan } from '@/lib/schema/builders/product'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
+import { PageJsonLd } from '@/components/PageJsonLd'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 // Pricing data mirrors production apturio.com/pay-per-use. ES rendering only swaps
@@ -143,6 +145,19 @@ export default async function PayPerUsePage({ params }: { params: Promise<{ lang
 
   const fmt = (cell: string) => (es ? cell.replace(/\$(\d+)\.(\d+)/g, '$$$1,$2') : cell)
 
+  // Representative variable-usage line items → Product per item (content-match,
+  // Pitfall 1: prices come straight from the visible SECTIONS above; unitText reflects
+  // the billing unit). Numeric prices use schema.org dot-decimal regardless of ES display.
+  const url = `${SITE_URL}/${lang}/pay-per-use`
+  const plans: PricingPlan[] = [
+    { name: 'Making calls per min (US/CAN)', price: '$0.0560', description: 'Outbound calls (US/CAN)', unitText: 'per minute', pageUrl: url },
+    { name: 'Receiving calls per min (US/CAN)', price: '$0.0340', description: 'Inbound calls (US/CAN)', unitText: 'per minute', pageUrl: url },
+    { name: 'Text messages per segment (US/CAN)', price: '$0.0332', description: 'SMS per segment (US/CAN)', unitText: 'per segment', pageUrl: url },
+    { name: 'Send Email (per email)', price: '$0.0030', description: 'Email send', unitText: 'per email', pageUrl: url },
+    { name: 'Email Verification (per email)', price: '$0.0100', description: 'Email verification', unitText: 'per email', pageUrl: url },
+    { name: 'Workflow per execution', price: '$0.0200', description: 'Premium workflow execution', unitText: 'per execution', pageUrl: url },
+  ]
+
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <Navbar />
@@ -189,6 +204,13 @@ export default async function PayPerUsePage({ params }: { params: Promise<{ lang
         </div>
       </main>
       <Footer />
+      <PageJsonLd
+        kind="pricing"
+        locale={lang as AppLocale}
+        url={url}
+        title="Pay-Per-Use Pricing"
+        plans={plans}
+      />
     </div>
   )
 }

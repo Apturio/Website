@@ -7,6 +7,7 @@ import { getPageBySlug } from '@/lib/pages'
 import type { PricingPlan } from '@/lib/schema/builders/product'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { PricingJsonLd } from '@/components/JsonLd'
+import { PageJsonLd } from '@/components/PageJsonLd'
 import { Navbar } from '@/components/Navbar'
 import { Hero } from '@/components/Hero'
 import { TrustedBy } from '@/components/TrustedBy'
@@ -66,6 +67,8 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
           { name: t('pricing.plans.growth.name'), price: '699', description: t('pricing.plans.growth.name'), unitText: 'per month', pageUrl: homeUrl },
         ]
 
+  const homeTitle = page?.meta?.title || t('seo.home.title')
+
   // CMS path: render the home from the seeded Page's blocks. The footer drops
   // its advantage card because the final CtaBlock renders it in-flow.
   if (page?.layout && page.layout.length > 0) {
@@ -77,6 +80,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         </main>
         <Footer showAdvantage={false} />
         <PricingJsonLd plans={plans} locale={locale} />
+        <PageJsonLd kind="home" locale={locale} url={homeUrl} title={homeTitle} />
       </div>
     )
   }
@@ -97,6 +101,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
       </main>
       <Footer />
       <PricingJsonLd plans={plans} locale={locale} />
+      <PageJsonLd kind="home" locale={locale} url={homeUrl} title={homeTitle} />
     </div>
   )
 }

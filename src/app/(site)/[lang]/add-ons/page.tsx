@@ -4,9 +4,11 @@ import { ArrowLeft } from 'lucide-react'
 import { setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { pageMetadata, type AppLocale } from '@/lib/site'
+import { pageMetadata, SITE_URL, type AppLocale } from '@/lib/site'
+import type { PricingPlan } from '@/lib/schema/builders/product'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
+import { PageJsonLd } from '@/components/PageJsonLd'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 
 const ADD_ONS = [
@@ -47,6 +49,17 @@ export default async function AddOnsPage({ params }: { params: Promise<{ lang: s
   const es = lang === 'es'
 
   const formatPrice = (price: string) => (es ? price.replace('.', ',') : price)
+
+  // One Product per add-on from the page's own visible ADD_ONS (content-match,
+  // Pitfall 1). All add-ons bill monthly per the page note above.
+  const url = `${SITE_URL}/${lang}/add-ons`
+  const plans: PricingPlan[] = ADD_ONS.map((addon) => ({
+    name: addon.name,
+    price: addon.price,
+    description: addon.name,
+    unitText: 'per month',
+    pageUrl: url,
+  }))
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/30">
@@ -101,6 +114,13 @@ export default async function AddOnsPage({ params }: { params: Promise<{ lang: s
         </div>
       </main>
       <Footer />
+      <PageJsonLd
+        kind="pricing"
+        locale={lang as AppLocale}
+        url={url}
+        title={es ? 'Precios de Complementos (Add-Ons)' : 'Add-Ons Pricing'}
+        plans={plans}
+      />
     </div>
   )
 }
