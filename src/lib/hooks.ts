@@ -101,7 +101,7 @@ function safeRevalidate(urlPath: string): void {
  * locales that actually have a stored slug. Returns `{}` when unreadable.
  */
 async function getLocalizedSlugs(
-  collection: 'posts' | 'pages',
+  collection: 'posts' | 'pages' | 'categories',
   id: string | number,
   payload: Payload,
 ): Promise<Record<string, string>> {
@@ -126,18 +126,72 @@ async function getLocalizedSlugs(
 }
 
 /**
+ * Read a relationship value that may arrive populated (`{ id, ... }`) or as a bare
+ * id (depth 0). Returns the id, or `null` when the relation is unset/unreadable.
+ */
+function relationId(value: unknown): string | number | null {
+  if (value == null) return null
+  if (typeof value === 'object') {
+    const id = (value as Record<string, unknown>).id
+    return typeof id === 'string' || typeof id === 'number' ? id : null
+  }
+  if (typeof value === 'string' || typeof value === 'number') return value
+  return null
+}
+
+/**
+ * Read a single (NON-localized) `slug` string for a document — used for Authors,
+ * whose slug is shared across locales. Returns `null` when unreadable/missing.
+ */
+async function getSingleSlug(
+  collection: 'authors',
+  id: string | number,
+  payload: Payload,
+): Promise<string | null> {
+  try {
+    const doc = (await payload.findByID({
+      collection,
+      id,
+      depth: 0,
+    })) as unknown as Record<string, unknown> | null
+    const slug = doc?.slug
+    return typeof slug === 'string' && slug ? slug : null
+  } catch {
+    return null
+  }
+}
+
+/**
  * afterChange (Posts) — on save/publish, invalidate BOTH locales' localized URLs
  * for this one document (using each locale's stored slug), both blog indexes, and
- * the sitemap so edits go live without a redeploy. Wrapped in `safeRevalidate`
- * so seed/migrate never crash.
+ * the sitemap so edits go live without a redeploy.
+ *
+ * SCHEMA-18: the category + author pages now emit CollectionPage / ProfilePage
+ * schema, so a published post must ALSO refresh those schema-bearing paths per
+ * locale (preferred over the 1h ISR window — afterChange freshness on
+ * schema-bearing paths). Category slugs are localized (per-locale map); author
+ * slugs are NOT (one slug shared across every locale). Everything stays inside
+ * `safeRevalidate` so seed/migrate never crash.
  */
 export const revalidatePostPaths: CollectionAfterChangeHook = async ({ doc, req }) => {
   if (!doc) return doc
 
   const slugs = await getLocalizedSlugs('posts', doc.id as string | number, req.payload)
+
+  // Resolve the changed post's category + author relations once (skip cleanly
+  // when unset), then map each to its schema-bearing path inside the locale loop.
+  const catId = relationId(doc.category)
+  const authorId = relationId(doc.author)
+  const catSlugs = catId ? await getLocalizedSlugs('categories', catId, req.payload) : {}
+  const authorSlug = authorId ? await getSingleSlug('authors', authorId, req.payload) : null
+
   for (const [locale, slug] of Object.entries(slugs)) {
     safeRevalidate(`/${locale}/blog/${slug}`)
     safeRevalidate(`/${locale}/blog`)
+
+    const catSlug = catSlugs[locale]
+    if (catSlug) safeRevalidate(`/${locale}/blog/category/${catSlug}`)
+    if (authorSlug) safeRevalidate(`/${locale}/blog/author/${authorSlug}`)
   }
 
   safeRevalidate('/sitemap.xml')
