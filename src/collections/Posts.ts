@@ -1,7 +1,12 @@
 import type { CollectionConfig } from 'payload'
 
 import { contentEditor } from '@/lib/contentEditor'
-import { autoSlug, computeReadTime, warnMissingRelatedLocale } from '@/lib/hooks'
+import {
+  autoSlug,
+  computeReadTime,
+  revalidatePostPaths,
+  warnMissingRelatedLocale,
+} from '@/lib/hooks'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -19,6 +24,7 @@ export const Posts: CollectionConfig = {
   hooks: {
     beforeValidate: [autoSlug('title'), warnMissingRelatedLocale],
     beforeChange: [computeReadTime],
+    afterChange: [revalidatePostPaths],
   },
   fields: [
     {

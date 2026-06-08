@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { contentEditor } from '@/lib/contentEditor'
-import { autoSlug, warnMissingRelatedLocale } from '@/lib/hooks'
+import { autoSlug, revalidatePagePaths, warnMissingRelatedLocale } from '@/lib/hooks'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -18,6 +18,7 @@ export const Pages: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [autoSlug('title'), warnMissingRelatedLocale],
+    afterChange: [revalidatePagePaths],
   },
   fields: [
     {
