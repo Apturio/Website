@@ -296,7 +296,32 @@ export interface Page {
    * Block-based page layout. The home page is built from these 8 section blocks; arbitrary pages can mix any subset.
    */
   layout?:
-    | (HeroBlock | LogosBlock | ProblemBlock | BenefitsBlock | TestimonialsBlock | PricingBlock | FaqBlock | CtaBlock)[]
+    | (
+        | HeroBlock
+        | LogosBlock
+        | ProblemBlock
+        | BenefitsBlock
+        | TestimonialsBlock
+        | PricingBlock
+        | FaqBlock
+        | CtaBlock
+        | HeroCenteredBlock
+        | HeroSplitBlock
+        | HeroDashboardBlock
+        | HeroBoldBlock
+        | FeatureGridBlock
+        | FeatureZigzagBlock
+        | FeatureAccordionBlock
+        | StepsBlock
+        | TimelineBlock
+        | TabsBlock
+        | MetricsBlock
+        | BigQuoteBlock
+        | MiniPricingBlock
+        | StrategyFormBlock
+        | StickyCtaBlock
+        | BonusBannerBlock
+      )[]
     | null;
   /**
    * Optional long-form rich text for simple pages. Block-based pages use the Layout field above instead.
@@ -553,6 +578,528 @@ export interface CtaBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroCenteredBlock".
+ */
+export interface HeroCenteredBlock {
+  /**
+   * Lucide icon name for the eyebrow pill (e.g. calendar-check).
+   */
+  pillIcon?: string | null;
+  pillText: string;
+  /**
+   * Headline text before the accented phrase.
+   */
+  titleStart: string;
+  /**
+   * Accented phrase (rendered in the brand or green color).
+   */
+  titleAccent?: string | null;
+  /**
+   * Headline text after the accented phrase.
+   */
+  titleEnd?: string | null;
+  accentColor?: ('brand' | 'green') | null;
+  subtitle?: string | null;
+  ctaPrimaryLabel?: string | null;
+  ctaPrimaryHref?: string | null;
+  /**
+   * Optional lucide icon name for the secondary CTA.
+   */
+  ctaSecondaryIcon?: string | null;
+  ctaSecondaryLabel?: string | null;
+  ctaSecondaryHref?: string | null;
+  /**
+   * Small checkmark items under the CTAs (centered/split heroes).
+   */
+  micro?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroCentered';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroSplitBlock".
+ */
+export interface HeroSplitBlock {
+  /**
+   * Lucide icon name for the eyebrow pill (e.g. calendar-check).
+   */
+  pillIcon?: string | null;
+  pillText: string;
+  /**
+   * Headline text before the accented phrase.
+   */
+  titleStart: string;
+  /**
+   * Accented phrase (rendered in the brand or green color).
+   */
+  titleAccent?: string | null;
+  /**
+   * Headline text after the accented phrase.
+   */
+  titleEnd?: string | null;
+  accentColor?: ('brand' | 'green') | null;
+  subtitle?: string | null;
+  ctaPrimaryLabel?: string | null;
+  ctaPrimaryHref?: string | null;
+  /**
+   * Optional lucide icon name for the secondary CTA.
+   */
+  ctaSecondaryIcon?: string | null;
+  ctaSecondaryLabel?: string | null;
+  ctaSecondaryHref?: string | null;
+  /**
+   * Small checkmark items under the CTAs (centered/split heroes).
+   */
+  micro?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  image?: (number | null) | Media;
+  /**
+   * Placeholder label shown when no image is set.
+   */
+  placeholder?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroSplit';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroDashboardBlock".
+ */
+export interface HeroDashboardBlock {
+  /**
+   * Lucide icon name for the eyebrow pill (e.g. calendar-check).
+   */
+  pillIcon?: string | null;
+  pillText: string;
+  /**
+   * Headline text before the accented phrase.
+   */
+  titleStart: string;
+  /**
+   * Accented phrase (rendered in the brand or green color).
+   */
+  titleAccent?: string | null;
+  /**
+   * Headline text after the accented phrase.
+   */
+  titleEnd?: string | null;
+  accentColor?: ('brand' | 'green') | null;
+  subtitle?: string | null;
+  ctaPrimaryLabel?: string | null;
+  ctaPrimaryHref?: string | null;
+  /**
+   * Optional lucide icon name for the secondary CTA.
+   */
+  ctaSecondaryIcon?: string | null;
+  ctaSecondaryLabel?: string | null;
+  ctaSecondaryHref?: string | null;
+  /**
+   * Small checkmark items under the CTAs (centered/split heroes).
+   */
+  micro?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  image?: (number | null) | Media;
+  /**
+   * Placeholder label shown when no mockup image is set.
+   */
+  placeholder?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroDashboard';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBoldBlock".
+ */
+export interface HeroBoldBlock {
+  /**
+   * Lucide icon name for the eyebrow pill (e.g. calendar-check).
+   */
+  pillIcon?: string | null;
+  pillText: string;
+  /**
+   * Headline text before the accented phrase.
+   */
+  titleStart: string;
+  /**
+   * Accented phrase (rendered in the brand or green color).
+   */
+  titleAccent?: string | null;
+  /**
+   * Headline text after the accented phrase.
+   */
+  titleEnd?: string | null;
+  accentColor?: ('brand' | 'green') | null;
+  subtitle?: string | null;
+  ctaPrimaryLabel?: string | null;
+  ctaPrimaryHref?: string | null;
+  /**
+   * Optional lucide icon name for the secondary CTA.
+   */
+  ctaSecondaryIcon?: string | null;
+  ctaSecondaryLabel?: string | null;
+  ctaSecondaryHref?: string | null;
+  /**
+   * Small checkmark items under the CTAs (centered/split heroes).
+   */
+  micro?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  cards?:
+    | {
+        /**
+         * Lucide icon name.
+         */
+        icon?: string | null;
+        big: string;
+        label: string;
+        /**
+         * Render the icon in the green accent.
+         */
+        green?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroBold';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureGridBlock".
+ */
+export interface FeatureGridBlock {
+  eyebrow?: string | null;
+  heading: string;
+  subtitle?: string | null;
+  /**
+   * Use the left-aligned two-column intro header (Bold template).
+   */
+  splitIntro?: boolean | null;
+  cards?:
+    | {
+        /**
+         * Lucide icon name.
+         */
+        icon?: string | null;
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureGrid';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureZigzagBlock".
+ */
+export interface FeatureZigzagBlock {
+  eyebrow?: string | null;
+  heading?: string | null;
+  rows?:
+    | {
+        /**
+         * Kicker label, e.g. "01" or "The problem".
+         */
+        num?: string | null;
+        title: string;
+        description: string;
+        bullets?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        image?: (number | null) | Media;
+        placeholder?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureZigzag';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureAccordionBlock".
+ */
+export interface FeatureAccordionBlock {
+  eyebrow?: string | null;
+  heading: string;
+  image?: (number | null) | Media;
+  placeholder?: string | null;
+  items?:
+    | {
+        /**
+         * Lucide icon name.
+         */
+        icon?: string | null;
+        title: string;
+        body: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featureAccordion';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StepsBlock".
+ */
+export interface StepsBlock {
+  eyebrow?: string | null;
+  heading: string;
+  items?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'steps';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock".
+ */
+export interface TimelineBlock {
+  eyebrow?: string | null;
+  heading: string;
+  items?:
+    | {
+        /**
+         * Lucide icon name for the dot.
+         */
+        icon?: string | null;
+        /**
+         * Small uppercase phase tag.
+         */
+        tag?: string | null;
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'timeline';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TabsBlock".
+ */
+export interface TabsBlock {
+  eyebrow?: string | null;
+  heading: string;
+  tabs?:
+    | {
+        /**
+         * Lucide icon name for the tab button.
+         */
+        icon?: string | null;
+        label: string;
+        title: string;
+        description: string;
+        bullets?:
+          | {
+              text: string;
+              id?: string | null;
+            }[]
+          | null;
+        image?: (number | null) | Media;
+        placeholder?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'tabs';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MetricsBlock".
+ */
+export interface MetricsBlock {
+  /**
+   * Add the periwinkle glow band above the metrics.
+   */
+  glowTop?: boolean | null;
+  items?:
+    | {
+        value: string;
+        label: string;
+        /**
+         * Render the value in the green accent.
+         */
+        green?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'metrics';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BigQuoteBlock".
+ */
+export interface BigQuoteBlock {
+  /**
+   * Add the periwinkle glow band above the quote.
+   */
+  glowTop?: boolean | null;
+  quote: string;
+  authorName: string;
+  authorRole?: string | null;
+  avatar?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bigQuote';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MiniPricingBlock".
+ */
+export interface MiniPricingBlock {
+  eyebrow?: string | null;
+  heading?: string | null;
+  subtitle?: string | null;
+  /**
+   * Show only the featured plan (standalone .pricing-single).
+   */
+  single?: boolean | null;
+  plans?:
+    | {
+        name: string;
+        sub?: string | null;
+        price: string;
+        period?: string | null;
+        /**
+         * Highlight this plan (periwinkle border + scale).
+         */
+        featured?: boolean | null;
+        /**
+         * Green pill above a featured plan (e.g. "$2,000 Bonus Included").
+         */
+        bonusTag?: string | null;
+        features?:
+          | {
+              text: string;
+              /**
+               * Emphasize (white/bold + green check) — e.g. "FREE $2,000 Setup".
+               */
+              hot?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        ctaLabel: string;
+        ctaHref?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'miniPricing';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StrategyFormBlock".
+ */
+export interface StrategyFormBlock {
+  eyebrow?: string | null;
+  heading: string;
+  body?: string | null;
+  bullets?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Form field labels and placeholders (seed per-locale).
+   */
+  labels?: {
+    name?: string | null;
+    namePlaceholder?: string | null;
+    company?: string | null;
+    companyPlaceholder?: string | null;
+    email?: string | null;
+    emailPlaceholder?: string | null;
+    leads?: string | null;
+    submit?: string | null;
+    fine?: string | null;
+    success?: string | null;
+  };
+  leadOptions?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'strategyForm';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StickyCtaBlock".
+ */
+export interface StickyCtaBlock {
+  title: string;
+  /**
+   * Green secondary line (e.g. bonus).
+   */
+  subtitle?: string | null;
+  ctaLabel: string;
+  ctaHref?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'stickyCta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BonusBannerBlock".
+ */
+export interface BonusBannerBlock {
+  /**
+   * Green pill label (e.g. "$2,000 Setup Bonus Included").
+   */
+  pillText?: string | null;
+  heading: string;
+  body?: string | null;
+  ctaPrimaryLabel?: string | null;
+  ctaPrimaryHref?: string | null;
+  ctaSecondaryLabel?: string | null;
+  ctaSecondaryHref?: string | null;
+  fine?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'bonusBanner';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faqs".
  */
 export interface Faq {
@@ -752,6 +1299,22 @@ export interface PagesSelect<T extends boolean = true> {
         pricing?: T | PricingBlockSelect<T>;
         faq?: T | FaqBlockSelect<T>;
         cta?: T | CtaBlockSelect<T>;
+        heroCentered?: T | HeroCenteredBlockSelect<T>;
+        heroSplit?: T | HeroSplitBlockSelect<T>;
+        heroDashboard?: T | HeroDashboardBlockSelect<T>;
+        heroBold?: T | HeroBoldBlockSelect<T>;
+        featureGrid?: T | FeatureGridBlockSelect<T>;
+        featureZigzag?: T | FeatureZigzagBlockSelect<T>;
+        featureAccordion?: T | FeatureAccordionBlockSelect<T>;
+        steps?: T | StepsBlockSelect<T>;
+        timeline?: T | TimelineBlockSelect<T>;
+        tabs?: T | TabsBlockSelect<T>;
+        metrics?: T | MetricsBlockSelect<T>;
+        bigQuote?: T | BigQuoteBlockSelect<T>;
+        miniPricing?: T | MiniPricingBlockSelect<T>;
+        strategyForm?: T | StrategyFormBlockSelect<T>;
+        stickyCta?: T | StickyCtaBlockSelect<T>;
+        bonusBanner?: T | BonusBannerBlockSelect<T>;
       };
   content?: T;
   publishedAt?: T;
@@ -920,6 +1483,379 @@ export interface CtaBlockSelect<T extends boolean = true> {
   cancelAnytime?: T;
   buttonLabel?: T;
   buttonHref?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroCenteredBlock_select".
+ */
+export interface HeroCenteredBlockSelect<T extends boolean = true> {
+  pillIcon?: T;
+  pillText?: T;
+  titleStart?: T;
+  titleAccent?: T;
+  titleEnd?: T;
+  accentColor?: T;
+  subtitle?: T;
+  ctaPrimaryLabel?: T;
+  ctaPrimaryHref?: T;
+  ctaSecondaryIcon?: T;
+  ctaSecondaryLabel?: T;
+  ctaSecondaryHref?: T;
+  micro?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroSplitBlock_select".
+ */
+export interface HeroSplitBlockSelect<T extends boolean = true> {
+  pillIcon?: T;
+  pillText?: T;
+  titleStart?: T;
+  titleAccent?: T;
+  titleEnd?: T;
+  accentColor?: T;
+  subtitle?: T;
+  ctaPrimaryLabel?: T;
+  ctaPrimaryHref?: T;
+  ctaSecondaryIcon?: T;
+  ctaSecondaryLabel?: T;
+  ctaSecondaryHref?: T;
+  micro?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  image?: T;
+  placeholder?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroDashboardBlock_select".
+ */
+export interface HeroDashboardBlockSelect<T extends boolean = true> {
+  pillIcon?: T;
+  pillText?: T;
+  titleStart?: T;
+  titleAccent?: T;
+  titleEnd?: T;
+  accentColor?: T;
+  subtitle?: T;
+  ctaPrimaryLabel?: T;
+  ctaPrimaryHref?: T;
+  ctaSecondaryIcon?: T;
+  ctaSecondaryLabel?: T;
+  ctaSecondaryHref?: T;
+  micro?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  image?: T;
+  placeholder?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBoldBlock_select".
+ */
+export interface HeroBoldBlockSelect<T extends boolean = true> {
+  pillIcon?: T;
+  pillText?: T;
+  titleStart?: T;
+  titleAccent?: T;
+  titleEnd?: T;
+  accentColor?: T;
+  subtitle?: T;
+  ctaPrimaryLabel?: T;
+  ctaPrimaryHref?: T;
+  ctaSecondaryIcon?: T;
+  ctaSecondaryLabel?: T;
+  ctaSecondaryHref?: T;
+  micro?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  cards?:
+    | T
+    | {
+        icon?: T;
+        big?: T;
+        label?: T;
+        green?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureGridBlock_select".
+ */
+export interface FeatureGridBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subtitle?: T;
+  splitIntro?: T;
+  cards?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureZigzagBlock_select".
+ */
+export interface FeatureZigzagBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  rows?:
+    | T
+    | {
+        num?: T;
+        title?: T;
+        description?: T;
+        bullets?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        image?: T;
+        placeholder?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeatureAccordionBlock_select".
+ */
+export interface FeatureAccordionBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  image?: T;
+  placeholder?: T;
+  items?:
+    | T
+    | {
+        icon?: T;
+        title?: T;
+        body?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StepsBlock_select".
+ */
+export interface StepsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TimelineBlock_select".
+ */
+export interface TimelineBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  items?:
+    | T
+    | {
+        icon?: T;
+        tag?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TabsBlock_select".
+ */
+export interface TabsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  tabs?:
+    | T
+    | {
+        icon?: T;
+        label?: T;
+        title?: T;
+        description?: T;
+        bullets?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        image?: T;
+        placeholder?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MetricsBlock_select".
+ */
+export interface MetricsBlockSelect<T extends boolean = true> {
+  glowTop?: T;
+  items?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        green?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BigQuoteBlock_select".
+ */
+export interface BigQuoteBlockSelect<T extends boolean = true> {
+  glowTop?: T;
+  quote?: T;
+  authorName?: T;
+  authorRole?: T;
+  avatar?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "MiniPricingBlock_select".
+ */
+export interface MiniPricingBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subtitle?: T;
+  single?: T;
+  plans?:
+    | T
+    | {
+        name?: T;
+        sub?: T;
+        price?: T;
+        period?: T;
+        featured?: T;
+        bonusTag?: T;
+        features?:
+          | T
+          | {
+              text?: T;
+              hot?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+        ctaHref?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StrategyFormBlock_select".
+ */
+export interface StrategyFormBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  body?: T;
+  bullets?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  labels?:
+    | T
+    | {
+        name?: T;
+        namePlaceholder?: T;
+        company?: T;
+        companyPlaceholder?: T;
+        email?: T;
+        emailPlaceholder?: T;
+        leads?: T;
+        submit?: T;
+        fine?: T;
+        success?: T;
+      };
+  leadOptions?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StickyCtaBlock_select".
+ */
+export interface StickyCtaBlockSelect<T extends boolean = true> {
+  title?: T;
+  subtitle?: T;
+  ctaLabel?: T;
+  ctaHref?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BonusBannerBlock_select".
+ */
+export interface BonusBannerBlockSelect<T extends boolean = true> {
+  pillText?: T;
+  heading?: T;
+  body?: T;
+  ctaPrimaryLabel?: T;
+  ctaPrimaryHref?: T;
+  ctaSecondaryLabel?: T;
+  ctaSecondaryHref?: T;
+  fine?: T;
   id?: T;
   blockName?: T;
 }

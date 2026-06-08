@@ -10,6 +10,23 @@ import { TestimonialsBlock } from '@/blocks/TestimonialsBlock/config'
 import { PricingBlock } from '@/blocks/PricingBlock/config'
 import { FaqBlock } from '@/blocks/FaqBlock/config'
 import { CtaBlock } from '@/blocks/CtaBlock/config'
+// Wave 2 — service-page block library
+import { HeroCenteredBlock } from '@/blocks/HeroCenteredBlock/config'
+import { HeroSplitBlock } from '@/blocks/HeroSplitBlock/config'
+import { HeroDashboardBlock } from '@/blocks/HeroDashboardBlock/config'
+import { HeroBoldBlock } from '@/blocks/HeroBoldBlock/config'
+import { FeatureGridBlock } from '@/blocks/FeatureGridBlock/config'
+import { FeatureZigzagBlock } from '@/blocks/FeatureZigzagBlock/config'
+import { FeatureAccordionBlock } from '@/blocks/FeatureAccordionBlock/config'
+import { StepsBlock } from '@/blocks/StepsBlock/config'
+import { TimelineBlock } from '@/blocks/TimelineBlock/config'
+import { TabsBlock } from '@/blocks/TabsBlock/config'
+import { MetricsBlock } from '@/blocks/MetricsBlock/config'
+import { BigQuoteBlock } from '@/blocks/BigQuoteBlock/config'
+import { MiniPricingBlock } from '@/blocks/MiniPricingBlock/config'
+import { StrategyFormBlock } from '@/blocks/StrategyFormBlock/config'
+import { StickyCtaBlock } from '@/blocks/StickyCtaBlock/config'
+import { BonusBannerBlock } from '@/blocks/BonusBannerBlock/config'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -77,6 +94,23 @@ export const Pages: CollectionConfig = {
         PricingBlock,
         FaqBlock,
         CtaBlock,
+        // Wave 2 — service-page blocks
+        HeroCenteredBlock,
+        HeroSplitBlock,
+        HeroDashboardBlock,
+        HeroBoldBlock,
+        FeatureGridBlock,
+        FeatureZigzagBlock,
+        FeatureAccordionBlock,
+        StepsBlock,
+        TimelineBlock,
+        TabsBlock,
+        MetricsBlock,
+        BigQuoteBlock,
+        MiniPricingBlock,
+        StrategyFormBlock,
+        StickyCtaBlock,
+        BonusBannerBlock,
       ],
     },
     {

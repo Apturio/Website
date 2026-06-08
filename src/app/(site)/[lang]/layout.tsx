@@ -9,6 +9,7 @@ import { SITE_URL } from '@/lib/site'
 import { OrganizationJsonLd } from '@/components/JsonLd'
 import { WhatsAppFloat } from '@/components/WhatsAppFloat'
 import '../../globals.css'
+import '@/styles/service-blocks.css'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

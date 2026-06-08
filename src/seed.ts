@@ -7,6 +7,7 @@ import type { Where } from 'payload'
 import config from '@payload-config'
 
 import { slugify } from '@/lib/slugify'
+import { seedServicePages } from '@/seed-service'
 
 // ---------- Home page block layout (seeded from messages/*.json) ----------
 
@@ -481,6 +482,9 @@ export const seed = async (): Promise<void> => {
   await link('pages', enHome.id, esHome.id)
   await link('pages', esHome.id, enHome.id)
 
+  // ---- Wave 2 — service pages (product pages + 4 template demos) ----
+  const service = await seedServicePages(payload, findOrCreate, link)
+
   // ---- Report ----
   const [catCount, authorCount, postCount, pageCount] = await Promise.all([
     payload.count({ collection: 'categories' }),
@@ -493,7 +497,8 @@ export const seed = async (): Promise<void> => {
     `[seed] done. categories=${catCount.totalDocs} (created ${categoriesCreated} this run), ` +
       `authors=${authorCount.totalDocs}, posts=${postCount.totalDocs}, pages=${pageCount.totalDocs}. ` +
       `EN post id=${enPost.id} <-> ES post id=${esPost.id}. ` +
-      `EN home id=${enHome.id} <-> ES home id=${esHome.id}`,
+      `EN home id=${enHome.id} <-> ES home id=${esHome.id}. ` +
+      `service pages: ${service.total} docs (created ${service.created} this run).`,
   )
 }
 
