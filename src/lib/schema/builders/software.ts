@@ -17,8 +17,9 @@ const SCREENSHOT =
  * `WithContext<SoftwareApplication>` with a stable `@id` anchor and locale-driven
  * `inLanguage` (Pitfall 7 — never a literal).
  *
- * The `offers` block carries both `price` and `priceCurrency` (Google requires both for
- * price display — Pitfall 10). No `aggregateRating`/`review` (Pitfall 4, threat T-14-03).
+ * No global `offers` block — per-page price markup lives in `PricingJsonLd`, bound to the
+ * displayed plan prices (content-match — Pitfall 1). No `aggregateRating`/`review`
+ * (Pitfall 4, threat T-14-03).
  */
 export function buildSoftwareApplication(
   locale: AppLocale,
@@ -42,11 +43,8 @@ export function buildSoftwareApplication(
     // Served from the United States (US-based support line +1 561). Expand only with
     // verified served countries — no speculative ISO codes.
     countriesSupported: 'US',
-    offers: {
-      '@type': 'Offer',
-      price: '199',
-      priceCurrency: 'USD', // required by Google alongside price (Pitfall 10)
-    },
+    // No global Offer: price markup lives in PricingJsonLd, bound to the
+    // price visible on each pricing surface (content-match — Pitfall 1).
     // TODO(v2.3): aggregateRating only after verified G2/Capterra profile with ≥5 reviews (Pitfall 4)
   }
 }
