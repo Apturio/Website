@@ -1,31 +1,20 @@
-import type { Product, WithContext } from 'schema-dts'
+import type { AppLocale } from '@/lib/site'
 
-import { SITE_URL, SITE_NAME } from '@/lib/site'
+import { buildProduct, type PricingPlan } from '@/lib/schema/builders/product'
 import { JsonLdScript } from '@/components/JsonLdScript'
 
-interface PricingOffer {
-  name: string
-  price: string
-}
-
-/** Product + Offer list. Rendered on pricing surfaces (home, pay-per-use). */
-export function PricingJsonLd({ offers }: { offers: PricingOffer[] }) {
-  const data: WithContext<Product> = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: `${SITE_NAME} AI CRM`,
-    description:
-      'Done-for-You AI-Powered Sales Machine: a turnkey AI CRM that qualifies leads, manages your pipeline, and books appointments 24/7.',
-    brand: { '@type': 'Brand', name: SITE_NAME },
-    offers: offers.map((o) => ({
-      '@type': 'Offer',
-      name: o.name,
-      price: o.price.replace(/[^0-9.]/g, ''),
-      priceCurrency: 'USD',
-      availability: 'https://schema.org/InStock',
-      url: SITE_URL,
-    })),
-  }
-
-  return <JsonLdScript data={data} />
+/**
+ * One `Product` per pricing plan (fixes the legacy single-Product-wrapping-all-offers
+ * anti-pattern) with locale-driven `inLanguage` (IN-01 fix). Each plan is mapped through
+ * the pure `buildProduct` builder and rendered through the shared XSS-safe `JsonLdScript`
+ * (the single serialization choke point — Pitfall 2). Rendered on pricing surfaces (home).
+ */
+export function PricingJsonLd({ plans, locale }: { plans: PricingPlan[]; locale: AppLocale }) {
+  return (
+    <>
+      {plans.map((plan, i) => (
+        <JsonLdScript key={i} data={buildProduct(plan, locale)} />
+      ))}
+    </>
+  )
 }

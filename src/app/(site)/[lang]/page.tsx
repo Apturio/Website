@@ -2,8 +2,9 @@ import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { pageMetadata, type AppLocale } from '@/lib/site'
+import { pageMetadata, SITE_URL, type AppLocale } from '@/lib/site'
 import { getPageBySlug } from '@/lib/pages'
+import type { PricingPlan } from '@/lib/schema/builders/product'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { PricingJsonLd } from '@/components/JsonLd'
 import { Navbar } from '@/components/Navbar'
@@ -44,16 +45,25 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
 
   const page = await getPageBySlug(lang, 'home')
 
-  // Derive Product/Offer JSON-LD offers from the pricing block when present;
-  // otherwise fall back to the i18n plan names + current prices.
+  // Derive one Product-per-plan JSON-LD from the pricing block when present;
+  // otherwise fall back to the i18n plan names + current monthly prices. Plans are
+  // monthly subscriptions, so unitText is "per month"; pageUrl is the home canonical.
+  const locale = lang as AppLocale
+  const homeUrl = `${SITE_URL}/${lang}`
   const pricingBlock = page?.layout?.find((b) => b.blockType === 'pricing')
-  const offers =
+  const plans: PricingPlan[] =
     pricingBlock && 'plans' in pricingBlock && pricingBlock.plans?.length
-      ? pricingBlock.plans.map((p) => ({ name: p.name, price: p.price }))
+      ? pricingBlock.plans.map((p) => ({
+          name: p.name,
+          price: p.price,
+          description: p.description ?? p.name,
+          unitText: 'per month',
+          pageUrl: homeUrl,
+        }))
       : [
-          { name: t('pricing.plans.foundation.name'), price: '199' },
-          { name: t('pricing.plans.engine.name'), price: '299' },
-          { name: t('pricing.plans.growth.name'), price: '699' },
+          { name: t('pricing.plans.foundation.name'), price: '199', description: t('pricing.plans.foundation.name'), unitText: 'per month', pageUrl: homeUrl },
+          { name: t('pricing.plans.engine.name'), price: '299', description: t('pricing.plans.engine.name'), unitText: 'per month', pageUrl: homeUrl },
+          { name: t('pricing.plans.growth.name'), price: '699', description: t('pricing.plans.growth.name'), unitText: 'per month', pageUrl: homeUrl },
         ]
 
   // CMS path: render the home from the seeded Page's blocks. The footer drops
@@ -66,7 +76,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
           <RenderBlocks layout={page.layout} lang={lang} />
         </main>
         <Footer showAdvantage={false} />
-        <PricingJsonLd offers={offers} />
+        <PricingJsonLd plans={plans} locale={locale} />
       </div>
     )
   }
@@ -86,7 +96,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
         <FAQ />
       </main>
       <Footer />
-      <PricingJsonLd offers={offers} />
+      <PricingJsonLd plans={plans} locale={locale} />
     </div>
   )
 }
