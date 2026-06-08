@@ -1,3 +1,4 @@
+// noindex page — no page-specific JSON-LD
 import type { Metadata } from 'next'
 import { CheckCircle2, Bot } from 'lucide-react'
 import { setRequestLocale } from 'next-intl/server'

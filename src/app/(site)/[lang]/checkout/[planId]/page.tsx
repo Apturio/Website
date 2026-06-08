@@ -1,3 +1,4 @@
+// noindex page — no page-specific JSON-LD
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Check, ArrowLeft, ShieldCheck } from 'lucide-react'
