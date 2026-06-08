@@ -71,10 +71,26 @@ export default async function AuthorPage({
   const socials = author.socials
 
   // Map the `socials` GROUP { linkedin, x, website } to a filtered, non-empty
-  // sameAs[] (T-15-15 — only the author's own profile URLs, no free-form input).
-  const sameAs = [socials?.linkedin, socials?.x, socials?.website].filter(
-    (v): v is string => typeof v === 'string' && v.length > 0,
-  )
+  // sameAs[] (T-15-15). These are free-form CMS text fields, so each value IS
+  // domain-validated before it becomes an authoritative `sameAs` association:
+  // `linkedin` must be a linkedin.com URL, `x` an x.com/twitter.com URL; `website`
+  // is legitimately arbitrary but must still be a valid http(s) URL. Values that
+  // fail validation are dropped (prevents an editor pointing sameAs at a
+  // competitor/phishing URL — CMS-sourced sameAs without domain validation).
+  const isHttpUrl = (v: string): boolean => {
+    try {
+      return /^https?:$/.test(new URL(v).protocol)
+    } catch {
+      return false
+    }
+  }
+  const sameAs = [
+    socials?.linkedin && /^https:\/\/(www\.)?linkedin\.com\//.test(socials.linkedin)
+      ? socials.linkedin
+      : null,
+    socials?.x && /^https:\/\/(www\.)?(x|twitter)\.com\//.test(socials.x) ? socials.x : null,
+    socials?.website && isHttpUrl(socials.website) ? socials.website : null,
+  ].filter((v): v is string => typeof v === 'string' && v.length > 0)
   const authorInput: AuthorInput = {
     name: author.name,
     slug: author.slug,
