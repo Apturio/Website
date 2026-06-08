@@ -51,6 +51,11 @@ export function buildProduct(
     '@type': 'Product',
     name: plan.name,
     description: plan.description,
+    // WR-03 / SCHEMA-08: Google requires `image` per plan for the Product rich result.
+    // `imageUrl` is intentionally OPTIONAL today, so a missing image is NOT a compile-time
+    // error — it surfaces at the CI gate (validate-jsonld.mjs) at deploy instead. The
+    // conditional spread is correct (omit rather than emit an empty image). Populating
+    // `imageUrl` on the pay-per-use / add-ons plans is the deploy-time follow-up.
     ...(plan.imageUrl ? { image: plan.imageUrl } : {}),
     // @id ref to the canonical Organization node — never inline (Pitfall 5).
     brand: { '@id': IDS.organization },

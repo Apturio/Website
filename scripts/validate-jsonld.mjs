@@ -37,6 +37,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const WEBSITE_ROOT = resolve(__dirname, '..')
 
 // --- Target resolution (CLI arg or FIXTURE env override, else the real build) ---
+// WR-02 SCOPE: this gate scans ONLY prerendered static HTML
+// (`.next/server/app/**/*.html`). Routes emitted on-demand (SSR / dynamic, no
+// `generateStaticParams`, or `dynamic = 'force-dynamic'`) produce no static .html
+// and are therefore NOT validated here. The override targets — Pages and Posts —
+// are ISR-static (statically generated), so their `jsonLdOverride` IS covered.
+// Purely dynamic routes are out of scope; acceptable because the override fields
+// live exclusively on statically-generated collections.
 const cliTarget = process.argv[2]
 const envTarget = process.env.FIXTURE
 const DEFAULT_TARGET = join(WEBSITE_ROOT, '.next', 'server', 'app')
