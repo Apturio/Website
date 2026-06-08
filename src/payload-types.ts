@@ -182,6 +182,18 @@ export interface Post {
    * Manual "Keep reading" cards on the single post (display limited to 3).
    */
   relatedPosts?: (number | Post)[] | null;
+  /**
+   * Advanced: a raw JSON-LD object shallow-merged over this page’s auto-generated schema. Override wins on conflicting keys and arrays are REPLACED, not extended. Policy: the override MUST match the visible page content — mismatched or fake markup (ratings, reviews, searchboxes) triggers a Google manual action. aggregateRating, review, reviews, potentialAction and SearchAction are rejected on save at any depth. Must be a single object including an "@type".
+   */
+  jsonLdOverride?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -336,6 +348,18 @@ export interface Page {
     [k: string]: unknown;
   } | null;
   publishedAt?: string | null;
+  /**
+   * Advanced: a raw JSON-LD object shallow-merged over this page’s auto-generated schema. Override wins on conflicting keys and arrays are REPLACED, not extended. Policy: the override MUST match the visible page content — mismatched or fake markup (ratings, reviews, searchboxes) triggers a Google manual action. aggregateRating, review, reviews, potentialAction and SearchAction are rejected on save at any depth. Must be a single object including an "@type".
+   */
+  jsonLdOverride?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -1489,6 +1513,7 @@ export interface PostsSelect<T extends boolean = true> {
   readTime?: T;
   publishedAt?: T;
   relatedPosts?: T;
+  jsonLdOverride?: T;
   meta?:
     | T
     | {
@@ -1537,6 +1562,7 @@ export interface PagesSelect<T extends boolean = true> {
       };
   content?: T;
   publishedAt?: T;
+  jsonLdOverride?: T;
   meta?:
     | T
     | {
