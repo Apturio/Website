@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { contentEditor } from '@/lib/contentEditor'
 import { autoSlug, revalidatePagePaths } from '@/lib/hooks'
+import { jsonLdOverrideField } from './fields/jsonLdOverride'
 import { HeroBlock } from '@/blocks/HeroBlock/config'
 import { LogosBlock } from '@/blocks/LogosBlock/config'
 import { ProblemBlock } from '@/blocks/ProblemBlock/config'
@@ -117,6 +118,7 @@ export const Pages: CollectionConfig = {
         date: { pickerAppearance: 'dayAndTime' },
       },
     },
+    jsonLdOverrideField,
     // SEO `meta` group (title/description/image, all localized) is injected by
     // @payloadcms/plugin-seo — see src/payload.config.ts. Replaces the old manual
     // `seo` group so there is a single source of truth for meta.

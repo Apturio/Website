@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { contentEditor } from '@/lib/contentEditor'
 import { autoSlug, computeReadTime, revalidatePostPaths } from '@/lib/hooks'
+import { jsonLdOverrideField } from './fields/jsonLdOverride'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -107,6 +108,7 @@ export const Posts: CollectionConfig = {
         description: 'Manual "Keep reading" cards on the single post (display limited to 3).',
       },
     },
+    jsonLdOverrideField,
     // SEO `meta` group (title/description/image, all localized) is injected by
     // @payloadcms/plugin-seo — see src/payload.config.ts. Replaces the old manual
     // `seo` group so there is a single source of truth for meta.
