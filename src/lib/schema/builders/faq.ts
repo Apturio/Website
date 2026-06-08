@@ -4,8 +4,9 @@ import type { FAQPage, WithContext } from 'schema-dts'
 
 /**
  * One FAQ entry. `answer` is the raw CMS textarea which may embed link tokens like
- * `[/pay-per-use]` / `[/add-ons]` — these are stripped to plain visible text so the
- * emitted JSON-LD matches the rendered FAQ (Pitfall 1 content-match, T-15-08).
+ * `[/pay-per-use]` / `[/add-ons]` — these are resolved to the SAME visible anchor
+ * label the accordion renders so the emitted JSON-LD matches the rendered FAQ
+ * (Pitfall 1 content-match, T-15-08).
  */
 export interface FaqItem {
   question: string
@@ -16,12 +17,18 @@ export interface FaqItem {
 const MAX_ITEMS = 18
 
 /**
- * Strip the `[/path]` link-token markup the FaqBlock answers carry (e.g.
- * `[/pay-per-use]`, `[/add-ons]`) so the schema text matches the visible rendered
- * answer. Collapses any leftover double spaces produced by the removal.
+ * Resolve the `[/path]` link-token markup the FaqBlock answers carry to plain text
+ * that matches the visible rendered answer. The two known tokens (`[/pay-per-use]`,
+ * `[/add-ons]`) are SUBSTITUTED with the same locale-aware anchor label the visible
+ * accordion (`FAQ.tsx`) inserts — `"detailed pricing breakdown"` (EN) /
+ * `"desglose detallado de precios"` (ES) — so schema text == rendered text. Any
+ * unknown `[/...]` token is stripped as a fallback. Collapses leftover double
+ * spaces and trims.
  */
-function cleanAnswer(answer: string): string {
+function cleanAnswer(answer: string, locale: AppLocale): string {
+  const label = locale === 'es' ? 'desglose detallado de precios' : 'detailed pricing breakdown'
   return answer
+    .replace(/\[\/(?:pay-per-use|add-ons)\]/g, label)
     .replace(/\[\/[^\]]*\]/g, '')
     .replace(/\s{2,}/g, ' ')
     .trim()
@@ -30,8 +37,8 @@ function cleanAnswer(answer: string): string {
 /**
  * FAQPage emitting Question/Answer pairs for pages carrying a FaqBlock. Pure builder.
  *
- * `inLanguage` is required (Pitfall 7). Tokens are cleaned to plain text and the list
- * is capped at the first {@link MAX_ITEMS} entries.
+ * `inLanguage` is required (Pitfall 7). Tokens are resolved to their locale-aware
+ * visible label and the list is capped at the first {@link MAX_ITEMS} entries.
  */
 export function buildFaqPage(questions: FaqItem[], locale: AppLocale): WithContext<FAQPage> {
   return {
@@ -43,7 +50,7 @@ export function buildFaqPage(questions: FaqItem[], locale: AppLocale): WithConte
       name: item.question,
       acceptedAnswer: {
         '@type': 'Answer',
-        text: cleanAnswer(item.answer),
+        text: cleanAnswer(item.answer, locale),
       },
     })),
   }
