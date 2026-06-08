@@ -1,33 +1,29 @@
-import { Rocket } from "lucide-react";
 import Link from "next/link";
 import { getTranslations, getLocale } from "next-intl/server";
 
-export async function Footer() {
+import { AdvantageCTA } from "@/components/AdvantageCTA";
+
+// `showAdvantage` defaults to true (every non-home page renders the advantage
+// card inside the footer). The home page sets it to false because the card is
+// rendered there as the final CtaBlock — preserving the original layout exactly
+// (advantage band on a card-coloured background, then the footer links).
+export async function Footer({ showAdvantage = true }: { showAdvantage?: boolean } = {}) {
   const t = await getTranslations();
   const language = await getLocale();
 
   return (
-    <footer className="border-t border-border bg-card pt-16 pb-8">
+    <footer className={`bg-card pb-8 ${showAdvantage ? "border-t border-border pt-16" : "pt-0"}`}>
       <div className="container mx-auto px-4">
-        <div className="relative max-w-4xl mx-auto mb-16 bg-background rounded-[20px] p-8 border border-primary/40 shadow-[0_0_30px_rgba(120,125,255,0.15)] text-center">
-          <div className="absolute -top-4 right-4 md:-right-4 px-4 py-1.5 bg-background border border-[#37ca37] text-[#37ca37] text-xs font-bold uppercase tracking-wider rounded-full shadow-[0_0_15px_rgba(55,202,55,0.4)] whitespace-nowrap z-10">
-            {t('footer.bonus')}
-          </div>
-          <Rocket className="h-12 w-12 text-primary mx-auto mb-4 drop-shadow-[0_0_10px_rgba(120,125,255,0.5)]" />
-          <h3 className="text-2xl md:text-3xl font-bold mb-4 text-[#FFFFFF]">{t('footer.advantageTitle')}</h3>
-          <p className="text-[#94a3b8] text-lg mb-4 max-w-2xl mx-auto">
-            {t('footer.advantageBody')}
-          </p>
-          <p className="text-[#FFFFFF] text-lg mb-2 font-medium max-w-2xl mx-auto">
-            {t('footer.advantageGoal')}
-          </p>
-          <p className="text-[#37ca37] text-base mb-6 font-semibold max-w-2xl mx-auto drop-shadow-[0_0_8px_rgba(55,202,55,0.4)]">
-            {t('footer.advantageSafety')}
-          </p>
-          <p className="text-sm font-medium text-[#94a3b8] uppercase tracking-widest">
-            {t('footer.cancelAnytime')}
-          </p>
-        </div>
+        {showAdvantage && (
+          <AdvantageCTA
+            badge={t('footer.bonus')}
+            title={t('footer.advantageTitle')}
+            body={t('footer.advantageBody')}
+            goal={t('footer.advantageGoal')}
+            safety={t('footer.advantageSafety')}
+            cancelAnytime={t('footer.cancelAnytime')}
+          />
+        )}
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-border/50 text-sm text-slate-400">
           <Link href={`/${language}`} className="flex items-center gap-2">

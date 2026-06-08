@@ -1,28 +1,43 @@
 import { TrendingDown, Clock, Layers, Bot, Settings, Activity, AlertTriangle } from "lucide-react";
 import { getTranslations } from "next-intl/server";
+import type { ProblemBlock } from "@/payload-types";
 
-export async function TheProblem() {
+// Icon set, addressable by name (block) or position (legacy index fallback).
+const ICON_BY_NAME: Record<string, React.ReactNode> = {
+  TrendingDown: <TrendingDown className="h-8 w-8 text-primary" />,
+  Clock: <Clock className="h-8 w-8 text-primary drop-shadow-[0_0_10px_rgba(120,125,255,0.5)]" />,
+  Layers: <Layers className="h-8 w-8 text-primary drop-shadow-[0_0_10px_rgba(120,125,255,0.5)]" />,
+  Bot: <Bot className="h-8 w-8 text-primary drop-shadow-[0_0_10px_rgba(120,125,255,0.5)]" />,
+  Settings: <Settings className="h-8 w-8 text-primary drop-shadow-[0_0_10px_rgba(120,125,255,0.5)]" />,
+  Activity: <Activity className="h-8 w-8 text-primary drop-shadow-[0_0_10px_rgba(120,125,255,0.5)]" />,
+};
+
+const ICON_BY_INDEX = [
+  ICON_BY_NAME.TrendingDown,
+  ICON_BY_NAME.Clock,
+  ICON_BY_NAME.Layers,
+  ICON_BY_NAME.Bot,
+  ICON_BY_NAME.Settings,
+  ICON_BY_NAME.Activity,
+];
+
+export async function TheProblem({ block }: { block?: ProblemBlock } = {}) {
   const t = await getTranslations();
-  const problems = t.raw('problem.items') as { title: string; description: string }[];
 
-  const icons = [
-    <TrendingDown className="h-8 w-8 text-primary" />,
-    <Clock className="h-8 w-8 text-primary drop-shadow-[0_0_10px_rgba(120,125,255,0.5)]" />,
-    <Layers className="h-8 w-8 text-primary drop-shadow-[0_0_10px_rgba(120,125,255,0.5)]" />,
-    <Bot className="h-8 w-8 text-primary drop-shadow-[0_0_10px_rgba(120,125,255,0.5)]" />,
-    <Settings className="h-8 w-8 text-primary drop-shadow-[0_0_10px_rgba(120,125,255,0.5)]" />,
-    <Activity className="h-8 w-8 text-primary drop-shadow-[0_0_10px_rgba(120,125,255,0.5)]" />
-  ];
+  const heading = block?.heading ?? t('problem.title');
+  const subtitle = block?.subtitle ?? t('problem.subtitle');
+  const problems: { title: string; description: string; icon?: string | null }[] =
+    block?.items ?? (t.raw('problem.items') as { title: string; description: string }[]);
 
   return (
     <section id="problem" className="py-24 bg-background relative">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16 flex flex-col items-center">
-          <h2 className="text-3xl md:text-5xl font-bold mb-8 tracking-tight text-white">{t('problem.title')}</h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-8 tracking-tight text-white">{heading}</h2>
           <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#37ca37]/10 border border-[#37ca37]">
             <AlertTriangle className="w-5 h-5 text-[#37ca37]" />
             <span className="text-lg font-semibold text-[#37ca37] [text-shadow:_0_0_8px_rgba(55,202,55,0.5)]">
-              {t('problem.subtitle')}
+              {subtitle}
             </span>
           </div>
         </div>
@@ -30,7 +45,7 @@ export async function TheProblem() {
           {problems.map((problem, index) => (
             <div key={index} className="group p-8 rounded-[20px] bg-card border border-border hover:border-primary/50 transition-all shadow-sm">
               <div className="h-16 w-16 rounded-[16px] bg-primary/10 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform group-hover:shadow-[0_0_15px_rgba(120,125,255,0.3)]">
-                {icons[index]}
+                {(problem.icon && ICON_BY_NAME[problem.icon]) ?? ICON_BY_INDEX[index]}
               </div>
               <h3 className="text-xl font-bold mb-3 text-white">{problem.title}</h3>
               <p className="text-slate-400 leading-relaxed">{problem.description}</p>

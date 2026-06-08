@@ -2,6 +2,14 @@ import type { CollectionConfig } from 'payload'
 
 import { contentEditor } from '@/lib/contentEditor'
 import { autoSlug, revalidatePagePaths, warnMissingRelatedLocale } from '@/lib/hooks'
+import { HeroBlock } from '@/blocks/HeroBlock/config'
+import { LogosBlock } from '@/blocks/LogosBlock/config'
+import { ProblemBlock } from '@/blocks/ProblemBlock/config'
+import { BenefitsBlock } from '@/blocks/BenefitsBlock/config'
+import { TestimonialsBlock } from '@/blocks/TestimonialsBlock/config'
+import { PricingBlock } from '@/blocks/PricingBlock/config'
+import { FaqBlock } from '@/blocks/FaqBlock/config'
+import { CtaBlock } from '@/blocks/CtaBlock/config'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -54,9 +62,31 @@ export const Pages: CollectionConfig = {
       },
     },
     {
+      name: 'layout',
+      type: 'blocks',
+      admin: {
+        description:
+          'Block-based page layout. The home page is built from these 8 section blocks; arbitrary pages can mix any subset.',
+      },
+      blocks: [
+        HeroBlock,
+        LogosBlock,
+        ProblemBlock,
+        BenefitsBlock,
+        TestimonialsBlock,
+        PricingBlock,
+        FaqBlock,
+        CtaBlock,
+      ],
+    },
+    {
       name: 'content',
       type: 'richText',
       editor: contentEditor,
+      admin: {
+        description:
+          'Optional long-form rich text for simple pages. Block-based pages use the Layout field above instead.',
+      },
     },
     {
       name: 'publishedAt',

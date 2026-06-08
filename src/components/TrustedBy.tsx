@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
+import type { LogosBlock } from "@/payload-types";
 
-const logos = [
+const DEFAULT_LOGOS = [
   { name: "Sportsmed Academy", src: "https://vibe.filesafe.space/1775831502235366632/attachments/40dbb601-c692-4abc-b2a9-6b77e3b414ea.png", old: true },
   { name: "SM Privé", src: "https://vibe.filesafe.space/1775831502235366632/attachments/112147e9-ed3a-4f3c-92e9-47c6f1c6cf81.png", old: true },
   { name: "Venxel", src: "https://vibe.filesafe.space/1775831502235366632/attachments/b5f01474-d965-4589-a2b4-d84fc8860b36.png", old: true },
@@ -11,14 +12,29 @@ const logos = [
   { name: "Dharma Health", src: "https://vibe.filesafe.space/1775831502235366632/attachments/b59b13fc-6550-45b1-8e9a-4ae25904dcf7.png", old: false },
 ];
 
-export const TrustedBy = async () => {
+export const TrustedBy = async ({ block }: { block?: LogosBlock } = {}) => {
   const t = await getTranslations();
+
+  const heading = block?.heading ?? t('trustedBy.title');
+  const globalOperations = block?.globalOperations ?? t('trustedBy.globalOperations');
+  const logos: { name: string; src: string; old?: boolean | null }[] =
+    block?.logos && block.logos.length > 0 ? block.logos : DEFAULT_LOGOS;
+  const countries: { name: string; code: string }[] =
+    block?.countries && block.countries.length > 0
+      ? block.countries
+      : [
+          { name: t('trustedBy.countries.ca'), code: "ca" },
+          { name: t('trustedBy.countries.ar'), code: "ar" },
+          { name: t('trustedBy.countries.mx'), code: "mx" },
+          { name: t('trustedBy.countries.es'), code: "es" },
+          { name: t('trustedBy.countries.ve'), code: "ve" },
+        ];
 
   return (
     <section className="bg-[#000000] py-[60px]">
       <div className="container mx-auto px-4 flex flex-col items-center">
         <h2 className="text-center text-3xl md:text-5xl font-bold mb-12 tracking-tight text-white">
-          {t('trustedBy.title')}
+          {heading}
         </h2>
 
         <div className="w-full max-w-6xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] py-8">
@@ -39,16 +55,10 @@ export const TrustedBy = async () => {
 
         <div className="mt-12 text-center">
           <h3 className="text-[10px] md:text-xs font-bold tracking-[0.2em] text-primary/80 uppercase mb-6">
-            {t('trustedBy.globalOperations')}
+            {globalOperations}
           </h3>
           <div className="flex flex-wrap justify-center gap-3 md:gap-4 w-full max-w-5xl mx-auto">
-            {[
-              { name: t('trustedBy.countries.ca'), code: "ca" },
-              { name: t('trustedBy.countries.ar'), code: "ar" },
-              { name: t('trustedBy.countries.mx'), code: "mx" },
-              { name: t('trustedBy.countries.es'), code: "es" },
-              { name: t('trustedBy.countries.ve'), code: "ve" },
-            ].map((country) => (
+            {countries.map((country) => (
               <div
                 key={country.name}
                 className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-primary/50 hover:shadow-[0_0_15px_rgba(120,125,255,0.2)] transition-all duration-300 cursor-default group"

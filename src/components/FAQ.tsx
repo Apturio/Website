@@ -3,16 +3,30 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useTranslations, useLocale } from "next-intl";
 
-export function FAQ() {
+type FaqItem = { q: string; a: string };
+
+// Client component (Radix accordion holds open/close state). Accepts optional
+// items + lang from a FaqBlock; falls back to next-intl when rendered bare.
+export function FAQ({
+  heading,
+  items,
+  lang,
+}: {
+  heading?: string;
+  items?: FaqItem[];
+  lang?: string;
+} = {}) {
   const t = useTranslations();
-  const language = useLocale();
-  const faqItems = t.raw('faq.items') as { q: string; a: string }[];
+  const locale = useLocale();
+  const language = lang ?? locale;
+  const title = heading ?? t('faq.title');
+  const faqItems: FaqItem[] = items ?? (t.raw('faq.items') as FaqItem[]);
 
   return (
     <section id="faq" className="py-24 bg-background border-t border-border">
       <div className="container mx-auto px-4 max-w-3xl">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight text-white">{t('faq.title')}</h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight text-white">{title}</h2>
         </div>
         <Accordion type="single" collapsible className="w-full">
           {faqItems.map((item, index) => (

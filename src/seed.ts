@@ -1,8 +1,128 @@
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
 import { getPayload } from 'payload'
 import type { Where } from 'payload'
 import config from '@payload-config'
 
 import { slugify } from '@/lib/slugify'
+
+// ---------- Home page block layout (seeded from messages/*.json) ----------
+
+const seedDir = path.dirname(fileURLToPath(import.meta.url))
+
+type Messages = Record<string, any>
+
+const loadMessages = (lang: string): Messages =>
+  JSON.parse(fs.readFileSync(path.resolve(seedDir, `../messages/${lang}.json`), 'utf-8'))
+
+const HOME_LOGOS = [
+  { name: 'Sportsmed Academy', src: 'https://vibe.filesafe.space/1775831502235366632/attachments/40dbb601-c692-4abc-b2a9-6b77e3b414ea.png', old: true },
+  { name: 'SM Privé', src: 'https://vibe.filesafe.space/1775831502235366632/attachments/112147e9-ed3a-4f3c-92e9-47c6f1c6cf81.png', old: true },
+  { name: 'Venxel', src: 'https://vibe.filesafe.space/1775831502235366632/attachments/b5f01474-d965-4589-a2b4-d84fc8860b36.png', old: true },
+  { name: 'En Otro Idioma', src: 'https://vibe.filesafe.space/1775831502235366632/attachments/6139c761-d36d-4240-8a90-ccec4045bec9.png', old: true },
+  { name: 'Aprendo SEO', src: 'https://vibe.filesafe.space/1775831502235366632/attachments/7d0ff8ad-4917-46be-b2a4-501c8f5b0c9b.png', old: true },
+  { name: 'Forja Group', src: 'https://vibe.filesafe.space/1775831502235366632/attachments/07fed6fa-f329-4106-b0a6-eaa6156111eb.png', old: false },
+  { name: 'New Cargo Express', src: 'https://vibe.filesafe.space/1775831502235366632/attachments/2f4d42da-e799-4211-ae7e-7d72ed9b95e4.png', old: false },
+  { name: 'Dharma Health', src: 'https://vibe.filesafe.space/1775831502235366632/attachments/b59b13fc-6550-45b1-8e9a-4ae25904dcf7.png', old: false },
+]
+
+const PROBLEM_ICONS = ['TrendingDown', 'Clock', 'Layers', 'Bot', 'Settings', 'Activity']
+const COUNTRY_CODES = ['ca', 'ar', 'mx', 'es', 've']
+
+/** Build the 8-block home layout from a locale's message bundle. */
+const buildHomeLayout = (lang: string, m: Messages): Record<string, unknown>[] => {
+  const secondaryHref = lang === 'es' ? 'https://wa.me/15614731298' : `/${lang}/strategy-call`
+  const planPrice: Record<string, string> = { foundation: '$199', engine: '$299', growth: '$699' }
+
+  const plan = (planId: 'foundation' | 'engine' | 'growth') => {
+    const p = m.pricing.plans[planId]
+    return {
+      planId,
+      name: p.name,
+      price: planPrice[planId],
+      description: p.description,
+      features: (p.features as string[]).map((feature) => ({ feature })),
+      highlighted: planId === 'engine',
+      bonus: planId === 'engine' ? m.pricing.bonus : undefined,
+      ctaLabel: p.cta,
+      ctaHref: `/${lang}/checkout/${planId}`,
+      subText: p.subText ?? undefined,
+    }
+  }
+
+  return [
+    {
+      blockType: 'hero',
+      badge: m.hero.badge,
+      title: m.hero.title,
+      description: m.hero.description,
+      ctaPrimaryLabel: m.hero.ctaPrimary,
+      ctaPrimaryHref: '#pricing',
+      ctaSecondaryLabel: m.hero.ctaSecondary,
+      ctaSecondaryHref: secondaryHref,
+    },
+    {
+      blockType: 'problem',
+      heading: m.problem.title,
+      subtitle: m.problem.subtitle,
+      items: (m.problem.items as { title: string; description: string }[]).map((it, i) => ({
+        title: it.title,
+        description: it.description,
+        icon: PROBLEM_ICONS[i] ?? undefined,
+      })),
+    },
+    {
+      blockType: 'benefits',
+      heading: m.benefits.title,
+      subtitle: m.benefits.subtitle,
+      items: (m.benefits.items as { title: string; description: string }[]).map((it) => ({
+        title: it.title,
+        description: it.description,
+      })),
+    },
+    {
+      blockType: 'logos',
+      heading: m.trustedBy.title,
+      logos: HOME_LOGOS,
+      globalOperations: m.trustedBy.globalOperations,
+      countries: COUNTRY_CODES.map((code) => ({ name: m.trustedBy.countries[code], code })),
+    },
+    {
+      blockType: 'testimonials',
+      heading: m.testimonials.title,
+      subtitle: m.testimonials.subtitle,
+      items: (m.testimonials.items as { name: string; text: string }[]).map((it) => ({
+        quote: it.text,
+        author: it.name,
+      })),
+    },
+    {
+      blockType: 'pricing',
+      heading: m.pricing.title,
+      subtitle: m.pricing.subtitle,
+      plans: [plan('foundation'), plan('engine'), plan('growth')],
+    },
+    {
+      blockType: 'faq',
+      heading: m.faq.title,
+      items: (m.faq.items as { q: string; a: string }[]).map((it) => ({
+        question: it.q,
+        answer: it.a,
+      })),
+    },
+    {
+      blockType: 'cta',
+      badge: m.footer.bonus,
+      heading: m.footer.advantageTitle,
+      body: m.footer.advantageBody,
+      goal: m.footer.advantageGoal,
+      safety: m.footer.advantageSafety,
+      cancelAnytime: m.footer.cancelAnytime,
+    },
+  ]
+}
 
 /**
  * Idempotent seed for Phase 8.
@@ -116,7 +236,7 @@ export const seed = async (): Promise<void> => {
 
   // Helper: find-or-create keyed by where clause.
   const findOrCreate = async (
-    collection: 'categories' | 'authors' | 'posts',
+    collection: 'categories' | 'authors' | 'posts' | 'pages',
     where: Where,
     data: Record<string, unknown>,
   ): Promise<{ id: number | string; created: boolean }> => {
@@ -135,7 +255,7 @@ export const seed = async (): Promise<void> => {
   }
 
   const link = async (
-    collection: 'categories' | 'posts',
+    collection: 'categories' | 'posts' | 'pages',
     id: number | string,
     relatedLocaleId: number | string,
   ): Promise<void> => {
@@ -304,17 +424,76 @@ export const seed = async (): Promise<void> => {
   await link('posts', enPost.id, esPost.id)
   await link('posts', esPost.id, enPost.id)
 
+  // ---- Home Page (EN + ES, block layout, published, linked) ----
+  const enMessages = loadMessages('en')
+  const esMessages = loadMessages('es')
+
+  const enHome = await findOrCreate(
+    'pages',
+    { and: [{ slug: { equals: 'home' } }, { lang: { equals: 'en' } }] },
+    {
+      title: 'Home',
+      slug: 'home',
+      lang: 'en',
+      layout: buildHomeLayout('en', enMessages),
+      _status: 'published',
+      seo: {
+        metaTitle: enMessages.seo.home.title,
+        metaDescription: enMessages.seo.home.description,
+      },
+    },
+  )
+
+  const esHome = await findOrCreate(
+    'pages',
+    { and: [{ slug: { equals: 'home' } }, { lang: { equals: 'es' } }] },
+    {
+      title: 'Inicio',
+      slug: 'home',
+      lang: 'es',
+      layout: buildHomeLayout('es', esMessages),
+      _status: 'published',
+      seo: {
+        metaTitle: esMessages.seo.home.title,
+        metaDescription: esMessages.seo.home.description,
+      },
+    },
+  )
+
+  // Keep the block layout in sync with messages on re-run (idempotent refresh of
+  // existing rows; create already populated new ones).
+  if (!enHome.created) {
+    await payload.update({
+      collection: 'pages',
+      id: enHome.id,
+      data: { layout: buildHomeLayout('en', enMessages) } as never,
+    })
+  }
+  if (!esHome.created) {
+    await payload.update({
+      collection: 'pages',
+      id: esHome.id,
+      data: { layout: buildHomeLayout('es', esMessages) } as never,
+    })
+  }
+
+  // Link the EN/ES home pair both directions for hreflang.
+  await link('pages', enHome.id, esHome.id)
+  await link('pages', esHome.id, enHome.id)
+
   // ---- Report ----
-  const [catCount, authorCount, postCount] = await Promise.all([
+  const [catCount, authorCount, postCount, pageCount] = await Promise.all([
     payload.count({ collection: 'categories' }),
     payload.count({ collection: 'authors' }),
     payload.count({ collection: 'posts' }),
+    payload.count({ collection: 'pages' }),
   ])
 
   payload.logger.info(
     `[seed] done. categories=${catCount.totalDocs} (created ${categoriesCreated} this run), ` +
-      `authors=${authorCount.totalDocs}, posts=${postCount.totalDocs}. ` +
-      `EN post id=${enPost.id} <-> ES post id=${esPost.id}`,
+      `authors=${authorCount.totalDocs}, posts=${postCount.totalDocs}, pages=${pageCount.totalDocs}. ` +
+      `EN post id=${enPost.id} <-> ES post id=${esPost.id}. ` +
+      `EN home id=${enHome.id} <-> ES home id=${esHome.id}`,
   )
 }
 

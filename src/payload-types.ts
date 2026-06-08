@@ -292,6 +292,15 @@ export interface Page {
    * Link to the same page in the other language. Set on BOTH documents for hreflang.
    */
   relatedLocale?: (number | null) | Page;
+  /**
+   * Block-based page layout. The home page is built from these 8 section blocks; arbitrary pages can mix any subset.
+   */
+  layout?:
+    | (HeroBlock | LogosBlock | ProblemBlock | BenefitsBlock | TestimonialsBlock | PricingBlock | FaqBlock | CtaBlock)[]
+    | null;
+  /**
+   * Optional long-form rich text for simple pages. Block-based pages use the Layout field above instead.
+   */
   content?: {
     root: {
       type: string;
@@ -316,6 +325,231 @@ export interface Page {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock".
+ */
+export interface HeroBlock {
+  /**
+   * Eyebrow / pill above the headline.
+   */
+  badge?: string | null;
+  title: string;
+  description?: string | null;
+  ctaPrimaryLabel?: string | null;
+  /**
+   * Primary CTA destination (e.g. #pricing).
+   */
+  ctaPrimaryHref?: string | null;
+  ctaSecondaryLabel?: string | null;
+  /**
+   * Secondary CTA destination. External links (https://wa.me/...) render a chat icon and open in a new tab; internal links render a calendar icon.
+   */
+  ctaSecondaryHref?: string | null;
+  /**
+   * Optional logo shown above the headline.
+   */
+  logo?: (number | null) | Media;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'hero';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LogosBlock".
+ */
+export interface LogosBlock {
+  heading: string;
+  logos?:
+    | {
+        name: string;
+        /**
+         * Logo image URL.
+         */
+        src: string;
+        /**
+         * Legacy logo (renders with the grayscale screen treatment).
+         */
+        old?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Small uppercase label above the country chips.
+   */
+  globalOperations?: string | null;
+  countries?:
+    | {
+        name: string;
+        /**
+         * ISO 2-letter country code (drives the flag image).
+         */
+        code: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'logos';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProblemBlock".
+ */
+export interface ProblemBlock {
+  heading: string;
+  /**
+   * Green pill text under the heading.
+   */
+  subtitle?: string | null;
+  items?:
+    | {
+        title: string;
+        description: string;
+        /**
+         * Card icon.
+         */
+        icon?: ('TrendingDown' | 'Clock' | 'Layers' | 'Bot' | 'Settings' | 'Activity') | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'problem';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BenefitsBlock".
+ */
+export interface BenefitsBlock {
+  heading: string;
+  subtitle?: string | null;
+  items?:
+    | {
+        title: string;
+        description: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'benefits';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock".
+ */
+export interface TestimonialsBlock {
+  heading: string;
+  subtitle?: string | null;
+  items?:
+    | {
+        quote: string;
+        author: string;
+        role?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'testimonials';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PricingBlock".
+ */
+export interface PricingBlock {
+  heading: string;
+  subtitle?: string | null;
+  plans?:
+    | {
+        /**
+         * Drives the per-tier styling (engine = highlighted center card).
+         */
+        planId: 'foundation' | 'engine' | 'growth';
+        name: string;
+        /**
+         * e.g. $199
+         */
+        price: string;
+        /**
+         * e.g. " / month" (falls back to i18n).
+         */
+        period?: string | null;
+        description?: string | null;
+        features?:
+          | {
+              feature: string;
+              id?: string | null;
+            }[]
+          | null;
+        highlighted?: boolean | null;
+        /**
+         * Optional badge above the card (engine tier).
+         */
+        bonus?: string | null;
+        ctaLabel: string;
+        ctaHref?: string | null;
+        /**
+         * Optional fine print under the features.
+         */
+        subText?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'pricing';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FaqBlock".
+ */
+export interface FaqBlock {
+  heading: string;
+  items?:
+    | {
+        question: string;
+        answer: string;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaBlock".
+ */
+export interface CtaBlock {
+  /**
+   * Green pill badge (e.g. "$2,000 BONUS INCLUDED").
+   */
+  badge?: string | null;
+  heading: string;
+  body?: string | null;
+  /**
+   * Emphasised goal line (white text).
+   */
+  goal?: string | null;
+  /**
+   * Green safety / disclaimer line.
+   */
+  safety?: string | null;
+  /**
+   * Uppercase footnote (e.g. "Cancel anytime").
+   */
+  cancelAnytime?: string | null;
+  /**
+   * Optional CTA button label. Leave empty to hide the button.
+   */
+  buttonLabel?: string | null;
+  buttonHref?: string | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -507,6 +741,18 @@ export interface PagesSelect<T extends boolean = true> {
   slug?: T;
   lang?: T;
   relatedLocale?: T;
+  layout?:
+    | T
+    | {
+        hero?: T | HeroBlockSelect<T>;
+        logos?: T | LogosBlockSelect<T>;
+        problem?: T | ProblemBlockSelect<T>;
+        benefits?: T | BenefitsBlockSelect<T>;
+        testimonials?: T | TestimonialsBlockSelect<T>;
+        pricing?: T | PricingBlockSelect<T>;
+        faq?: T | FaqBlockSelect<T>;
+        cta?: T | CtaBlockSelect<T>;
+      };
   content?: T;
   publishedAt?: T;
   seo?:
@@ -519,6 +765,163 @@ export interface PagesSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock_select".
+ */
+export interface HeroBlockSelect<T extends boolean = true> {
+  badge?: T;
+  title?: T;
+  description?: T;
+  ctaPrimaryLabel?: T;
+  ctaPrimaryHref?: T;
+  ctaSecondaryLabel?: T;
+  ctaSecondaryHref?: T;
+  logo?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LogosBlock_select".
+ */
+export interface LogosBlockSelect<T extends boolean = true> {
+  heading?: T;
+  logos?:
+    | T
+    | {
+        name?: T;
+        src?: T;
+        old?: T;
+        id?: T;
+      };
+  globalOperations?: T;
+  countries?:
+    | T
+    | {
+        name?: T;
+        code?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ProblemBlock_select".
+ */
+export interface ProblemBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subtitle?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        icon?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "BenefitsBlock_select".
+ */
+export interface BenefitsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subtitle?: T;
+  items?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TestimonialsBlock_select".
+ */
+export interface TestimonialsBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subtitle?: T;
+  items?:
+    | T
+    | {
+        quote?: T;
+        author?: T;
+        role?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PricingBlock_select".
+ */
+export interface PricingBlockSelect<T extends boolean = true> {
+  heading?: T;
+  subtitle?: T;
+  plans?:
+    | T
+    | {
+        planId?: T;
+        name?: T;
+        price?: T;
+        period?: T;
+        description?: T;
+        features?:
+          | T
+          | {
+              feature?: T;
+              id?: T;
+            };
+        highlighted?: T;
+        bonus?: T;
+        ctaLabel?: T;
+        ctaHref?: T;
+        subText?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FaqBlock_select".
+ */
+export interface FaqBlockSelect<T extends boolean = true> {
+  heading?: T;
+  items?:
+    | T
+    | {
+        question?: T;
+        answer?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaBlock_select".
+ */
+export interface CtaBlockSelect<T extends boolean = true> {
+  badge?: T;
+  heading?: T;
+  body?: T;
+  goal?: T;
+  safety?: T;
+  cancelAnytime?: T;
+  buttonLabel?: T;
+  buttonHref?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

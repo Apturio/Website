@@ -4,66 +4,108 @@ import { Check } from "lucide-react";
 import { getTranslations, getLocale } from "next-intl/server";
 import { PricingTable } from "./PricingTable";
 import { PricingTableToggle } from "./PricingTableToggle";
+import type { PricingBlock } from "@/payload-types";
 
-export async function Pricing() {
+type Tier = {
+  id: string;
+  name: string;
+  price: string;
+  description: string;
+  features: string[];
+  cta: string;
+  link: string;
+  badge?: string;
+  badgeStyle?: string;
+  ctaColor: string;
+  subText?: string;
+};
+
+// Per-tier visual tokens, keyed by planId — preserves the exact original styling
+// regardless of whether plans come from a PricingBlock or next-intl.
+const CTA_COLOR: Record<string, string> = {
+  foundation: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
+  engine:
+    "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(120,125,255,0.4)] hover:shadow-[0_0_25px_rgba(120,125,255,0.6)]",
+  growth: "bg-[#1f2937] text-white hover:bg-[#111827] shadow-none",
+};
+const ENGINE_BADGE_STYLE =
+  "bg-[#111] border-[#37ca37] text-[#37ca37] shadow-[0_0_20px_rgba(55,202,55,0.8)]";
+
+export async function Pricing({ block, lang }: { block?: PricingBlock; lang?: string } = {}) {
   const t = await getTranslations();
-  const language = await getLocale();
+  const language = lang ?? (await getLocale());
 
-  const tiers = [
-    {
-      id: 'foundation',
-      name: t('pricing.plans.foundation.name'),
-      price: "$199",
-      description: t('pricing.plans.foundation.description'),
-      features: t.raw('pricing.plans.foundation.features') as string[],
-      cta: t('pricing.plans.foundation.cta'),
-      link: `/${language}/checkout/foundation`,
-      popular: false,
-      ctaColor: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
-      subText: t('pricing.plans.foundation.subText')
-    },
-    {
-      id: 'engine',
-      name: t('pricing.plans.engine.name'),
-      price: "$299",
-      description: t('pricing.plans.engine.description'),
-      features: t.raw('pricing.plans.engine.features') as string[],
-      cta: t('pricing.plans.engine.cta'),
-      link: `/${language}/checkout/engine`,
-      popular: true,
-      badge: t('pricing.bonus'),
-      badgeStyle: "bg-[#111] border-[#37ca37] text-[#37ca37] shadow-[0_0_20px_rgba(55,202,55,0.8)]",
-      ctaColor: "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(120,125,255,0.4)] hover:shadow-[0_0_25px_rgba(120,125,255,0.6)]",
-      subText: undefined as string | undefined,
-    },
-    {
-      id: 'growth',
-      name: t('pricing.plans.growth.name'),
-      price: "$699",
-      description: t('pricing.plans.growth.description'),
-      features: t.raw('pricing.plans.growth.features') as string[],
-      cta: t('pricing.plans.growth.cta'),
-      link: `/${language}/checkout/growth`,
-      popular: false,
-      ctaColor: "bg-[#1f2937] text-white hover:bg-[#111827] shadow-none",
-      subText: undefined as string | undefined,
-    }
-  ] as const;
+  const heading = block?.heading ?? t('pricing.title');
+  const subtitle = block?.subtitle ?? t('pricing.subtitle');
+  const perMonth = t('pricing.perMonth');
+
+  let tiers: Tier[];
+  if (block?.plans && block.plans.length > 0) {
+    tiers = block.plans.map((p) => ({
+      id: p.planId,
+      name: p.name,
+      price: p.price,
+      description: p.description ?? '',
+      features: (p.features ?? []).map((f) => f.feature),
+      cta: p.ctaLabel,
+      link: p.ctaHref ?? `/${language}/checkout/${p.planId}`,
+      badge: p.planId === 'engine' ? (p.bonus ?? t('pricing.bonus')) : undefined,
+      badgeStyle: p.planId === 'engine' ? ENGINE_BADGE_STYLE : undefined,
+      ctaColor: CTA_COLOR[p.planId] ?? CTA_COLOR.foundation,
+      subText: p.subText ?? undefined,
+    }));
+  } else {
+    tiers = [
+      {
+        id: 'foundation',
+        name: t('pricing.plans.foundation.name'),
+        price: "$199",
+        description: t('pricing.plans.foundation.description'),
+        features: t.raw('pricing.plans.foundation.features') as string[],
+        cta: t('pricing.plans.foundation.cta'),
+        link: `/${language}/checkout/foundation`,
+        ctaColor: CTA_COLOR.foundation,
+        subText: t('pricing.plans.foundation.subText'),
+      },
+      {
+        id: 'engine',
+        name: t('pricing.plans.engine.name'),
+        price: "$299",
+        description: t('pricing.plans.engine.description'),
+        features: t.raw('pricing.plans.engine.features') as string[],
+        cta: t('pricing.plans.engine.cta'),
+        link: `/${language}/checkout/engine`,
+        badge: t('pricing.bonus'),
+        badgeStyle: ENGINE_BADGE_STYLE,
+        ctaColor: CTA_COLOR.engine,
+      },
+      {
+        id: 'growth',
+        name: t('pricing.plans.growth.name'),
+        price: "$699",
+        description: t('pricing.plans.growth.description'),
+        features: t.raw('pricing.plans.growth.features') as string[],
+        cta: t('pricing.plans.growth.cta'),
+        link: `/${language}/checkout/growth`,
+        ctaColor: CTA_COLOR.growth,
+      },
+    ];
+  }
 
   return (
     <section id="pricing" className="py-24 bg-background relative">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight text-white">{t('pricing.title')}</h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight text-white">{heading}</h2>
           <p className="text-lg text-slate-400">
-            {t('pricing.subtitle')}
+            {subtitle}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch mt-8 md:mt-0">
           {tiers.map((tier, index) => {
-            const badge = 'badge' in tier ? tier.badge : undefined;
-            const badgeStyle = 'badgeStyle' in tier ? tier.badgeStyle : undefined;
+            const badge = tier.badge;
+            const badgeStyle = tier.badgeStyle;
             return (
             <div
               key={index}
@@ -86,7 +128,7 @@ export async function Pricing() {
 
               <div className="mb-8">
                 <span className="text-5xl font-extrabold text-white">{tier.price}</span>
-                <span className="text-slate-400 font-medium">{t('pricing.perMonth')}</span>
+                <span className="text-slate-400 font-medium">{perMonth}</span>
               </div>
 
               <ul className="space-y-4 mb-10 flex-1 flex flex-col">
