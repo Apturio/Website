@@ -81,7 +81,10 @@ export function resolvePageSchemas(props: PageJsonLdProps): WithContext<Thing>[]
       schemas.push(
         buildBreadcrumbList([homeCrumb(locale), { name: page.title, url }], locale),
       )
-      // Service ALWAYS for a Payload landing page — inference, no discriminator field.
+      // Service emitted on all Payload landing pages by deliberate SCHEMA-09 decision
+      // — the CMS currently contains only service landings; revisit with a
+      // pageType/isService discriminator if non-service content pages are added to the
+      // Pages collection.
       schemas.push(
         buildService({ locale, url, name: page.title, description: page.meta?.description ?? undefined }),
       )
