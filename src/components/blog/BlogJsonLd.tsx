@@ -1,15 +1,16 @@
+import type { Thing, WithContext } from 'schema-dts'
+
 import type { Post } from '@/payload-types'
 import type { AppLocale } from '@/lib/site'
 import { SITE_URL, SITE_NAME } from '@/lib/site'
 import { asAuthor, asCategory, asMedia } from '@/lib/blog'
+import { JsonLdScript } from '@/components/JsonLdScript'
 
+// BlogPosting/BreadcrumbList are assembled as plain objects from CMS-sourced
+// fields; cast to the shared component's schema-dts prop so every JSON-LD
+// script routes through safeSerialize (XSS control point, T-14-06).
 function Script({ data }: { data: Record<string, unknown> }) {
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-    />
-  )
+  return <JsonLdScript data={data as unknown as WithContext<Thing>} />
 }
 
 /**
