@@ -24,8 +24,8 @@ export interface AuthorInput {
  * Person node for an author (E-E-A-T). Carries a stable `@id` via
  * `IDS.person(authorUrl)` so `BlogPosting.author` resolves to this exact node.
  *
- * `worksFor` is an `@id` cross-reference to the canonical Organization (Pitfall 5 /
- * T-15-09 — never inline an Organization). `sameAs` is emitted only when non-empty.
+ * Employment links to the canonical Organization via an `@id` cross-reference
+ * (Pitfall 5 / T-15-09 — never inline an Organization). `sameAs` only when non-empty.
  * `inLanguage` is required (Pitfall 7); schema.org scopes it to CreativeWork so the
  * literal is asserted to `WithContext<Person>` (same narrow-cast pattern as
  * organization.ts — only suppresses the excess-property check).
