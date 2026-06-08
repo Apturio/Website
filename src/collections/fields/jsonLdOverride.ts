@@ -10,13 +10,25 @@ import type { Field } from 'payload'
  */
 const BLOCKED_KEYS = ['aggregateRating', 'review', 'reviews', 'potentialAction', 'SearchAction']
 
+/**
+ * @type VALUES that must never appear in an editor-supplied override — at any depth.
+ *
+ * The key-based block (BLOCKED_KEYS) only catches fake ratings expressed as the
+ * PROPERTY `aggregateRating`/`review`. An admin could bypass it by injecting a NODE
+ * with `@type: "AggregateRating"` / `"Review"` / `"Reviews"` instead — the exact
+ * fake-rating content SCHEMA-15 / Pitfall "manual action" is meant to stop. This
+ * closes that bypass. Matched case-insensitively against a string or array @type.
+ */
+const BLOCKED_TYPES = ['aggregaterating', 'review', 'reviews']
+
 function isPlainObject(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
 }
 
 /**
  * Depth-first walk over every nested object and every array element.
- * Returns the first blocked key found at any depth, or null if the node is clean.
+ * Returns the first blocked key OR blocked `@type` value found at any depth,
+ * or null if the node is clean.
  */
 function findBlockedKey(node: unknown): string | null {
   if (Array.isArray(node)) {
@@ -27,6 +39,15 @@ function findBlockedKey(node: unknown): string | null {
     return null
   }
   if (isPlainObject(node)) {
+    // Block by @type VALUE (string or array of strings), case-insensitive.
+    const t = node['@type']
+    const types = Array.isArray(t) ? t : [t]
+    for (const x of types) {
+      if (typeof x === 'string' && BLOCKED_TYPES.includes(x.toLowerCase())) {
+        return `@type:${x}`
+      }
+    }
+    // Block by property NAME.
     for (const key of Object.keys(node)) {
       if (BLOCKED_KEYS.includes(key)) return key
       const hit = findBlockedKey(node[key])
@@ -59,7 +80,7 @@ export function validateJsonLdOverride(value: unknown): true | string {
   // (4) Anti-spam backstop: reject blocked keys at any nesting depth.
   const blocked = findBlockedKey(value)
   if (blocked) {
-    return `JSON-LD override may not contain "${blocked}". Keys aggregateRating, review, reviews, potentialAction and SearchAction are blocked to prevent fake ratings / dead markup (Google manual action risk).`
+    return `JSON-LD override may not contain "${blocked}". Property names aggregateRating, review, reviews, potentialAction and SearchAction, AND nodes whose "@type" is AggregateRating, Review or Reviews (case-insensitive), are blocked at any depth to prevent fake ratings / dead markup (Google manual action risk).`
   }
 
   return true

@@ -71,8 +71,16 @@ function extractJsonLd(html) {
   return blocks
 }
 
-// --- Recursive walk: forbid SearchAction @type and potentialAction/SearchAction keys ---
+// --- Recursive walk: forbid dead/spam markup ---
+// Mirrors the override validate hook (jsonLdOverride.ts) so this gate is a true
+// backstop on PRODUCTION HTML, not just at save time:
+//   - @type 'SearchAction'                       → discontinued Sitelinks Searchbox.
+//   - @type 'AggregateRating' / 'Review' / 'Reviews' → fake-rating bypass that does
+//     NOT use the property names aggregateRating/review (SCHEMA-15 / Pitfall manual
+//     action). Matched case-insensitively.
+//   - property keys potentialAction / SearchAction.
 const FORBIDDEN_KEYS = ['potentialAction', 'SearchAction']
+const FORBIDDEN_TYPES = ['searchaction', 'aggregaterating', 'review', 'reviews']
 function findDeadMarkup(node, trail = '$') {
   const hits = []
   if (Array.isArray(node)) {
@@ -82,8 +90,10 @@ function findDeadMarkup(node, trail = '$') {
   if (node && typeof node === 'object') {
     const type = node['@type']
     const typeList = Array.isArray(type) ? type : [type]
-    if (typeList.includes('SearchAction')) {
-      hits.push(`${trail}: @type 'SearchAction'`)
+    for (const x of typeList) {
+      if (typeof x === 'string' && FORBIDDEN_TYPES.includes(x.toLowerCase())) {
+        hits.push(`${trail}: @type '${x}'`)
+      }
     }
     for (const key of Object.keys(node)) {
       if (FORBIDDEN_KEYS.includes(key)) {
