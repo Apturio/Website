@@ -1,13 +1,14 @@
 /**
- * Wave 2 — service page seed.
+ * Wave 2 — service page seed (native localization).
  *
- * Builds the block layouts for the two real product pages (automated-booking,
- * unified-crm — EN + ES, relatedLocale linked) and the four template demo pages
- * (templates/centered|split|dashboard|bold — EN), recreating the delivered
+ * Builds the block layouts for the two real product pages (automated-booking /
+ * agendamiento-automatizado, unified-crm / crm-unificado) and the four template
+ * demo pages (templates/centered|split|dashboard|bold), recreating the delivered
  * prototype copy. Every block type in the Wave-2 library is exercised across
- * these pages. Idempotent: find-or-create by slug+lang, refresh layout on re-run.
+ * these pages. Each page is ONE document with EN + ES localized fields (title,
+ * slug, layout, seo); product pages get a distinct ES slug, templates share slug.
  */
-import type { Payload, Where } from 'payload'
+import type { Payload } from 'payload'
 
 type Lang = 'en' | 'es'
 type Block = Record<string, unknown>
@@ -720,26 +721,18 @@ const templateBold = (lang: Lang): Block[] => [
 // SEED ENTRY
 // ---------------------------------------------------------------------------
 
-type FindOrCreate = (
-  collection: 'pages',
-  where: Where,
-  data: Record<string, unknown>,
-) => Promise<{ id: number | string; created: boolean }>
-
-type Link = (collection: 'pages', id: number | string, relatedLocaleId: number | string) => Promise<void>
-
 interface PageSpec {
-  slug: string
-  title: { en: string; es?: string }
-  metaTitle: { en: string; es?: string }
-  metaDescription: { en: string; es?: string }
+  /** EN slug + ES slug. Templates share the same slug across locales. */
+  slug: { en: string; es: string }
+  title: { en: string; es: string }
+  metaTitle: { en: string; es: string }
+  metaDescription: { en: string; es: string }
   build: (lang: Lang) => Block[]
-  bilingual: boolean
 }
 
 const PAGES: PageSpec[] = [
   {
-    slug: 'automated-booking',
+    slug: { en: 'automated-booking', es: 'agendamiento-automatizado' },
     title: { en: 'Automated Booking', es: 'Agendamiento Automático' },
     metaTitle: {
       en: 'Automated Booking — Fill your calendar 24/7 | Apturio',
@@ -750,10 +743,9 @@ const PAGES: PageSpec[] = [
       es: 'Los leads calificados se agendan solos en el calendario correcto, al instante y 24/7, con recordatorios que eliminan ausencias.',
     },
     build: automatedBooking,
-    bilingual: true,
   },
   {
-    slug: 'unified-crm',
+    slug: { en: 'unified-crm', es: 'crm-unificado' },
     title: { en: 'Unified CRM', es: 'CRM Unificado' },
     metaTitle: {
       en: 'Unified CRM — One brain for your whole stack | Apturio',
@@ -764,93 +756,101 @@ const PAGES: PageSpec[] = [
       es: 'El Cerebro unifica todo tu stack en un hub centralizado con datos en tiempo real y un setup de $2,000 hecho para ti.',
     },
     build: unifiedCrm,
-    bilingual: true,
   },
   {
-    slug: 'templates/centered',
-    title: { en: 'Service Template — Centered' },
-    metaTitle: { en: 'Service Template — Centered | Apturio' },
-    metaDescription: { en: 'Centered-hero service template composing the Apturio block library.' },
+    slug: { en: 'templates/centered', es: 'templates/centered' },
+    title: { en: 'Service Template — Centered', es: 'Plantilla de Servicio — Centrada' },
+    metaTitle: {
+      en: 'Service Template — Centered | Apturio',
+      es: 'Plantilla de Servicio — Centrada | Apturio',
+    },
+    metaDescription: {
+      en: 'Centered-hero service template composing the Apturio block library.',
+      es: 'Plantilla de servicio con hero centrado que compone la librería de bloques de Apturio.',
+    },
     build: templateCentered,
-    bilingual: false,
   },
   {
-    slug: 'templates/split',
-    title: { en: 'Service Template — Split' },
-    metaTitle: { en: 'Service Template — Split | Apturio' },
-    metaDescription: { en: 'Split-hero service template composing the Apturio block library.' },
+    slug: { en: 'templates/split', es: 'templates/split' },
+    title: { en: 'Service Template — Split', es: 'Plantilla de Servicio — Split' },
+    metaTitle: {
+      en: 'Service Template — Split | Apturio',
+      es: 'Plantilla de Servicio — Split | Apturio',
+    },
+    metaDescription: {
+      en: 'Split-hero service template composing the Apturio block library.',
+      es: 'Plantilla de servicio con hero dividido que compone la librería de bloques de Apturio.',
+    },
     build: templateSplit,
-    bilingual: false,
   },
   {
-    slug: 'templates/dashboard',
-    title: { en: 'Service Template — Dashboard' },
-    metaTitle: { en: 'Service Template — Dashboard | Apturio' },
-    metaDescription: { en: 'Dashboard-hero service template composing the Apturio block library.' },
+    slug: { en: 'templates/dashboard', es: 'templates/dashboard' },
+    title: { en: 'Service Template — Dashboard', es: 'Plantilla de Servicio — Dashboard' },
+    metaTitle: {
+      en: 'Service Template — Dashboard | Apturio',
+      es: 'Plantilla de Servicio — Dashboard | Apturio',
+    },
+    metaDescription: {
+      en: 'Dashboard-hero service template composing the Apturio block library.',
+      es: 'Plantilla de servicio con hero de dashboard que compone la librería de bloques de Apturio.',
+    },
     build: templateDashboard,
-    bilingual: false,
   },
   {
-    slug: 'templates/bold',
-    title: { en: 'Service Template — Bold' },
-    metaTitle: { en: 'Service Template — Bold | Apturio' },
-    metaDescription: { en: 'Bold asymmetric-hero service template composing the Apturio block library.' },
+    slug: { en: 'templates/bold', es: 'templates/bold' },
+    title: { en: 'Service Template — Bold', es: 'Plantilla de Servicio — Bold' },
+    metaTitle: {
+      en: 'Service Template — Bold | Apturio',
+      es: 'Plantilla de Servicio — Bold | Apturio',
+    },
+    metaDescription: {
+      en: 'Bold asymmetric-hero service template composing the Apturio block library.',
+      es: 'Plantilla de servicio con hero asimétrico y audaz que compone la librería de bloques de Apturio.',
+    },
     build: templateBold,
-    bilingual: false,
   },
 ]
 
+/** Create ONE page document with EN content, then write the ES locale on top. */
+const createLocalizedPage = async (payload: Payload, spec: PageSpec): Promise<number | string> => {
+  const created = await payload.create({
+    collection: 'pages',
+    locale: 'en',
+    data: {
+      title: spec.title.en,
+      slug: spec.slug.en,
+      layout: spec.build('en'),
+      _status: 'published',
+      seo: { metaTitle: spec.metaTitle.en, metaDescription: spec.metaDescription.en },
+    } as never,
+  })
+
+  await payload.update({
+    collection: 'pages',
+    id: created.id,
+    locale: 'es',
+    data: {
+      title: spec.title.es,
+      slug: spec.slug.es,
+      layout: spec.build('es'),
+      _status: 'published',
+      seo: { metaTitle: spec.metaTitle.es, metaDescription: spec.metaDescription.es },
+    } as never,
+  })
+
+  return created.id
+}
+
 export const seedServicePages = async (
   payload: Payload,
-  findOrCreate: FindOrCreate,
-  link: Link,
 ): Promise<{ created: number; total: number }> => {
-  let created = 0
   const slugs: string[] = []
 
   for (const spec of PAGES) {
-    const langs: Lang[] = spec.bilingual ? ['en', 'es'] : ['en']
-    const ids: Partial<Record<Lang, number | string>> = {}
-
-    for (const lang of langs) {
-      const data = {
-        title: lang === 'es' ? spec.title.es ?? spec.title.en : spec.title.en,
-        slug: spec.slug,
-        lang,
-        layout: spec.build(lang),
-        _status: 'published',
-        seo: {
-          metaTitle: lang === 'es' ? spec.metaTitle.es ?? spec.metaTitle.en : spec.metaTitle.en,
-          metaDescription:
-            lang === 'es' ? spec.metaDescription.es ?? spec.metaDescription.en : spec.metaDescription.en,
-        },
-      }
-      const res = await findOrCreate(
-        'pages',
-        { and: [{ slug: { equals: spec.slug } }, { lang: { equals: lang } }] },
-        data,
-      )
-      // Refresh layout on re-run so content stays in sync (idempotent).
-      if (!res.created) {
-        await payload.update({
-          collection: 'pages',
-          id: res.id,
-          data: { layout: spec.build(lang), _status: 'published', seo: data.seo } as never,
-        })
-      } else {
-        created++
-      }
-      ids[lang] = res.id
-      slugs.push(`${spec.slug} (${lang})`)
-    }
-
-    // Link the EN/ES pair both directions for hreflang.
-    if (spec.bilingual && ids.en && ids.es) {
-      await link('pages', ids.en, ids.es)
-      await link('pages', ids.es, ids.en)
-    }
+    await createLocalizedPage(payload, spec)
+    slugs.push(`${spec.slug.en} / ${spec.slug.es}`)
   }
 
-  payload.logger.info(`[seed] service pages: created ${created} this run → ${slugs.join(', ')}`)
-  return { created, total: slugs.length }
+  payload.logger.info(`[seed] service pages: created ${slugs.length} docs → ${slugs.join(', ')}`)
+  return { created: slugs.length, total: slugs.length }
 }

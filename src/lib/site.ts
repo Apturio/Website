@@ -56,3 +56,23 @@ export function pageMetadata({
     ...(noindex ? { robots: { index: false, follow: false } } : {}),
   }
 }
+
+/**
+ * Build reciprocal hreflang alternates for a doc with LOCALIZED slugs. Given a
+ * per-locale slug map (`{ en: 'foo', es: 'bar' }`) and a URL builder, emits one
+ * `languages` entry per locale that has a stored slug, always self-canonical and
+ * `x-default` → English (falling back to the canonical when EN is absent).
+ */
+export function localizedAlternates(
+  selfLocale: AppLocale,
+  slugMap: Record<string, string>,
+  makeUrl: (locale: string, slug: string) => string,
+): { canonical: string; languages: Record<string, string> } {
+  const languages: Record<string, string> = {}
+  for (const [loc, slug] of Object.entries(slugMap)) {
+    languages[loc] = makeUrl(loc, slug)
+  }
+  const canonical = languages[selfLocale] ?? makeUrl(selfLocale, slugMap[selfLocale] ?? '')
+  languages['x-default'] = languages['en'] ?? canonical
+  return { canonical, languages }
+}

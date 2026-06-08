@@ -4,8 +4,10 @@ import config from '@payload-config'
 import { notFound } from 'next/navigation'
 import { setRequestLocale } from 'next-intl/server'
 
-import { pageMetadata, type AppLocale } from '@/lib/site'
+import { routing } from '@/i18n/routing'
+import { SITE_URL, localizedAlternates, type AppLocale } from '@/lib/site'
 import { getPageBySlug } from '@/lib/pages'
+import { getLocalizedSlugMap } from '@/lib/blog'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
@@ -16,19 +18,25 @@ export const revalidate = 3600
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config })
-  const { docs } = await payload.find({
-    collection: 'pages',
-    where: { _status: { equals: 'published' } },
-    limit: 1000,
-    depth: 0,
-    pagination: false,
-    select: { slug: true, lang: true },
-  })
-
-  return docs
-    // `home` is served by /[lang]/page.tsx — exclude it from the catch-all.
-    .filter((p) => p.slug && p.slug !== 'home')
-    .map((p) => ({ lang: p.lang as string, slug: (p.slug as string).split('/') }))
+  const params: { lang: string; slug: string[] }[] = []
+  for (const lang of routing.locales) {
+    const { docs } = await payload.find({
+      collection: 'pages',
+      locale: lang,
+      where: { _status: { equals: 'published' } },
+      limit: 1000,
+      depth: 0,
+      pagination: false,
+      select: { slug: true },
+    })
+    for (const p of docs) {
+      // `home` is served by /[lang]/page.tsx — exclude it from the catch-all.
+      if (p.slug && p.slug !== 'home') {
+        params.push({ lang, slug: (p.slug as string).split('/') })
+      }
+    }
+  }
+  return params
 }
 
 export async function generateMetadata({
@@ -40,12 +48,18 @@ export async function generateMetadata({
   const page = await getPageBySlug(lang, slug.join('/'))
   if (!page) return {}
 
-  return pageMetadata({
-    locale: lang as AppLocale,
-    path: `/${slug.join('/')}`,
+  const slugMap = await getLocalizedSlugMap('pages', page.id)
+  const { canonical, languages } = localizedAlternates(
+    lang as AppLocale,
+    slugMap,
+    (loc, s) => `${SITE_URL}/${loc}/${s}`,
+  )
+
+  return {
     title: page.seo?.metaTitle || page.title,
     description: page.seo?.metaDescription || '',
-  })
+    alternates: { canonical, languages },
+  }
 }
 
 export default async function DynamicPage({

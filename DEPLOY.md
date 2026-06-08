@@ -39,13 +39,19 @@ Legend:
 - [ ] [M] **Generate a tracked migration for a FRESH prod DB.** The dev Neon DB was
       built incrementally via Payload dev schema-push, so only the *initial* migration
       is tracked in `src/migrations/`; the Phase-8 collections + Phase-11 block schema
+      **and the Phase-12 native-localization schema** (the `*_locales` tables for
+      posts/pages/categories/authors/faqs, with `lang`/`relatedLocale` columns removed)
       live in the dev DB but are NOT yet in a committed migration. On a clean production
       Neon branch, before the first deploy, run against that branch:
       `DATABASE_URI=<prod-branch-url> npx payload migrate:create` then commit the
-      generated file. The build command's `payload migrate` will then create the full
-      schema (Users, Media, Posts, Pages w/ layout blocks, Categories, Authors, Faqs)
-      on fresh databases. (On the existing dev DB the schema is already present, so do
-      NOT run a fresh migrate against it — it would conflict.)
+      generated file. NOTE: `migrate:create` is INTERACTIVE — drizzle-kit asks
+      "Is `_locales` enum created or renamed from another enum?"; choose **`+ _locales
+      create enum`** (the default), and accept the data-loss warnings. The build
+      command's `payload migrate` will then create the full localized schema (Users,
+      Media, Posts, Pages w/ layout blocks, Categories, Authors, Faqs — each with its
+      `*_locales` table) on fresh databases. (On the existing dev DB the schema is
+      already present via schema-push, so do NOT run a fresh migrate against it — it
+      would conflict.)
 
 **Why pooler:** each Vercel function holds its own pool; the PgBouncer pooler URL
 multiplexes them. The direct URL will hit `too many connections` under traffic.

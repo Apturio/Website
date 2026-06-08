@@ -33,6 +33,7 @@ export const Authors: CollectionConfig = {
     {
       name: 'role',
       type: 'text',
+      localized: true,
       admin: {
         description: 'Job title / department shown on the author hero (e.g. "Head of Growth").',
       },
@@ -40,6 +41,7 @@ export const Authors: CollectionConfig = {
     {
       name: 'bio',
       type: 'textarea',
+      localized: true,
     },
     {
       name: 'avatar',

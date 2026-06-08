@@ -69,23 +69,6 @@ export const computeReadTime: CollectionBeforeChangeHook = ({ data }) => {
   return data
 }
 
-/**
- * beforeValidate — non-fatal warning when a Post is published without a
- * `relatedLocale` counterpart. hreflang is incomplete until the pair is linked
- * (Phase 9 consumes relatedLocale for alternates). We only warn; we never block.
- */
-export const warnMissingRelatedLocale: CollectionBeforeValidateHook = ({ data }) => {
-  if (!data) return data
-  const isPublished = data._status === 'published' || data.status === 'published'
-  if (isPublished && !data.relatedLocale) {
-    // eslint-disable-next-line no-console
-    console.warn(
-      `[Payload] "${data.title ?? data.slug ?? 'document'}" published without relatedLocale — hreflang will be incomplete until the EN/ES pair is linked.`,
-    )
-  }
-  return data
-}
-
 // ---------- afterChange: ISR revalidation (Phase 10) ----------
 
 /**
@@ -112,67 +95,49 @@ function safeRevalidate(urlPath: string): void {
 }
 
 /**
- * Resolve a `relatedLocale` relationship to its `{ lang, slug }`. The field may
- * arrive as a populated object (when depth > 0) or as a bare ID (depth 0). When
- * it is an ID we fetch the counterpart via the Local API (in-process, no HTTP).
- * Returns null when it cannot be resolved — callers simply skip that locale.
+ * Read EVERY locale's `slug` for a single document. With native localization a
+ * document holds one slug per locale; `locale: 'all'` returns the raw per-locale
+ * map (`{ en: 'foo', es: 'bar' }`) with no fallback, so we only emit URLs for
+ * locales that actually have a stored slug. Returns `{}` when unreadable.
  */
-async function resolveRelatedLangSlug(
-  related: unknown,
+async function getLocalizedSlugs(
   collection: 'posts' | 'pages',
+  id: string | number,
   payload: Payload,
-): Promise<{ lang: string; slug: string } | null> {
-  if (related == null) return null
-
-  let id: string | number | null = null
-
-  if (typeof related === 'object') {
-    const r = related as Record<string, unknown>
-    if (typeof r.lang === 'string' && typeof r.slug === 'string') {
-      return { lang: r.lang, slug: r.slug }
-    }
-    if (typeof r.id === 'string' || typeof r.id === 'number') id = r.id
-  } else if (typeof related === 'string' || typeof related === 'number') {
-    id = related
-  }
-
-  if (id == null) return null
-
+): Promise<Record<string, string>> {
   try {
-    const doc = (await payload.findByID({ collection, id, depth: 0 })) as unknown as
-      | Record<string, unknown>
-      | null
-    if (doc && typeof doc.lang === 'string' && typeof doc.slug === 'string') {
-      return { lang: doc.lang, slug: doc.slug }
+    const doc = (await payload.findByID({
+      collection,
+      id,
+      locale: 'all',
+      depth: 0,
+    })) as unknown as Record<string, unknown> | null
+    const slug = doc?.slug
+    const out: Record<string, string> = {}
+    if (slug && typeof slug === 'object') {
+      for (const [loc, val] of Object.entries(slug as Record<string, unknown>)) {
+        if (typeof val === 'string' && val) out[loc] = val
+      }
     }
+    return out
   } catch {
-    // Counterpart missing/unreadable — skip it (do not throw).
+    return {}
   }
-  return null
 }
 
 /**
- * afterChange (Posts) — on save/publish, invalidate the post's localized URL,
- * the blog index, and the sitemap so edits go live without a redeploy. When a
- * `relatedLocale` counterpart exists, its URL + blog index are revalidated too
- * so BOTH language variants update together (avoids stale ES after EN edit, and
- * vice versa). Wrapped in `safeRevalidate` so seed/migrate never crash.
+ * afterChange (Posts) — on save/publish, invalidate BOTH locales' localized URLs
+ * for this one document (using each locale's stored slug), both blog indexes, and
+ * the sitemap so edits go live without a redeploy. Wrapped in `safeRevalidate`
+ * so seed/migrate never crash.
  */
 export const revalidatePostPaths: CollectionAfterChangeHook = async ({ doc, req }) => {
   if (!doc) return doc
 
-  const lang = typeof doc.lang === 'string' ? doc.lang : undefined
-  const slug = typeof doc.slug === 'string' ? doc.slug : undefined
-
-  if (lang && slug) {
-    safeRevalidate(`/${lang}/blog/${slug}`)
-    safeRevalidate(`/${lang}/blog`)
-  }
-
-  const related = await resolveRelatedLangSlug(doc.relatedLocale, 'posts', req.payload)
-  if (related) {
-    safeRevalidate(`/${related.lang}/blog/${related.slug}`)
-    safeRevalidate(`/${related.lang}/blog`)
+  const slugs = await getLocalizedSlugs('posts', doc.id as string | number, req.payload)
+  for (const [locale, slug] of Object.entries(slugs)) {
+    safeRevalidate(`/${locale}/blog/${slug}`)
+    safeRevalidate(`/${locale}/blog`)
   }
 
   safeRevalidate('/sitemap.xml')
@@ -183,21 +148,19 @@ export const revalidatePostPaths: CollectionAfterChangeHook = async ({ doc, req 
 const HOME_MARKER_SLUGS = new Set(['home', 'index', ''])
 
 /**
- * afterChange (Pages) — invalidate the page's localized URL (or the locale root
- * when the slug is a home marker) and the sitemap. Wrapped in `safeRevalidate`
- * so seed/migrate never crash.
+ * afterChange (Pages) — invalidate BOTH locales' localized URLs (or the locale
+ * root when the slug is a home marker) for this one document, plus the sitemap.
+ * Wrapped in `safeRevalidate` so seed/migrate never crash.
  */
-export const revalidatePagePaths: CollectionAfterChangeHook = async ({ doc }) => {
+export const revalidatePagePaths: CollectionAfterChangeHook = async ({ doc, req }) => {
   if (!doc) return doc
 
-  const lang = typeof doc.lang === 'string' ? doc.lang : undefined
-  const slug = typeof doc.slug === 'string' ? doc.slug : undefined
-
-  if (lang && slug != null) {
+  const slugs = await getLocalizedSlugs('pages', doc.id as string | number, req.payload)
+  for (const [locale, slug] of Object.entries(slugs)) {
     if (HOME_MARKER_SLUGS.has(slug)) {
-      safeRevalidate(`/${lang}`)
+      safeRevalidate(`/${locale}`)
     } else {
-      safeRevalidate(`/${lang}/${slug}`)
+      safeRevalidate(`/${locale}/${slug}`)
     }
   }
 

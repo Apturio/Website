@@ -96,10 +96,10 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'es') | ('en' | 'es')[];
   globals: {};
   globalsSelect: {};
-  locale: null;
+  locale: 'en' | 'es';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -135,14 +135,9 @@ export interface Post {
   id: number;
   title: string;
   /**
-   * Auto-generated from title when empty. Used in /[lang]/blog/[slug].
+   * Auto-generated from title when empty. Localized per-locale — used in /[lang]/blog/[slug].
    */
   slug: string;
-  lang: 'en' | 'es';
-  /**
-   * Link to the same post in the other language. Set on BOTH documents so hreflang emits correctly (Phase 9).
-   */
-  relatedLocale?: (number | null) | Post;
   category?: (number | null) | Category;
   author?: (number | null) | Author;
   /**
@@ -198,14 +193,9 @@ export interface Category {
   id: number;
   title: string;
   /**
-   * Auto-generated from title when left empty. Used in /[lang]/blog/category/[slug].
+   * Auto-generated from title when left empty. Localized per-locale — used in /[lang]/blog/category/[slug].
    */
   slug: string;
-  lang: 'en' | 'es';
-  /**
-   * Link to the equivalent category in the other language. Set on BOTH documents for hreflang.
-   */
-  relatedLocale?: (number | null) | Category;
   description?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -284,14 +274,9 @@ export interface Page {
   id: number;
   title: string;
   /**
-   * Auto-generated from title when empty. Resolves against the [...slug] catch-all.
+   * Auto-generated from title when empty. Localized per-locale — resolves against the [...slug] catch-all.
    */
   slug: string;
-  lang: 'en' | 'es';
-  /**
-   * Link to the same page in the other language. Set on BOTH documents for hreflang.
-   */
-  relatedLocale?: (number | null) | Page;
   /**
    * Block-based page layout. The home page is built from these 8 section blocks; arbitrary pages can mix any subset.
    */
@@ -1123,7 +1108,6 @@ export interface Faq {
     };
     [k: string]: unknown;
   };
-  lang: 'en' | 'es';
   /**
    * Display order (ascending).
    */
@@ -1257,8 +1241,6 @@ export interface PayloadMigration {
 export interface PostsSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  lang?: T;
-  relatedLocale?: T;
   category?: T;
   author?: T;
   excerpt?: T;
@@ -1286,8 +1268,6 @@ export interface PostsSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  lang?: T;
-  relatedLocale?: T;
   layout?:
     | T
     | {
@@ -1866,8 +1846,6 @@ export interface BonusBannerBlockSelect<T extends boolean = true> {
 export interface CategoriesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
-  lang?: T;
-  relatedLocale?: T;
   description?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1910,7 +1888,6 @@ export interface AuthorsSelect<T extends boolean = true> {
 export interface FaqsSelect<T extends boolean = true> {
   question?: T;
   answer?: T;
-  lang?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;

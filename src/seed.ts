@@ -3,7 +3,6 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 import { getPayload } from 'payload'
-import type { Where } from 'payload'
 import config from '@payload-config'
 
 import { slugify } from '@/lib/slugify'
@@ -126,16 +125,20 @@ const buildHomeLayout = (lang: string, m: Messages): Record<string, unknown>[] =
 }
 
 /**
- * Idempotent seed for Phase 8.
+ * Idempotent seed (native Payload localization).
  *
- * Creates (or reuses, keyed by slug+lang / slug):
- *  - 5 EN/ES category pairs, linked both directions via relatedLocale
- *  - 1 author
- *  - 1 published Post per locale (EN + ES), linked via relatedLocale, with real
- *    Lexical content that includes a Callout block and an Inline CTA Banner block
+ * Wipes posts/pages/categories first, then creates ONE document per entity with
+ * EN + ES localized fields written via `create({ locale:'en' })` + `update({
+ * locale:'es' })`:
+ *  - 5 categories (EN/ES title, slug, description)
+ *  - 1 author (shared name/slug; localized role + bio)
+ *  - 1 published Post (EN + ES title, slug, excerpt, content, seo) with a Callout
+ *    block and an Inline CTA Banner block in both locales
+ *  - 7 pages (home + 6 service/template pages), each one doc with localized slug,
+ *    layout blocks and seo
  *
- * Run: `npm run seed` (→ `payload run src/seed.ts`). Running twice does not
- * duplicate rows.
+ * Run: `npm run seed` (→ `payload run src/seed.ts`). Running twice ends in the
+ * same state (wipe-then-create).
  */
 
 // ---------- Lexical content helpers ----------
@@ -235,75 +238,60 @@ export const seed = async (): Promise<void> => {
   const payload = await getPayload({ config })
   payload.logger.info('[seed] starting…')
 
-  // Helper: find-or-create keyed by where clause.
-  const findOrCreate = async (
-    collection: 'categories' | 'authors' | 'posts' | 'pages',
-    where: Where,
-    data: Record<string, unknown>,
-  ): Promise<{ id: number | string; created: boolean }> => {
-    const existing = await payload.find({
-      collection,
-      where,
-      limit: 1,
-      depth: 0,
-      pagination: false,
-    })
-    if (existing.docs.length > 0) {
-      return { id: existing.docs[0].id as number | string, created: false }
+  // ---- Wipe old rows first (so the two-doc legacy data leaves no orphans) ----
+  const clearCollection = async (
+    collection: 'categories' | 'posts' | 'pages' | 'authors',
+  ): Promise<number> => {
+    const existing = await payload.find({ collection, depth: 0, limit: 1000, pagination: false })
+    for (const d of existing.docs) {
+      await payload.delete({ collection, id: d.id })
     }
-    const doc = await payload.create({ collection, data: data as never })
-    return { id: doc.id as number | string, created: true }
+    return existing.docs.length
   }
 
-  const link = async (
-    collection: 'categories' | 'posts' | 'pages',
-    id: number | string,
-    relatedLocaleId: number | string,
-  ): Promise<void> => {
-    await payload.update({
-      collection,
-      id,
-      data: { relatedLocale: relatedLocaleId } as never,
-    })
+  // Clear posts before authors/categories so relationship FKs are gone first.
+  const removed = {
+    posts: await clearCollection('posts'),
+    pages: await clearCollection('pages'),
+    authors: await clearCollection('authors'),
+    categories: await clearCollection('categories'),
   }
+  payload.logger.info(
+    `[seed] cleared posts=${removed.posts}, pages=${removed.pages}, ` +
+      `authors=${removed.authors}, categories=${removed.categories}`,
+  )
 
-  // ---- Categories (5 EN/ES pairs) ----
-  let categoriesCreated = 0
-  let firstEnCategoryId: number | string | undefined
-  let firstEsCategoryId: number | string | undefined
+  // ---- Categories (5 docs, EN + ES localized) ----
+  let firstCategoryId: number | string | undefined
 
   for (const pair of CATEGORY_PAIRS) {
-    const enSlug = slugify(pair.en)
-    const esSlug = slugify(pair.es)
-
-    const en = await findOrCreate(
-      'categories',
-      { and: [{ slug: { equals: enSlug } }, { lang: { equals: 'en' } }] },
-      { title: pair.en, slug: enSlug, lang: 'en', description: `Articles about ${pair.en}.` },
-    )
-    const es = await findOrCreate(
-      'categories',
-      { and: [{ slug: { equals: esSlug } }, { lang: { equals: 'es' } }] },
-      { title: pair.es, slug: esSlug, lang: 'es', description: `Artículos sobre ${pair.es}.` },
-    )
-    if (en.created) categoriesCreated++
-    if (es.created) categoriesCreated++
-
-    // Link both directions (idempotent — update is safe to repeat).
-    await link('categories', en.id, es.id)
-    await link('categories', es.id, en.id)
-
-    if (!firstEnCategoryId) {
-      firstEnCategoryId = en.id
-      firstEsCategoryId = es.id
-    }
+    const created = await payload.create({
+      collection: 'categories',
+      locale: 'en',
+      data: {
+        title: pair.en,
+        slug: slugify(pair.en),
+        description: `Articles about ${pair.en}.`,
+      } as never,
+    })
+    await payload.update({
+      collection: 'categories',
+      id: created.id,
+      locale: 'es',
+      data: {
+        title: pair.es,
+        slug: slugify(pair.es),
+        description: `Artículos sobre ${pair.es}.`,
+      } as never,
+    })
+    if (!firstCategoryId) firstCategoryId = created.id
   }
 
-  // ---- Author ----
-  const author = await findOrCreate(
-    'authors',
-    { slug: { equals: 'arianna-lupi' } },
-    {
+  // ---- Author (1 doc; shared name/slug, localized role + bio) ----
+  const authorDoc = await payload.create({
+    collection: 'authors',
+    locale: 'en',
+    data: {
       name: 'Arianna Lupi',
       slug: 'arianna-lupi',
       role: 'Head of Growth',
@@ -315,10 +303,20 @@ export const seed = async (): Promise<void> => {
       },
       expertise: [{ topic: 'AI Automation' }, { topic: 'Speed-to-Lead' }, { topic: 'Pipeline Design' }],
       stats: { reads: 12400 },
-    },
-  )
+    } as never,
+  })
+  await payload.update({
+    collection: 'authors',
+    id: authorDoc.id,
+    locale: 'es',
+    data: {
+      role: 'Directora de Crecimiento',
+      bio: 'Arianna escribe sobre sistemas de ventas impulsados por IA, velocidad de respuesta y diseño de pipeline en Apturio.',
+    } as never,
+  })
+  const author = { id: authorDoc.id }
 
-  // ---- Posts (EN + ES, linked, published, with custom blocks) ----
+  // ---- Post (1 doc, EN + ES localized, published, with custom blocks) ----
   const enContent = richTextRoot([
     paragraph(
       'Most teams lose deals not because of price, but because of speed. The first vendor to respond to a new lead wins the majority of the time.',
@@ -375,14 +373,13 @@ export const seed = async (): Promise<void> => {
     ),
   ])
 
-  const enPost = await findOrCreate(
-    'posts',
-    { and: [{ slug: { equals: 'speed-to-lead-wins-deals' } }, { lang: { equals: 'en' } }] },
-    {
+  const post = await payload.create({
+    collection: 'posts',
+    locale: 'en',
+    data: {
       title: 'Speed-to-Lead: Why the Fastest Reply Wins the Deal',
       slug: 'speed-to-lead-wins-deals',
-      lang: 'en',
-      category: firstEnCategoryId,
+      category: firstCategoryId,
       author: author.id,
       excerpt:
         'The first vendor to respond to a new lead wins most of the time. Here is how to make that vendor you — automatically.',
@@ -395,95 +392,63 @@ export const seed = async (): Promise<void> => {
         metaDescription:
           'Responding to leads in under five minutes makes you 21x more likely to qualify them. Learn how to automate the first touch.',
       },
-    },
-  )
-
-  const esPost = await findOrCreate(
-    'posts',
-    { and: [{ slug: { equals: 'velocidad-de-respuesta-gana-ventas' } }, { lang: { equals: 'es' } }] },
-    {
+    } as never,
+  })
+  await payload.update({
+    collection: 'posts',
+    id: post.id,
+    locale: 'es',
+    data: {
       title: 'Velocidad de respuesta: por qué el primero en contestar gana la venta',
       slug: 'velocidad-de-respuesta-gana-ventas',
-      lang: 'es',
-      category: firstEsCategoryId,
-      author: author.id,
       excerpt:
         'El primer proveedor en responder a un nuevo lead gana la mayoría de las veces. Así logras que ese proveedor seas tú — automáticamente.',
       content: esContent,
-      featured: true,
-      publishedAt: new Date('2026-05-20T09:00:00Z').toISOString(),
       _status: 'published',
       seo: {
         metaTitle: 'Velocidad de respuesta: el primero en contestar gana la venta | Apturio',
         metaDescription:
           'Responder a los leads en menos de cinco minutos te hace 21 veces más probable de calificarlos. Aprende a automatizar el primer contacto.',
       },
-    },
-  )
+    } as never,
+  })
 
-  // Link the EN/ES post pair both directions.
-  await link('posts', enPost.id, esPost.id)
-  await link('posts', esPost.id, enPost.id)
-
-  // ---- Home Page (EN + ES, block layout, published, linked) ----
+  // ---- Home Page (1 doc, EN + ES localized block layout, published) ----
   const enMessages = loadMessages('en')
   const esMessages = loadMessages('es')
 
-  const enHome = await findOrCreate(
-    'pages',
-    { and: [{ slug: { equals: 'home' } }, { lang: { equals: 'en' } }] },
-    {
+  const home = await payload.create({
+    collection: 'pages',
+    locale: 'en',
+    data: {
       title: 'Home',
       slug: 'home',
-      lang: 'en',
       layout: buildHomeLayout('en', enMessages),
       _status: 'published',
       seo: {
         metaTitle: enMessages.seo.home.title,
         metaDescription: enMessages.seo.home.description,
       },
-    },
-  )
-
-  const esHome = await findOrCreate(
-    'pages',
-    { and: [{ slug: { equals: 'home' } }, { lang: { equals: 'es' } }] },
-    {
+    } as never,
+  })
+  await payload.update({
+    collection: 'pages',
+    id: home.id,
+    locale: 'es',
+    data: {
       title: 'Inicio',
       slug: 'home',
-      lang: 'es',
       layout: buildHomeLayout('es', esMessages),
       _status: 'published',
       seo: {
         metaTitle: esMessages.seo.home.title,
         metaDescription: esMessages.seo.home.description,
       },
-    },
-  )
-
-  // Keep the block layout in sync with messages on re-run (idempotent refresh of
-  // existing rows; create already populated new ones).
-  if (!enHome.created) {
-    await payload.update({
-      collection: 'pages',
-      id: enHome.id,
-      data: { layout: buildHomeLayout('en', enMessages) } as never,
-    })
-  }
-  if (!esHome.created) {
-    await payload.update({
-      collection: 'pages',
-      id: esHome.id,
-      data: { layout: buildHomeLayout('es', esMessages) } as never,
-    })
-  }
-
-  // Link the EN/ES home pair both directions for hreflang.
-  await link('pages', enHome.id, esHome.id)
-  await link('pages', esHome.id, enHome.id)
+    } as never,
+  })
 
   // ---- Wave 2 — service pages (product pages + 4 template demos) ----
-  const service = await seedServicePages(payload, findOrCreate, link)
+  const service = await seedServicePages(payload)
 
   // ---- Report ----
   const [catCount, authorCount, postCount, pageCount] = await Promise.all([
@@ -494,11 +459,9 @@ export const seed = async (): Promise<void> => {
   ])
 
   payload.logger.info(
-    `[seed] done. categories=${catCount.totalDocs} (created ${categoriesCreated} this run), ` +
-      `authors=${authorCount.totalDocs}, posts=${postCount.totalDocs}, pages=${pageCount.totalDocs}. ` +
-      `EN post id=${enPost.id} <-> ES post id=${esPost.id}. ` +
-      `EN home id=${enHome.id} <-> ES home id=${esHome.id}. ` +
-      `service pages: ${service.total} docs (created ${service.created} this run).`,
+    `[seed] done. categories=${catCount.totalDocs}, authors=${authorCount.totalDocs}, ` +
+      `posts=${postCount.totalDocs}, pages=${pageCount.totalDocs}. ` +
+      `post id=${post.id}, home id=${home.id}, service pages: ${service.total} docs.`,
   )
 }
 

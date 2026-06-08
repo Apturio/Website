@@ -7,7 +7,7 @@ export const Faqs: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'question',
-    defaultColumns: ['question', 'lang', 'order'],
+    defaultColumns: ['question', 'order'],
     group: 'Content',
   },
   fields: [
@@ -15,24 +15,16 @@ export const Faqs: CollectionConfig = {
       name: 'question',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'answer',
       type: 'richText',
       required: true,
+      localized: true,
       admin: {
         description: 'Answer body. Feeds the FAQPage JSON-LD (SCHEMA-03) and the homepage FAQ.',
       },
-    },
-    {
-      name: 'lang',
-      type: 'select',
-      required: true,
-      defaultValue: 'en',
-      options: [
-        { label: 'English', value: 'en' },
-        { label: 'Español', value: 'es' },
-      ],
     },
     {
       name: 'order',

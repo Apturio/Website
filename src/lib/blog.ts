@@ -82,7 +82,8 @@ export async function getPublishedPosts(lang: AppLocale, limit = 50): Promise<Po
   const payload = await getPayloadClient()
   const { docs } = await payload.find({
     collection: 'posts',
-    where: { and: [{ _status: { equals: 'published' } }, { lang: { equals: lang } }] },
+    locale: lang,
+    where: { _status: { equals: 'published' } },
     sort: '-publishedAt',
     depth: 1,
     limit,
@@ -95,12 +96,9 @@ export async function getPostBySlug(lang: AppLocale, slug: string): Promise<Post
   const payload = await getPayloadClient()
   const { docs } = await payload.find({
     collection: 'posts',
+    locale: lang,
     where: {
-      and: [
-        { _status: { equals: 'published' } },
-        { lang: { equals: lang } },
-        { slug: { equals: slug } },
-      ],
+      and: [{ _status: { equals: 'published' } }, { slug: { equals: slug } }],
     },
     depth: 2,
     limit: 1,
@@ -113,7 +111,7 @@ export async function getCategories(lang: AppLocale): Promise<Category[]> {
   const payload = await getPayloadClient()
   const { docs } = await payload.find({
     collection: 'categories',
-    where: { lang: { equals: lang } },
+    locale: lang,
     sort: 'title',
     depth: 0,
     limit: 50,
@@ -125,7 +123,8 @@ export async function getCategoryBySlug(lang: AppLocale, slug: string): Promise<
   const payload = await getPayloadClient()
   const { docs } = await payload.find({
     collection: 'categories',
-    where: { and: [{ lang: { equals: lang } }, { slug: { equals: slug } }] },
+    locale: lang,
+    where: { slug: { equals: slug } },
     depth: 1,
     limit: 1,
   })
@@ -136,12 +135,9 @@ export async function getPostsByCategory(lang: AppLocale, categoryId: number): P
   const payload = await getPayloadClient()
   const { docs } = await payload.find({
     collection: 'posts',
+    locale: lang,
     where: {
-      and: [
-        { _status: { equals: 'published' } },
-        { lang: { equals: lang } },
-        { category: { equals: categoryId } },
-      ],
+      and: [{ _status: { equals: 'published' } }, { category: { equals: categoryId } }],
     },
     sort: '-publishedAt',
     depth: 1,
@@ -151,10 +147,11 @@ export async function getPostsByCategory(lang: AppLocale, categoryId: number): P
   return docs
 }
 
-export async function getAuthorBySlug(slug: string): Promise<Author | null> {
+export async function getAuthorBySlug(lang: AppLocale, slug: string): Promise<Author | null> {
   const payload = await getPayloadClient()
   const { docs } = await payload.find({
     collection: 'authors',
+    locale: lang,
     where: { slug: { equals: slug } },
     depth: 1,
     limit: 1,
@@ -166,12 +163,9 @@ export async function getPostsByAuthor(lang: AppLocale, authorId: number): Promi
   const payload = await getPayloadClient()
   const { docs } = await payload.find({
     collection: 'posts',
+    locale: lang,
     where: {
-      and: [
-        { _status: { equals: 'published' } },
-        { lang: { equals: lang } },
-        { author: { equals: authorId } },
-      ],
+      and: [{ _status: { equals: 'published' } }, { author: { equals: authorId } }],
     },
     sort: '-publishedAt',
     depth: 1,
@@ -191,12 +185,9 @@ export async function getCategoryCounts(
     categories.map(async (c) => {
       const { totalDocs } = await payload.find({
         collection: 'posts',
+        locale: lang,
         where: {
-          and: [
-            { _status: { equals: 'published' } },
-            { lang: { equals: lang } },
-            { category: { equals: c.id } },
-          ],
+          and: [{ _status: { equals: 'published' } }, { category: { equals: c.id } }],
         },
         depth: 0,
         limit: 1,
@@ -206,4 +197,30 @@ export async function getCategoryCounts(
     }),
   )
   return Object.fromEntries(entries)
+}
+
+/**
+ * Read EVERY locale's `slug` for a single document (for reciprocal hreflang).
+ * `locale: 'all'` returns the raw per-locale slug map with no fallback, so we
+ * only surface locales that actually have a stored slug.
+ */
+export async function getLocalizedSlugMap(
+  collection: 'posts' | 'pages' | 'categories',
+  id: number | string,
+): Promise<Record<string, string>> {
+  const payload = await getPayloadClient()
+  const doc = (await payload.findByID({
+    collection,
+    id,
+    locale: 'all',
+    depth: 0,
+  })) as unknown as Record<string, unknown> | null
+  const slug = doc?.slug
+  const out: Record<string, string> = {}
+  if (slug && typeof slug === 'object') {
+    for (const [loc, val] of Object.entries(slug as Record<string, unknown>)) {
+      if (typeof val === 'string' && val) out[loc] = val
+    }
+  }
+  return out
 }

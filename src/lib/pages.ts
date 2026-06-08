@@ -12,12 +12,9 @@ export async function getPageBySlug(lang: string, slug: string): Promise<Page | 
   const payload = await getPayload({ config })
   const { docs } = await payload.find({
     collection: 'pages',
+    locale: lang as 'en' | 'es',
     where: {
-      and: [
-        { slug: { equals: slug } },
-        { lang: { equals: lang } },
-        { _status: { equals: 'published' } },
-      ],
+      and: [{ slug: { equals: slug } }, { _status: { equals: 'published' } }],
     },
     limit: 1,
     depth: 1,

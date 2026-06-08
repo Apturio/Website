@@ -35,6 +35,14 @@ export default buildConfig({
     },
   },
   collections: [Posts, Pages, Categories, Authors, Faqs, Media, Users],
+  localization: {
+    locales: [
+      { code: 'en', label: 'English' },
+      { code: 'es', label: 'Español' },
+    ],
+    defaultLocale: 'en',
+    fallback: true,
+  },
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI,

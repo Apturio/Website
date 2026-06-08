@@ -4,13 +4,15 @@ import { notFound } from 'next/navigation'
 import { ArrowRight, Link2 } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
-import { SITE_URL, SITE_NAME, type AppLocale } from '@/lib/site'
+import { routing } from '@/i18n/routing'
+import { SITE_URL, SITE_NAME, localizedAlternates, type AppLocale } from '@/lib/site'
 import {
   asAuthor,
   asCategory,
   asMedia,
   extractHeadings,
   formatDate,
+  getLocalizedSlugMap,
   getPayloadClient,
   getPostBySlug,
   getPublishedPosts,
@@ -29,20 +31,27 @@ export const dynamicParams = true
 
 export async function generateStaticParams() {
   const payload = await getPayloadClient()
-  const { docs } = await payload.find({
-    collection: 'posts',
-    where: { _status: { equals: 'published' } },
-    depth: 0,
-    select: { slug: true, lang: true },
-    limit: 200,
-    pagination: false,
-    overrideAccess: false,
-  })
-  return docs.map((d) => ({ lang: d.lang, slug: d.slug }))
+  const params: { lang: string; slug: string }[] = []
+  for (const lang of routing.locales) {
+    const { docs } = await payload.find({
+      collection: 'posts',
+      locale: lang,
+      where: { _status: { equals: 'published' } },
+      depth: 0,
+      select: { slug: true },
+      limit: 200,
+      pagination: false,
+      overrideAccess: false,
+    })
+    for (const d of docs) {
+      if (d.slug) params.push({ lang, slug: d.slug })
+    }
+  }
+  return params
 }
 
-/** Conditional hreflang: emit the other-locale alternate only when the related
- * doc exists AND is published. Always self + x-default (→ EN). */
+/** Reciprocal hreflang: one document holds a slug per locale. Emit an alternate
+ * for every locale that has a stored slug. Always self + x-default (→ EN). */
 export async function generateMetadata({
   params,
 }: {
@@ -53,17 +62,12 @@ export async function generateMetadata({
   const post = await getPostBySlug(lang, slug)
   if (!post) return {}
 
-  const selfUrl = `${SITE_URL}/${lang}/blog/${post.slug}`
-  const related =
-    post.relatedLocale && typeof post.relatedLocale === 'object' && post.relatedLocale._status === 'published'
-      ? post.relatedLocale
-      : null
-  const relatedUrl = related ? `${SITE_URL}/${related.lang}/blog/${related.slug}` : null
-
-  const languages: Record<string, string> = { [lang]: selfUrl }
-  if (related && relatedUrl) languages[related.lang] = relatedUrl
-  // x-default points to the English version when known, else self.
-  languages['x-default'] = lang === 'en' ? selfUrl : related?.lang === 'en' && relatedUrl ? relatedUrl : selfUrl
+  const slugMap = await getLocalizedSlugMap('posts', post.id)
+  const { canonical: selfUrl, languages } = localizedAlternates(
+    lang,
+    slugMap,
+    (loc, s) => `${SITE_URL}/${loc}/blog/${s}`,
+  )
 
   const title = post.seo?.metaTitle ?? `${post.title} | ${SITE_NAME}`
   const description = post.seo?.metaDescription ?? post.excerpt ?? undefined

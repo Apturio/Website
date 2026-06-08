@@ -9,7 +9,7 @@ export const Categories: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'lang', 'slug'],
+    defaultColumns: ['title', 'slug'],
     group: 'Blog',
   },
   hooks: {
@@ -20,38 +20,23 @@ export const Categories: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'slug',
       type: 'text',
       required: true,
       index: true,
-      admin: {
-        description: 'Auto-generated from title when left empty. Used in /[lang]/blog/category/[slug].',
-      },
-    },
-    {
-      name: 'lang',
-      type: 'select',
-      required: true,
-      defaultValue: 'en',
-      options: [
-        { label: 'English', value: 'en' },
-        { label: 'Español', value: 'es' },
-      ],
-    },
-    {
-      name: 'relatedLocale',
-      type: 'relationship',
-      relationTo: 'categories',
+      localized: true,
       admin: {
         description:
-          'Link to the equivalent category in the other language. Set on BOTH documents for hreflang.',
+          'Auto-generated from title when left empty. Localized per-locale — used in /[lang]/blog/category/[slug].',
       },
     },
     {
       name: 'description',
       type: 'textarea',
+      localized: true,
     },
   ],
 }

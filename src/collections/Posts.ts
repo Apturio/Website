@@ -1,12 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { contentEditor } from '@/lib/contentEditor'
-import {
-  autoSlug,
-  computeReadTime,
-  revalidatePostPaths,
-  warnMissingRelatedLocale,
-} from '@/lib/hooks'
+import { autoSlug, computeReadTime, revalidatePostPaths } from '@/lib/hooks'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -15,14 +10,14 @@ export const Posts: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'lang', 'status', 'publishedAt'],
+    defaultColumns: ['title', 'slug', '_status', 'publishedAt'],
     group: 'Blog',
   },
   versions: {
     drafts: true,
   },
   hooks: {
-    beforeValidate: [autoSlug('title'), warnMissingRelatedLocale],
+    beforeValidate: [autoSlug('title')],
     beforeChange: [computeReadTime],
     afterChange: [revalidatePostPaths],
   },
@@ -31,33 +26,17 @@ export const Posts: CollectionConfig = {
       name: 'title',
       type: 'text',
       required: true,
+      localized: true,
     },
     {
       name: 'slug',
       type: 'text',
       required: true,
       index: true,
-      admin: {
-        description: 'Auto-generated from title when empty. Used in /[lang]/blog/[slug].',
-      },
-    },
-    {
-      name: 'lang',
-      type: 'select',
-      required: true,
-      defaultValue: 'en',
-      options: [
-        { label: 'English', value: 'en' },
-        { label: 'Español', value: 'es' },
-      ],
-    },
-    {
-      name: 'relatedLocale',
-      type: 'relationship',
-      relationTo: 'posts',
+      localized: true,
       admin: {
         description:
-          'Link to the same post in the other language. Set on BOTH documents so hreflang emits correctly (Phase 9).',
+          'Auto-generated from title when empty. Localized per-locale — used in /[lang]/blog/[slug].',
       },
     },
     {
@@ -73,6 +52,7 @@ export const Posts: CollectionConfig = {
     {
       name: 'excerpt',
       type: 'textarea',
+      localized: true,
       admin: {
         description: 'Short dek shown on cards and the post header.',
       },
@@ -86,6 +66,7 @@ export const Posts: CollectionConfig = {
       name: 'content',
       type: 'richText',
       editor: contentEditor,
+      localized: true,
       admin: {
         description: 'Article body. Insert Callout and Inline CTA Banner blocks anywhere.',
       },
@@ -102,6 +83,7 @@ export const Posts: CollectionConfig = {
     {
       name: 'readTime',
       type: 'number',
+      localized: true,
       admin: {
         readOnly: true,
         description: 'Auto-computed from content (minutes).',
@@ -128,6 +110,7 @@ export const Posts: CollectionConfig = {
     {
       name: 'seo',
       type: 'group',
+      localized: true,
       fields: [
         { name: 'metaTitle', type: 'text' },
         { name: 'metaDescription', type: 'textarea' },

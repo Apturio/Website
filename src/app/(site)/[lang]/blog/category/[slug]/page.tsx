@@ -4,12 +4,14 @@ import { notFound } from 'next/navigation'
 import { ArrowRight } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
-import { pageMetadata, type AppLocale } from '@/lib/site'
+import { routing } from '@/i18n/routing'
+import { SITE_URL, localizedAlternates, type AppLocale } from '@/lib/site'
 import {
   asMedia,
   getCategories,
   getCategoryBySlug,
   getCategoryCounts,
+  getLocalizedSlugMap,
   getPayloadClient,
   getPostsByCategory,
 } from '@/lib/blog'
@@ -21,14 +23,21 @@ export const dynamicParams = true
 
 export async function generateStaticParams() {
   const payload = await getPayloadClient()
-  const { docs } = await payload.find({
-    collection: 'categories',
-    depth: 0,
-    select: { slug: true, lang: true },
-    limit: 200,
-    pagination: false,
-  })
-  return docs.map((d) => ({ lang: d.lang, slug: d.slug }))
+  const params: { lang: string; slug: string }[] = []
+  for (const lang of routing.locales) {
+    const { docs } = await payload.find({
+      collection: 'categories',
+      locale: lang,
+      depth: 0,
+      select: { slug: true },
+      limit: 200,
+      pagination: false,
+    })
+    for (const d of docs) {
+      if (d.slug) params.push({ lang, slug: d.slug })
+    }
+  }
+  return params
 }
 
 export async function generateMetadata({
@@ -39,12 +48,19 @@ export async function generateMetadata({
   const { lang, slug } = await params
   const category = await getCategoryBySlug(lang as AppLocale, slug)
   if (!category) return {}
-  return pageMetadata({
-    locale: lang as AppLocale,
-    path: `/blog/category/${category.slug}`,
+
+  const slugMap = await getLocalizedSlugMap('categories', category.id)
+  const { canonical, languages } = localizedAlternates(
+    lang as AppLocale,
+    slugMap,
+    (loc, s) => `${SITE_URL}/${loc}/blog/category/${s}`,
+  )
+
+  return {
     title: `${category.title} | Apturio`,
     description: category.description ?? `${category.title} — Apturio`,
-  })
+    alternates: { canonical, languages },
+  }
 }
 
 export default async function CategoryPage({
