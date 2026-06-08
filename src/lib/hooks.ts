@@ -26,7 +26,7 @@ export const autoSlug =
  * Walk a Lexical editor state and accumulate plain-text word count. Handles the
  * default rich-text node shapes plus our custom blocks (callout text, CTA body).
  */
-function countWordsInLexical(node: unknown): number {
+export function countWordsInLexical(node: unknown): number {
   if (!node || typeof node !== 'object') return 0
   const n = node as Record<string, unknown>
   let words = 0
