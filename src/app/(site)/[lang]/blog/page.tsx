@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { pageMetadata, type AppLocale } from '@/lib/site'
+import { SITE_URL, pageMetadata, type AppLocale } from '@/lib/site'
 import {
   asAuthor,
   asCategory,
@@ -16,6 +16,7 @@ import {
 } from '@/lib/blog'
 import { BlogCard } from '@/components/blog/BlogCard'
 import { CategoryFilter, type FilterChip } from '@/components/blog/CategoryFilter'
+import { PageJsonLd } from '@/components/PageJsonLd'
 
 export const revalidate = 3600
 
@@ -137,6 +138,15 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ lang
           {rest.length === 0 && featured && <BlogCard post={featured} locale={lang} />}
         </div>
       </section>
+
+      {/* CollectionPage + Home-first Breadcrumb [Home, Blog]. */}
+      <PageJsonLd
+        kind="blog-index"
+        locale={lang}
+        url={`${SITE_URL}/${lang}/blog`}
+        title={t('indexTitle')}
+        description={t('indexSubtitle')}
+      />
     </main>
   )
 }

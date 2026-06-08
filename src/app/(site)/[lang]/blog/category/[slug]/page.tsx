@@ -17,6 +17,7 @@ import {
 } from '@/lib/blog'
 import { BlogCard } from '@/components/blog/BlogCard'
 import { CroCard, NewsletterMini } from '@/components/blog/Sidebar'
+import { PageJsonLd } from '@/components/PageJsonLd'
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -186,6 +187,15 @@ export default async function CategoryPage({
           </aside>
         </div>
       </section>
+
+      {/* CollectionPage + Home-first Breadcrumb [Home, Blog, Category]. */}
+      <PageJsonLd
+        kind="blog-category"
+        locale={lang}
+        url={`${SITE_URL}/${lang}/blog/category/${slug}`}
+        title={category.title}
+        description={category.description ?? undefined}
+      />
     </main>
   )
 }
