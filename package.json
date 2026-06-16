@@ -6,8 +6,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "payload migrate && payload generate:importmap && payload generate:types && next build",
+    "postbuild": "cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/",
     "build:next": "next build",
     "start": "next start",
+    "start:standalone": "node .next/standalone/server.js",
     "lint": "next lint",
     "seed": "payload run src/seed.ts",
     "generate:types": "payload generate:types",

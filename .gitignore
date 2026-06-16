@@ -40,3 +40,4 @@ payload-generated-schema.ts
 
 # Local admin recovery script (not versioned)
 scripts/reset-admin.mjs
+scripts/reconcile-migrations.mjs

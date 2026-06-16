@@ -5,6 +5,10 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Self-hosted (Hostinger VPS / Node app). Emits a self-contained
+  // `.next/standalone/server.js` with traced deps — no full node_modules needed
+  // at runtime. `.next/static` and `public/` must be copied in alongside it.
+  output: 'standalone',
   images: {
     // Cloudflare R2 public bucket hostname (media offload — wired for later phases)
     remotePatterns: [{ protocol: 'https', hostname: '*.r2.dev' }],
