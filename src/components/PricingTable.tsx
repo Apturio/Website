@@ -1,9 +1,10 @@
 import { Check, Minus } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
+import { getTranslations, getLocale } from "next-intl/server";
 import React from "react";
 
-export function PricingTable() {
-  const { t, language } = useLanguage();
+export async function PricingTable() {
+  const t = await getTranslations();
+  const language = await getLocale();
 
   const categories = [
     {

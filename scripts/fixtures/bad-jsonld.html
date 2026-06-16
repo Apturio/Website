@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Bad JSON-LD fixture — proves the gate exits 1</title>
+    <!--
+      Deliberately invalid JSON-LD used to prove validate-jsonld.mjs fails (exit 1).
+      It trips ALL THREE checks:
+        1. Schema ERROR  — Product missing required name/image/offers.
+        2. Dead markup   — WebSite with a SearchAction potentialAction node.
+        3. inLanguage    — WebPage root with no inLanguage key.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Product"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "url": "https://apturio.com",
+        "inLanguage": "en",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://apturio.com/search?q={query}",
+          "query-input": "required name=query"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "No language page"
+      }
+    </script>
+  </head>
+  <body></body>
+</html>
