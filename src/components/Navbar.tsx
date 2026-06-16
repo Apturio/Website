@@ -1,8 +1,11 @@
+"use client";
+
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
+import { useTranslations, useLocale } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Menu, X, AlertCircle, Star, Tag, HelpCircle, Languages } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,25 +15,34 @@ import {
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const { language, setLanguage, t } = useLanguage();
+  const t = useTranslations();
+  const language = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const handleLanguageChange = (lang: 'en' | 'es') => {
-    if (typeof window !== 'undefined') {
-      const hostname = window.location.hostname;
-      // Only redirect if we are on the production domains
-      const isProduction = hostname === 'apturio.com' || hostname === 'es.apturio.com';
-
-      if (isProduction) {
-        if (lang === 'es' && !hostname.startsWith('es.')) {
-          window.location.href = `https://es.apturio.com${window.location.pathname}${window.location.hash}`;
-          return;
-        } else if (lang === 'en' && hostname.startsWith('es.')) {
-          window.location.href = `https://apturio.com${window.location.pathname}${window.location.hash}`;
-          return;
+    if (lang === language) return;
+    // Prefer the localized counterpart URL emitted as an hreflang <link> by the
+    // page's generateMetadata — handles localized slugs (e.g. /en/automated-booking
+    // -> /es/agendamiento-automatizado). Fall back to swapping the locale prefix.
+    let target: string | null = null;
+    if (typeof document !== 'undefined') {
+      const alt = document.querySelector<HTMLLinkElement>(
+        `link[rel="alternate"][hreflang="${lang}"]`,
+      );
+      if (alt?.href) {
+        try {
+          const u = new URL(alt.href);
+          target = u.pathname + u.search + u.hash;
+        } catch {
+          /* ignore malformed */
         }
       }
     }
-    setLanguage(lang);
+    if (!target) {
+      target = pathname.replace(new RegExp(`^/${language}`), `/${lang}`);
+    }
+    router.push(target);
   };
 
   useEffect(() => {
@@ -44,18 +56,20 @@ export function Navbar() {
     };
   }, [isOpen]);
 
+  const home = `/${language}`;
+
   return (
     <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
+        <Link href={home} className="flex items-center gap-2">
           <img src="https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png" alt="Apturio Logo" className="h-10 w-auto" />
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
-          <a href="/#problem" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('nav.problems')}</a>
-          <a href="/#benefits" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('nav.benefits')}</a>
-          <a href="/#pricing" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('nav.pricing')}</a>
-          <a href="/#faq" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('nav.faq')}</a>
+          <a href={`${home}#problem`} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('nav.problems')}</a>
+          <a href={`${home}#benefits`} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('nav.benefits')}</a>
+          <a href={`${home}#pricing`} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('nav.pricing')}</a>
+          <a href={`${home}#faq`} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">{t('nav.faq')}</a>
         </nav>
 
         <div className="flex items-center gap-4">
@@ -75,7 +89,7 @@ export function Navbar() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button asChild className="rounded-[12px] font-bold"><a href="/#pricing">{t('nav.getStarted')}</a></Button>
+          <Button asChild className="rounded-[12px] font-bold"><a href={`${home}#pricing`}>{t('nav.getStarted')}</a></Button>
           <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsOpen(true)}>
             <Menu className="h-6 w-6 text-foreground" />
           </Button>
@@ -111,22 +125,22 @@ export function Navbar() {
               </div>
             </div>
 
-            <a href="/#problem" onClick={() => setIsOpen(false)} className="flex items-center gap-4 p-4 rounded-xl bg-white/10 hover:bg-white/15 transition-colors">
+            <a href={`${home}#problem`} onClick={() => setIsOpen(false)} className="flex items-center gap-4 p-4 rounded-xl bg-white/10 hover:bg-white/15 transition-colors">
               <AlertCircle className="w-6 h-6 text-white" />
               <span className="text-[22px] font-bold text-white">{t('nav.problems')}</span>
             </a>
 
-            <a href="/#benefits" onClick={() => setIsOpen(false)} className="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors">
+            <a href={`${home}#benefits`} onClick={() => setIsOpen(false)} className="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors">
               <Star className="w-6 h-6 text-white" />
               <span className="text-[22px] font-bold text-white">{t('nav.benefits')}</span>
             </a>
 
-            <a href="/#pricing" onClick={() => setIsOpen(false)} className="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors">
+            <a href={`${home}#pricing`} onClick={() => setIsOpen(false)} className="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors">
               <Tag className="w-6 h-6 text-white" />
               <span className="text-[22px] font-bold text-white">{t('nav.pricing')}</span>
             </a>
 
-            <a href="/#faq" onClick={() => setIsOpen(false)} className="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors">
+            <a href={`${home}#faq`} onClick={() => setIsOpen(false)} className="flex items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors">
               <HelpCircle className="w-6 h-6 text-white" />
               <span className="text-[22px] font-bold text-white">{t('nav.faq')}</span>
             </a>
@@ -134,7 +148,7 @@ export function Navbar() {
 
           <div className="h-[1px] bg-white/10 my-8" />
 
-          <a href="/#pricing" onClick={() => setIsOpen(false)} className="w-full">
+          <a href={`${home}#pricing`} onClick={() => setIsOpen(false)} className="w-full">
             <Button className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-14 text-[18px] shadow-[0_0_15px_rgba(120,125,255,0.4)] hover:shadow-[0_0_25px_rgba(120,125,255,0.6)] transition-all">
               {t('nav.getStarted')}
             </Button>

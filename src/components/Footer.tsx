@@ -1,43 +1,40 @@
-import { Rocket } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
-import { Link } from "react-router-dom";
+import Link from "next/link";
+import { getTranslations, getLocale } from "next-intl/server";
 
-export function Footer() {
-  const { t, language } = useLanguage();
+import { AdvantageCTA } from "@/components/AdvantageCTA";
+
+// `showAdvantage` defaults to true (every non-home page renders the advantage
+// card inside the footer). The home page sets it to false because the card is
+// rendered there as the final CtaBlock — preserving the original layout exactly
+// (advantage band on a card-coloured background, then the footer links).
+export async function Footer({ showAdvantage = true }: { showAdvantage?: boolean } = {}) {
+  const t = await getTranslations();
+  const language = await getLocale();
 
   return (
-    <footer className="border-t border-border bg-card pt-16 pb-8">
+    <footer className={`bg-card pb-8 ${showAdvantage ? "border-t border-border pt-16" : "pt-0"}`}>
       <div className="container mx-auto px-4">
-        <div className="relative max-w-4xl mx-auto mb-16 bg-background rounded-[20px] p-8 border border-primary/40 shadow-[0_0_30px_rgba(120,125,255,0.15)] text-center">
-          <div className="absolute -top-4 right-4 md:-right-4 px-4 py-1.5 bg-background border border-[#37ca37] text-[#37ca37] text-xs font-bold uppercase tracking-wider rounded-full shadow-[0_0_15px_rgba(55,202,55,0.4)] whitespace-nowrap z-10">
-            {t('footer.bonus')}
-          </div>
-          <Rocket className="h-12 w-12 text-primary mx-auto mb-4 drop-shadow-[0_0_10px_rgba(120,125,255,0.5)]" />
-          <h3 className="text-2xl md:text-3xl font-bold mb-4 text-[#FFFFFF]">{t('footer.advantageTitle')}</h3>
-          <p className="text-[#94a3b8] text-lg mb-4 max-w-2xl mx-auto">
-            {t('footer.advantageBody')}
-          </p>
-          <p className="text-[#FFFFFF] text-lg mb-2 font-medium max-w-2xl mx-auto">
-            {t('footer.advantageGoal')}
-          </p>
-          <p className="text-[#37ca37] text-base mb-6 font-semibold max-w-2xl mx-auto drop-shadow-[0_0_8px_rgba(55,202,55,0.4)]">
-            {t('footer.advantageSafety')}
-          </p>
-          <p className="text-sm font-medium text-[#94a3b8] uppercase tracking-widest">
-            {t('footer.cancelAnytime')}
-          </p>
-        </div>
+        {showAdvantage && (
+          <AdvantageCTA
+            badge={t('footer.bonus')}
+            title={t('footer.advantageTitle')}
+            body={t('footer.advantageBody')}
+            goal={t('footer.advantageGoal')}
+            safety={t('footer.advantageSafety')}
+            cancelAnytime={t('footer.cancelAnytime')}
+          />
+        )}
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-border/50 text-sm text-slate-400">
-          <Link to="/" className="flex items-center gap-2">
+          <Link href={`/${language}`} className="flex items-center gap-2">
             <img src="https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png" alt="Apturio Logo" className="h-10 w-auto" />
           </Link>
 
           <div className="flex gap-4 md:gap-6 flex-wrap justify-center">
-            <Link to="/pay-per-use" className="hover:text-primary transition-colors">{t('footer.payPerUse') || 'Pay-Per-Use Pricing'}</Link>
-            <Link to="/add-ons" className="hover:text-primary transition-colors">{language === 'es' ? 'Precios de Add-Ons' : 'Add-Ons Pricing'}</Link>
-            <Link to="/privacy-policy" className="hover:text-primary transition-colors">{t('footer.privacy')}</Link>
-            <Link to="/terms-of-service" className="hover:text-primary transition-colors">{t('footer.terms')}</Link>
+            <Link href={`/${language}/pay-per-use`} className="hover:text-primary transition-colors">{t('footer.payPerUse')}</Link>
+            <Link href={`/${language}/add-ons`} className="hover:text-primary transition-colors">{language === 'es' ? 'Precios de Add-Ons' : 'Add-Ons Pricing'}</Link>
+            <Link href={`/${language}/privacy-policy`} className="hover:text-primary transition-colors">{t('footer.privacy')}</Link>
+            <Link href={`/${language}/terms-of-service`} className="hover:text-primary transition-colors">{t('footer.terms')}</Link>
           </div>
 
           <p>&copy; {new Date().getFullYear()} {t('footer.copyright')}. {t('footer.rights')}</p>

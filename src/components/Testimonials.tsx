@@ -1,17 +1,24 @@
 import { Star } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
+import { getTranslations } from "next-intl/server";
+import type { TestimonialsBlock } from "@/payload-types";
 
-export function Testimonials() {
-  const { t } = useLanguage();
-  const reviews = t('testimonials.items') as any[];
+// Static masonry layout (no carousel in the current design) → Server Component.
+export async function Testimonials({ block }: { block?: TestimonialsBlock } = {}) {
+  const t = await getTranslations();
+
+  const heading = block?.heading ?? t('testimonials.title');
+  const subtitle = block?.subtitle ?? t('testimonials.subtitle');
+  const reviews: { text: string; name: string }[] = block?.items
+    ? block.items.map((i) => ({ text: i.quote, name: i.author }))
+    : (t.raw('testimonials.items') as { text: string; name: string }[]);
 
   return (
     <section className="py-24 bg-card/30 relative">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-4xl mx-auto mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight text-white">{t('testimonials.title')}</h2>
+          <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight text-white">{heading}</h2>
           <p className="text-lg text-slate-400 md:whitespace-nowrap">
-            {t('testimonials.subtitle')}
+            {subtitle}
           </p>
         </div>
 

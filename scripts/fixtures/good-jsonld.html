@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Good JSON-LD fixture — proves the gate exits 0</title>
+    <!--
+      Clean JSON-LD used to prove validate-jsonld.mjs passes (exit 0):
+        - No schema ERRORs (WebPage / BreadcrumbList carry no required-attr gaps).
+        - No SearchAction / potentialAction anywhere.
+        - inLanguage present on the WebPage root; BreadcrumbList is exempt.
+    -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "@id": "https://apturio.com/en#webpage",
+        "url": "https://apturio.com/en",
+        "name": "Apturio",
+        "inLanguage": "en"
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://apturio.com/en"
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body></body>
+</html>

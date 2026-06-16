@@ -1,9 +1,15 @@
 import { CheckCircle2 } from "lucide-react";
-import { useLanguage } from "@/context/LanguageContext";
+import { getTranslations } from "next-intl/server";
+import type { BenefitsBlock } from "@/payload-types";
 
-export function Benefits() {
-  const { t } = useLanguage();
-  const benefits = t('benefits.items') as any[];
+export async function Benefits({ block }: { block?: BenefitsBlock } = {}) {
+  const t = await getTranslations();
+
+  const heading = block?.heading ?? t('benefits.title');
+  const subtitle = block?.subtitle ?? t('benefits.subtitle');
+  const benefits: { title: string; description: string }[] =
+    block?.items ?? (t.raw('benefits.items') as { title: string; description: string }[]);
+
   return (
     <section id="benefits" className="py-24 bg-background relative">
       <div className="container mx-auto px-4">
@@ -11,10 +17,10 @@ export function Benefits() {
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -mr-32 -mt-32 pointer-events-none" />
           <div className="max-w-3xl mx-auto text-center relative z-10">
             <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white">
-              {t('benefits.title')}
+              {heading}
             </h2>
             <p className="text-lg text-slate-400 mb-12">
-              {t('benefits.subtitle')}
+              {subtitle}
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
               {benefits.map((item, index) => (

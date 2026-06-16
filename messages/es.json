@@ -1,0 +1,522 @@
+{
+  "nav": {
+    "problems": "Tus Problemas",
+    "benefits": "Beneficios",
+    "pricing": "Precios",
+    "faq": "Preguntas Frecuentes",
+    "getStarted": "Empezar",
+    "language": "Idioma"
+  },
+  "hero": {
+    "badge": "Configuración 'Llave en mano' valorada en $2.000",
+    "title": "Tu Máquina de Ventas con IA, Construida por Expertos y Lista para Funcionar.",
+    "description": "Para Fundadores B2B y Agencias: Obtén una configuración completa de CRM con IA valorada en $2.000, diseñada específicamente para calificar leads, gestionar tu embudo y escalar sin contratar más personal.",
+    "ctaPrimary": "Empezar Ahora",
+    "ctaSecondary": "Llamada de Estrategia Gratuita"
+  },
+  "problem": {
+    "title": "¿Por qué necesitas Apturio?",
+    "subtitle": "Detén la fuga invisible que está matando tu ROI.",
+    "items": [
+      {
+        "title": "Crecimiento Estancado",
+        "description": "Tus ingresos se han estancado porque tus sistemas actuales no pueden escalar con tu ambición."
+      },
+      {
+        "title": "Pérdida de Leads",
+        "description": "Tu equipo no puede responder en menos de 5 minutos, por lo que los leads mueren. Nuestra IA califica y agenda citas 24/7."
+      },
+      {
+        "title": "Caos Tecnológico",
+        "description": "Deja de pagar por herramientas desconectadas. Apturio es el 'Cerebro' unificado que conecta todo."
+      },
+      {
+        "title": "Brecha de IA",
+        "description": "Tus competidores están usando IA para superarte mientras tú dependes de flujos de trabajo manuales y obsoletos."
+      },
+      {
+        "title": "La Trampa de la Configuración",
+        "description": "Deja de comprar software que nunca configuras. Nosotros nos encargamos de toda la ingeniería 'llave en mano'."
+      },
+      {
+        "title": "Sin Datos en Tiempo Real",
+        "description": "Tomar decisiones a ciegas sin información accionable y en tiempo real sobre tu embudo de ventas."
+      }
+    ]
+  },
+  "benefits": {
+    "title": "Todo lo que necesitas para automatizar tu crecimiento.",
+    "subtitle": "Deja de gestionar herramientas. Empieza a gestionar resultados con nuestro ecosistema de IA integrado.",
+    "items": [
+      {
+        "title": "Vendedor IA 24/7",
+        "description": "Nunca pierdas un lead con un agente inteligente que responde al instante."
+      },
+      {
+        "title": "CRM Unificado",
+        "description": "Todas tus interacciones con clientes y data en un solo centro centralizado."
+      },
+      {
+        "title": "Agendamiento Automático",
+        "description": "Llena tu calendario sin esfuerzo y sin el vaivén manual de mensajes."
+      },
+      {
+        "title": "Soporte de Ingeniería Experto",
+        "description": "Nuestro equipo se encarga del trabajo pesado para que tú te enfoques en vender."
+      }
+    ]
+  },
+  "pricing": {
+    "title": "Precios simples y transparentes",
+    "subtitle": "Elige el plan perfecto para las necesidades de tu equipo. Sin cargos ocultos, cancela en cualquier momento.",
+    "perMonth": " / mes",
+    "bonus": "BONO DE $2.000 INCLUIDO",
+    "guarantee": "Cancela en cualquier momento.",
+    "plans": {
+      "foundation": {
+        "name": "Base de Ventas CRM",
+        "description": "Herramientas esenciales para gestionar leads y ventas.",
+        "features": [
+          "Configuración por Cuenta Propia",
+          "Funciones de CRM Core",
+          "Gestión de Leads",
+          "Automatizaciones Básicas",
+          "Integración de Email y SMS",
+          "Soporte Estándar"
+        ],
+        "cta": "Empezar",
+        "subText": "*Soporte de implementación disponible como complemento por separado."
+      },
+      "engine": {
+        "name": "AI CRM Sales Engine",
+        "description": "La base perfecta para ventas automatizadas.",
+        "features": [
+          "Todas las funciones de Foundation",
+          "Bot Conversacional de IA",
+          "Calificación de Leads con IA",
+          "Agendamiento Automático de Citas",
+          "Configuración de $2.000 GRATIS"
+        ],
+        "cta": "Reclamar mi Motor + Bono de $2.000"
+      },
+      "growth": {
+        "name": "AI CRM Growth Machine",
+        "description": "Para empresas que requieren arquitecturas complejas e ingeniería a gran escala sin costo inicial.",
+        "features": [
+          "Todo en el Motor de Ventas IA + $2.000 de Implementación Exonerada",
+          "Automatizaciones de Flujo de Trabajo Avanzadas",
+          "Constructor de Sitios Web/Embudos",
+          "Gestión de Reputación",
+          "Conserje de Ingeniería Elite"
+        ],
+        "cta": "Obtener mi Máquina Lista"
+      }
+    },
+    "implementation": {
+      "title": "Implementación de IA de Precisión",
+      "subtitle": "Sistemas personalizados diseñados para confiabilidad y escala.",
+      "body1": "No creemos en configuraciones genéricas. Tu plan Elite asegura un Sprint de Ingeniería Dedicado de 20 horas donde nuestro equipo construye tu lógica de negocio específica desde cero.",
+      "body2": "Ya sea que estés automatizando un solo departamento o toda una operation, nosotros manejamos el trabajo pesado. Nuestros ingenieros se enfocan en crear una solución llave en mano para que dejes de preocuparte por la tecnología y empieces a enfocarte en tu crecimiento.",
+      "pills": [
+        "Cola de Ingeniería Prioritaria (Clientes Elite Primero)",
+        "Construcción Dedicada de 20 Horas (Arquitectura Personalizada)",
+        "Configuración Llave en Mano (Tarifa de $2.000 - EXONERADA)"
+      ],
+      "note": "*Los proyectos se programan en el orden en que se reciben los activos. Solo aceptamos 5 implementaciones Elite al mes para garantizar la calidad de la ingeniería."
+    },
+    "enterprise": {
+      "title": "Ecosistemas de IA Empresariales",
+      "body": "Arquitectura de IA a medida e infraestructura dedicada para organizaciones globales. Construido para escalar sin límites.",
+      "cta": "Consultar con nuestros Arquitectos de Empresa"
+    },
+    "table": {
+      "title": "Comparación Detallada de Planes",
+      "cta": "Comparar Todas las Funciones",
+      "scrollHint": "Desliza para comparar",
+      "columnFeature": "Función",
+      "waived": "EXONERADA",
+      "categories": {
+        "strategy": "Estrategia",
+        "crm": "CRM",
+        "calendars": "Calendarios y Reservas",
+        "pipelines": "Pipelines y Oportunidades",
+        "automation": "Automatización",
+        "marketing": "Marketing",
+        "sites": "Sitios Web",
+        "affiliate": "Marketing de Afiliados",
+        "payments": "Pagos",
+        "documents": "Documentos y Contratos",
+        "ai": "IA",
+        "reputation": "Reputación",
+        "analytics": "Analítica e Informes",
+        "advanced": "Avanzado",
+        "support": "Soporte"
+      },
+      "features": {
+        "strategy": {
+          "lead": "Gestión de Leads",
+          "revenue": "Generación de Ingresos",
+          "scaling": "Escalado de Negocio",
+          "goals": "Objetivos Principales",
+          "positioning": "Posicionamiento en el Mercado",
+          "teamSize": "Tamaño de Equipo Ideal",
+          "structure": "Estructura del Equipo",
+          "seats": "Asientos Incluidos",
+          "extraSeat": "Precio de Asiento Extra"
+        },
+        "crm": {
+          "contacts": "Gestor de Contactos",
+          "fields": "Campos Personalizados y Etiquetas",
+          "lists": "Listas de Contactos Inteligentes",
+          "feed": "Feed de Conversación Unificado",
+          "multi": "Mensajería Multicanal",
+          "whatsapp": "Conector de WhatsApp",
+          "missed": "Texto de Llamada Perdida",
+          "phone": "Sistema de Teléfono / SMS",
+          "chat": "Chat de Equipo Interno"
+        },
+        "calendars": {
+          "unlimited": "Calendarios Ilimitados",
+          "types": "Múltiples Tipos de Calendario",
+          "menu": "Calendarios de Menú de Servicios",
+          "rental": "Calendario de Listado de Alquiler",
+          "advanced": "Opciones de Programación Avanzadas",
+          "booking": "Sitio de Reserva de Autoservicio",
+          "payments": "Pagos por Adelantado de Citas",
+          "synching": "Sincronización de Calendario (Google/Outlook)",
+          "video": "Enlaces de Videoconferencia"
+        },
+        "automation": {
+          "triggers": "Disparadores y Acciones de Plataforma",
+          "visual": "Pantalla de Flujo de Trabajo Visual",
+          "webhooks": "Permitir Webhooks",
+          "thirdParty": "Más de 1,000 Integraciones de Terceros",
+          "premium": "Flujos de Trabajo Premium"
+        },
+        "pipelines": {
+          "unlimited": "Pipelines Ilimitados",
+          "custom": "Pipelines Personalizados",
+          "nurturing": "Automatización de Nutrición de Leads"
+        },
+        "affiliate": {
+          "campaigns": "Campañas de Afiliados",
+          "integrations": "Integración con Embudos y Tiendas",
+          "portal": "Portal de Gestión de Afiliados",
+          "commissions": "Comisiones Multinivel",
+          "payout": "Pagos Automáticos con PayPal",
+          "stats": "Estadísticas de Rendimiento de Afiliados"
+        },
+        "payments": {
+          "integrations": "Stripe/PayPal/Authorize.net",
+          "invoicing": "Herramienta de Facturación",
+          "estimates": "Propuestas y Presupuestos",
+          "links": "Generador de Enlaces de Pago",
+          "products": "Listados de Productos y Servicios",
+          "coupons": "Generador de Cupones y Tarjetas de Regalo"
+        },
+        "documents": {
+          "generate": "Generar Documentos Digitales",
+          "sign": "Captura de Firma Digital",
+          "send": "Enviar por Email/Enlace"
+        },
+        "reputation": {
+          "requests": "Solicitante de Reseñas Automático",
+          "dashboard": "Tablero de Puntuación de Reseñas",
+          "management": "Gestión de Reseñas de GMB y FB",
+          "widgets": "Widgets de Reseñas para Web",
+          "video": "Testimonios en Video"
+        },
+        "analytics": {
+          "dashboard": "Tablero Personalizable",
+          "adData": "Datos de Anuncios de Google y FB",
+          "reports": "Informes de Atribución Detallados",
+          "call": "Informes de Llamadas y Agentes"
+        },
+        "advanced": {
+          "api": "Acceso a API de Entrada",
+          "domains": "Gestor de Dominios",
+          "redirect": "Redirecciones de URL",
+          "tracking": "Soporte de Rastreo Externo",
+          "apps": "Apps de Escritorio y Móvil"
+        },
+        "marketing": {
+          "emails": "Campañas de Email",
+          "creator": "Creador de Email Drag-and-drop",
+          "html": "Creador de Email HTML",
+          "templates": "Biblioteca de Plantillas de Email",
+          "advanced": "Funciones de Campaña Avanzadas",
+          "subscribe": "Suscripción/Baja Automática",
+          "triggerLinks": "Enlaces de Disparo",
+          "social": "Planificador de Redes Sociales",
+          "prospecting": "Herramienta de Prospección",
+          "adManager": "Administrador de Anuncios"
+        },
+        "sites": {
+          "builder": "Constructor de Sitios Web y Plantillas",
+          "funnels": "Landing Pages y Embudos",
+          "blogs": "Constructor de Blogs y Plantillas",
+          "editing": "Edición Drag-and-drop",
+          "forms": "Formularios, Encuestas y Quizzes",
+          "chat": "Widget de Chat con IA",
+          "wordpress": "Integración con WordPress",
+          "stores": "Tiendas de Comercio Electrónico"
+        },
+        "ai": {
+          "conv": "Agentes Conversacionales de IA",
+          "voice": "Agentes de Voz de IA",
+          "studio": "Agent Studio",
+          "content": "Creador de Contenido de IA",
+          "knowledge": "Base de Conocimientos de IA",
+          "integration": "Integración con Flujos y Calendario",
+          "channels": "Soporte de IA Multicanal",
+          "employee": "Empleado de IA Ilimitado",
+          "credits": "Créditos de IA Incluidos"
+        },
+        "support": {
+          "self": "Auto-onboarding",
+          "guided": "Onboarding Guiado",
+          "strategy": "Sesiones de Estrategia",
+          "human": "Soporte Humano (Horas Hábiles)",
+          "site": "Sitio de Soporte (EN/ES)",
+          "bot": "Chatbot de Soporte"
+        }
+      }
+    }
+  },
+  "trustedBy": {
+    "title": "Confiado por empresas innovadoras en todo el mundo",
+    "countries": {
+      "ca": "Canadá",
+      "ar": "Argentina",
+      "mx": "México",
+      "es": "España",
+      "ve": "Venezuela"
+    },
+    "globalOperations": "OPERACIONES GLOBALES"
+  },
+  "testimonials": {
+    "title": "No solo confíes en nuestra palabra",
+    "subtitle": "Únete al creciente número de empresas que han transformado su proceso de ventas con Apturio.",
+    "items": [
+      {
+        "name": "Samuel Flores",
+        "text": "Excelente plataforma, servicio y equipo."
+      },
+      {
+        "name": "Yus Muro",
+        "text": "Mi experiencia con Apturio ha sido muy personal y positiva... los recomiendo de todo corazón para buscar apoyo genuino y confiable en marketing médico."
+      },
+      {
+        "name": "Bella Bellarda",
+        "text": "Apturio nos ayudó a consolidar toda mi base de datos de más de 5,000 contactos, y estaremos trabajando con ellos en marketing por correo electrónico y mucho más. No solo están optimizando mis procesos, sino que también me brindan mayor facilidad y visión de mi negocio como influencer. Muchas gracias."
+      },
+      {
+        "name": "En Otro Idioma",
+        "text": "Quiero agradecer a Apturio por permitirnos alojar nuestro sitio web con ellos. El sitio web estará disponible muy pronto y estamos súper emocionados por cómo se ve hasta ahora. Gracias por todo su apoyo y atención, realmente lo apreciamos."
+      },
+      {
+        "name": "Venxel Team",
+        "text": "Apturio es un socio estratégico clave para Venxel. Han desempeñado un papel crucial en el fortalecimiento de todo nuestro ecosistema, desde CRM y automatización hasta soluciones inteligentes de chatbot que ayudan a nuestros clientes a capturar, calificar y convertir leads de manera más eficiente. Más allá de eso, también proporcionan una infraestructura robusta en marketing por correo electrónico, alojamiento, bases de datos y muchos otros sistemas esenciales que respaldan tanto nuestras operaciones internas como el crecimiento de nuestros clientes. Su tecnología nos permite ir mucho más allá del marketing tradicional y ofrecer sistemas reales y medibles. No se trata solo de generar leads, se trata de gestionar, nutrir y maximizar cada oportunidad, y Apturio hace posible. Honestamente, son uno de los mejores socios estratégicos que Venxel podría tener. Realmente vemos esto como una relación a largo plazo que continuará creciendo y creando valor en ambos lados. Estamos extremadamente agradecidos por su apoyo y emocionados por todo lo que seguiremos construyendo juntos."
+      }
+    ]
+  },
+  "faq": {
+    "title": "Preguntas Frecuentes",
+    "items": [
+      {
+        "q": "¿Necesito habilidades técnicas?",
+        "a": "Para nada. Nosotros nos encargamos de toda la configuración de ingeniería, el entrenamiento de la IA y la configuración del CRM por ti. Tú solo entras y vendes."
+      },
+      {
+        "q": "¿Hay contratos a largo plazo?",
+        "a": "No. Creemos en los resultados, no en las ataduras. Puedes cancelar tu suscripción mensual en cualquier momento."
+      },
+      {
+        "q": "¿Qué tan rápido puedo estar funcionando?",
+        "a": "Nuestro 'Ready-to-Sell' Sprint está diseñado para que estés operando en 30 días. Este cronograma es una colaboración de alta intensidad donde nuestros ingenieros ejecutan tu configuración llave en mano dentro de una ventana de 20 horas asignadas, siempre que todos los activos y accesos del cliente se entreguen a tiempo."
+      },
+      {
+        "q": "¿La IA suena como un robot?",
+        "a": "No. Utilizamos NLP (Procesamiento de Lenguaje Natural) avanzado para asegurar que tu asistente de IA suene humano, profesional y se mantenga fiel a tu marca."
+      },
+      {
+        "q": "¿Puedo integrar mis herramientas actuales?",
+        "a": "Sí. Apturio está construido para ser el cerebro unificado de tu operación. Nos conectamos con tu stack de marketing actual a través de APIs abiertas."
+      },
+      {
+        "q": "¿Qué sucede después de la configuración? ¿Me quedaré solo?",
+        "a": "En absoluto. Recibes soporte prioritario y actualizaciones continuas de IA para que tu motor nunca deje de evolucionar. Si necesitas implementaciones personalizadas adicionales o apoyo estratégico continuo, ofrecemos paquetes de horas flexibles adaptados a tu crecimiento. Nunca estarás solo."
+      },
+      {
+        "q": "¿Existen tarifas de pago por uso (Pay-Per-Use)?",
+        "a": "Sí, ciertas funciones avanzadas como el uso de IA, acciones de flujos de trabajo premium y servicios de telecomunicaciones (SMS, llamadas, correos electrónicos) se facturan en base a pago por uso directamente a través de la plataforma. Estas tarifas están sujetas a cambios. Por favor revisa el [/pay-per-use]"
+      },
+      {
+        "q": "¿Ofrecen complementos (Add-Ons)?",
+        "a": "¡Sí! Aunque nuestros planes principales te dan todo lo que necesitas para operar tu máquina de ventas, ofrecemos complementos opcionales como Sistemas Telefónicos dedicados, Herramientas de Prospección avanzadas, Gestores de Anuncios automatizados y alojamiento WordPress. Estos tienen precios separados y están sujetos a cambios. Por favor revisa el [/add-ons]"
+      }
+    ]
+  },
+  "strategy": {
+    "title": "Sesión de Hoja de Ruta de IA Personalizada",
+    "subtitle": "Selecciona un horario a continuación para programar tu llamada de estrategia con nuestro equipo de ingeniería.",
+    "whatsapp": "Preguntas? Chatea con nosotros"
+  },
+  "thankyou": {
+    "title": "¡Todo Listo!",
+    "subtitle": "Tu llamada de estrategia ha sido reservada con éxito. Hemos enviado un correo de confirmación con todos los detalles.",
+    "nextSteps": "Próximos Pasos:",
+    "steps": [
+      "Revisa tu bandeja de entrada para la invitación del calendario y el enlace de la reunión.",
+      "Prepara cualquier pregunta específica sobre tu proceso de ventas actual.",
+      "Asegúrate de estar en un lugar tranquilo para nuestra llamada."
+    ],
+    "button": "Volver al Inicio"
+  },
+  "footer": {
+    "advantageTitle": "La Ventaja de Implementación de $2.000.",
+    "advantageBody": "Mientras que cualquier otro CRM te vende una suscripción y te desea suerte, Apturio lo construye por ti. Incluimos 20 horas de configuración de ingeniería senior GRATIS para que puedas enfocarte en escalar, no en configurar software.",
+    "advantageGoal": "Nuestra meta es que estés operando en 30 días. Este sprint es una colaboración de alta intensidad; una vez entregados tus activos, nuestros ingenieros ejecutan tu configuración llave en mano dentro de la ventana de 20 horas.",
+    "advantageSafety": "Configuración sujeta a la cooperación del cliente y entrega de activos dentro del límite de 20 horas.",
+    "bonus": "BONO DE $2.000 INCLUIDO",
+    "cancelAnytime": "Cancela en cualquier momento.",
+    "payPerUse": "Precios de Pago por Uso",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio",
+    "rights": "Todos los derechos reservados.",
+    "copyright": "Apturio Ingeniería de IA"
+  },
+  "privacy": {
+    "title": "Política de Privacidad",
+    "lastUpdated": "Última actualización: 21 de abril de 2026",
+    "content": [
+      {
+        "title": "1. Información que Recopilamos",
+        "text": "Recopilamos información que usted nos proporciona directamente, como cuando crea una cuenta, se suscribe a nuestro boletín o se pone en contacto con nosotros para recibir soporte. Esto puede incluir su nombre, dirección de correo electrónico, número de teléfono y cualquier otra información que decida proporcionar."
+      },
+      {
+        "title": "2. Cómo Utilizamos su Información",
+        "text": "Utilizamos la información que recopilamos para proporcionar, mantener y mejorar nuestros servicios, para comunicarnos con usted y para desarrollar nuevos productos y servicios."
+      },
+      {
+        "title": "3. Información Compartida",
+        "text": "No compartimos su información personal con terceros, excepto como se describe en esta política, como con su consentimiento o para cumplir con obligaciones legales."
+      },
+      {
+        "title": "4. Seguridad de los Datos",
+        "text": "Tomamos medidas razonables para ayudar a proteger la información sobre usted contra pérdida, robo, uso indebido y acceso no autorizado, divulgación, alteración y destrucción."
+      }
+    ]
+  },
+  "terms": {
+    "title": "Términos de Servicio",
+    "lastUpdated": "Última actualización: 21 de abril de 2026",
+    "content": [
+      {
+        "title": "1. Aceptación de los Términos",
+        "text": "Al acceder o utilizar nuestros servicios, usted acepta estar sujeto a estos Términos de Servicio. Si no está de acuerdo con estos términos, no utilice nuestros servicios."
+      },
+      {
+        "title": "2. Descripción del Servicio",
+        "text": "Apturio proporciona servicios de automatización de ventas impulsados por IA e implementación de CRM. Nos reservamos el derecho de modificar o descontinuar el servicio en cualquier momento."
+      },
+      {
+        "title": "3. Responsabilidades del Usuario",
+        "text": "Usted es responsable de mantener la confidencialidad de la información de su cuenta y de todas las actividades que ocurran bajo su cuenta."
+      },
+      {
+        "title": "4. Limitación de Responsabilidad",
+        "text": "Apturio no será responsable de ningún daño indirecto, incidental, especial, consecuente o punitivo que resulte de su uso del servicio."
+      }
+    ]
+  },
+  "checkout": {
+    "title": "Finaliza tu pedido",
+    "subtitle": "Ingresa tus datos para activar tu suscripción de {planName}.",
+    "summary": "Resumen del pedido",
+    "billedMonthly": "Facturado mensualmente",
+    "subtotal": "Subtotal",
+    "implementationFee": "Tarifa de Implementación",
+    "totalDue": "Total hoy",
+    "included": "Qué incluye:",
+    "waived": "EXONERADA (Valor de $2,000)",
+    "back": "Volver a precios",
+    "secure": "Pago Seguro con cifrado SSL de 256 bits",
+    "comingSoon": "Checkout próximamente",
+    "provideLink": "Por favor, proporciona el enlace de pago para este plan."
+  },
+  "seo": {
+    "home": {
+      "title": "Apturio — Tu Máquina de Ventas con IA",
+      "description": "Apturio es tu Máquina de Ventas impulsada por IA, construida por expertos. Obtén una configuración completa de CRM valorada en $2,000."
+    },
+    "strategy": {
+      "title": "Sesión de Hoja de Ruta de IA | Apturio",
+      "description": "Programa tu sesión gratuita de hoja de ruta de IA con nuestro equipo de ingeniería."
+    },
+    "checkout": {
+      "title": "Pago Seguro | Apturio",
+      "description": "Completa tu pago seguro para comenzar con tu CRM de IA de Apturio."
+    },
+    "privacy": {
+      "title": "Política de Privacidad | Apturio",
+      "description": "Lee nuestra política de privacidad para entender cómo recopilamos y protegemos tus datos."
+    },
+    "terms": {
+      "title": "Términos de Servicio | Apturio",
+      "description": "Lee nuestros términos de servicio para entender las reglas y pautas para usar Apturio."
+    },
+    "thankyou": {
+      "title": "Gracias | Apturio",
+      "description": "Gracias por programar tu llamada de estrategia. Esperamos hablar contigo pronto."
+    }
+  },
+  "blog": {
+    "eyebrow": "Apturio Journal",
+    "indexTitle": "Apuntes para construir tu máquina de ventas.",
+    "indexSubtitle": "Playbooks tácticos, desgloses de automatización con IA e historias reales de fundadores y agencias que escalan con Apturio.",
+    "all": "Todo",
+    "featured": "Destacado",
+    "readPlaybook": "Leer el playbook",
+    "latest": "Últimos artículos",
+    "latestSub": "Recién salido del equipo de ingeniería y growth.",
+    "browseAll": "Ver todo",
+    "loadMore": "Cargar más artículos",
+    "minRead": "{count} min de lectura",
+    "readArticle": "Leer artículo",
+    "editorsPick": "Selección del editor",
+    "category": "Categoría",
+    "categoryCount": "{count, plural, one {# artículo} other {# artículos}}",
+    "allInCategory": "Todo en esta categoría",
+    "categoriesHeading": "Categorías",
+    "onThisPage": "En esta página",
+    "share": "Compartir",
+    "keepReading": "Sigue leyendo",
+    "allArticles": "Todos los artículos",
+    "article": "Artículo",
+    "authors": "Autores",
+    "articlesBy": "Artículos de {name}",
+    "follow": "Seguir",
+    "statArticles": "Artículos",
+    "statCategories": "Categorías",
+    "statReads": "Lecturas",
+    "writesAbout": "Escribe sobre",
+    "croBonus": "Bono de $2,000 Incluido",
+    "croName": "AI CRM Sales Engine",
+    "croSub": "La base hecha-para-ti para ventas automatizadas.",
+    "croPerMonth": "/mes",
+    "croFeatureBot": "Bot Conversacional IA",
+    "croFeatureQualify": "Calificación de Leads IA",
+    "croFeatureBooking": "Agendamiento Automático",
+    "croFeatureSetup": "Setup de $2,000 GRATIS",
+    "croClaim": "Reclamar mi Engine",
+    "croFine": "En vivo en 30 días · Cancela cuando quieras",
+    "newsTitle": "The Weekly Engine",
+    "newsBody": "Un playbook táctico en tu correo cada martes. Sin relleno.",
+    "newsPlaceholder": "you@company.com",
+    "newsSubscribe": "Suscribirme gratis",
+    "blog": "Blog",
+    "newsSuccess": "¡Listo! Te has suscrito.",
+    "newsError": "Ingresa un email válido."
+  }
+}

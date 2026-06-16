@@ -1,0 +1,522 @@
+{
+  "nav": {
+    "problems": "Your Problems",
+    "benefits": "Benefits",
+    "pricing": "Pricing",
+    "faq": "FAQ",
+    "getStarted": "Get Started",
+    "language": "Language"
+  },
+  "hero": {
+    "badge": "Done-for-You Setup Valued at $2,000",
+    "title": "Your AI-Powered Sales Machine, Expertly Built and Ready to Run.",
+    "description": "For B2B Founders and Agencies: Get a fully Done-for-You AI CRM setup valued at $2,000, specifically engineered to qualify leads, manage your pipeline, and scale without hiring more staff.",
+    "ctaPrimary": "Get Started",
+    "ctaSecondary": "Free Strategy Call"
+  },
+  "problem": {
+    "title": "Why You Need Apturio?",
+    "subtitle": "Stop the invisible leak killing your ROI.",
+    "items": [
+      {
+        "title": "Stagnant Growth",
+        "description": "Your revenue has plateaued because your current systems can't scale with your ambition."
+      },
+      {
+        "title": "Lead Decay",
+        "description": "Your team cannot respond in <5 minutes, so leads die. Our AI qualifies and books appointments 24/7."
+      },
+      {
+        "title": "Tech Chaos",
+        "description": "Stop paying for disconnected tools. Apturio is the unified 'Cerebro' that connects everything."
+      },
+      {
+        "title": "AI Gap",
+        "description": "Competitors are leveraging AI to outpace you while you rely on manual, outdated workflows."
+      },
+      {
+        "title": "The Setup Trap",
+        "description": "Stop buying software you never configure. We provide full 'turnkey' engineering setup for you."
+      },
+      {
+        "title": "No Real-Time Data",
+        "description": "Making decisions blindly without actionable, real-time insights on your sales pipeline."
+      }
+    ]
+  },
+  "benefits": {
+    "title": "Everything you need to automate your growth.",
+    "subtitle": "Stop managing tools. Start managing results with our integrated AI ecosystem.",
+    "items": [
+      {
+        "title": "24/7 AI Salesman",
+        "description": "Never miss a lead with an intelligent agent that responds instantly."
+      },
+      {
+        "title": "Unified CRM",
+        "description": "All your customer interactions and data in one centralized hub."
+      },
+      {
+        "title": "Automated Booking",
+        "description": "Fill your calendar effortlessly without manual back-and-forth."
+      },
+      {
+        "title": "Expert Engineering Support",
+        "description": "Our team handles the heavy lifting so you can focus on selling."
+      }
+    ]
+  },
+  "pricing": {
+    "title": "Simple, transparent pricing",
+    "subtitle": "Choose the perfect plan for your team's needs. No hidden fees, cancel at any time.",
+    "perMonth": " / month",
+    "bonus": "$2,000 BONUS INCLUDED",
+    "guarantee": "Cancel at any time.",
+    "plans": {
+      "foundation": {
+        "name": "CRM Sales Foundation",
+        "description": "Essential tools for managing leads and sales.",
+        "features": [
+          "Self-Service Setup",
+          "Core CRM Features",
+          "Lead Management",
+          "Basic Automations",
+          "Email & SMS Integration",
+          "Standard Support"
+        ],
+        "cta": "Get Started",
+        "subText": "*Implementation support available as a separate add-on."
+      },
+      "engine": {
+        "name": "AI CRM Sales Engine",
+        "description": "The perfect foundation for automated sales.",
+        "features": [
+          "All Foundation features",
+          "AI Conversational Bot",
+          "AI Lead Qualification",
+          "Automated Appointment Booking",
+          "FREE $2,000 Setup"
+        ],
+        "cta": "Claim My Engine + $2,000 Bonus"
+      },
+      "growth": {
+        "name": "AI CRM Growth Machine",
+        "description": "For companies requiring complex architectures and full-scale engineering at zero upfront cost.",
+        "features": [
+          "Everything in Sales Engine + $2,000 Implementation Waived",
+          "Advanced Workflow Automations",
+          "Website/Funnel Builder",
+          "Reputation Management",
+          "Elite Engineering Concierge"
+        ],
+        "cta": "Get My Ready-To-Run Machine"
+      }
+    },
+    "implementation": {
+      "title": "Precision AI Implementation",
+      "subtitle": "Custom-built systems designed for reliability and scale.",
+      "body1": "We don't believe in generic setups. Your Elite plan secures a 20-Hour Dedicated Engineering Sprint where our team builds your specific business logic from the ground up.",
+      "body2": "Whether you are automating a single department or an entire operation, we handle the heavy lifting. Our engineers focus on creating a seamless, turnkey solution so you can stop worrying about the tech and start focusing on your growth.",
+      "pills": [
+        "Priority Engineering Queue (Elite Clients First)",
+        "20-Hour Dedicated Build (Custom Architecture)",
+        "Full Turnkey Setup ($2,000 Setup Fee - WAIVED)"
+      ],
+      "note": "*Projects are scheduled in the order assets are received. We only accept 5 Elite implementations per month to ensure focused engineering quality."
+    },
+    "enterprise": {
+      "title": "Custom Enterprise Ecosystems",
+      "body": "Bespoke AI architecture and dedicated infrastructure for global organizations. Built to scale without limits.",
+      "cta": "Consult with our Enterprise Architects"
+    },
+    "table": {
+      "title": "Detailed Plan Comparison",
+      "cta": "Compare All Features",
+      "scrollHint": "Slide to compare",
+      "columnFeature": "Feature",
+      "waived": "WAIVED",
+      "categories": {
+        "strategy": "Strategy",
+        "crm": "CRM",
+        "calendars": "Calendars & Booking",
+        "pipelines": "Pipelines & Opportunities",
+        "automation": "Automation",
+        "marketing": "Marketing",
+        "sites": "Sites",
+        "affiliate": "Affiliate Marketing",
+        "payments": "Payments",
+        "documents": "Documents & Contracts",
+        "ai": "AI",
+        "reputation": "Reputation",
+        "analytics": "Analytics & Reporting",
+        "advanced": "Advanced",
+        "support": "Support"
+      },
+      "features": {
+        "strategy": {
+          "lead": "Lead Management",
+          "revenue": "Revenue Generation",
+          "scaling": "Business Scaling",
+          "goals": "Core Goals",
+          "positioning": "Market Positioning",
+          "teamSize": "Ideal Team Size",
+          "structure": "Team Structure",
+          "seats": "Included Seats",
+          "extraSeat": "Extra Seat Price"
+        },
+        "crm": {
+          "contacts": "Contact Manager",
+          "fields": "Custom Fields & Tagging",
+          "lists": "Smart Contact Lists",
+          "feed": "Unified Conversation Feed",
+          "multi": "Multi-channel Messaging",
+          "whatsapp": "WhatsApp Connector",
+          "missed": "Missed Call Text-back",
+          "phone": "Phone / SMS System",
+          "chat": "Internal Team Chat"
+        },
+        "calendars": {
+          "unlimited": "Unlimited Calendars",
+          "types": "Multiple Calendar Types",
+          "menu": "Service Menu Calendars",
+          "rental": "Rental Listing Calendar",
+          "advanced": "Advanced Scheduling Options",
+          "booking": "Self-service Booking Site",
+          "payments": "Upfront Appointment Payments",
+          "synching": "Calendar Syncing (Google/Outlook)",
+          "video": "Video Conferencing Links"
+        },
+        "automation": {
+          "triggers": "Platform Triggers & Actions",
+          "visual": "Visual Workflow Screen",
+          "webhooks": "Allow Webhooks",
+          "thirdParty": "1,000+ 3rd-party Integrations",
+          "premium": "Premium Workflows"
+        },
+        "pipelines": {
+          "unlimited": "Unlimited Pipelines",
+          "custom": "Customized Pipelines",
+          "nurturing": "Lead Nurturing Automation"
+        },
+        "affiliate": {
+          "campaigns": "Affiliate Campaigns",
+          "integrations": "Funnel & Store Integration",
+          "portal": "Affiliate Management Portal",
+          "commissions": "Multi-level Commissions",
+          "payout": "Automatic PayPal Payouts",
+          "stats": "Affiliate Performance Stats"
+        },
+        "payments": {
+          "integrations": "Stripe/PayPal/Authorize.net",
+          "invoicing": "Invoicing Tool",
+          "estimates": "Proposals & Estimates",
+          "links": "Payment Link Generator",
+          "products": "Product & Service Listings",
+          "coupons": "Coupon & Giftcard Generator"
+        },
+        "documents": {
+          "generate": "Generate Digital Documents",
+          "sign": "Digital Sign Capture",
+          "send": "Send via Email/Link"
+        },
+        "reputation": {
+          "requests": "Auto Review Requester",
+          "dashboard": "Review Score Dashboard",
+          "management": "GMB & FB Review Management",
+          "widgets": "Website Review Widgets",
+          "video": "Video Testimonials"
+        },
+        "analytics": {
+          "dashboard": "Customizable Dashboard",
+          "adData": "Google & FB Ad Data",
+          "reports": "Detailed Attribution Reports",
+          "call": "Call & Agent Reports"
+        },
+        "advanced": {
+          "api": "Inbound API Access",
+          "domains": "Domains Manager",
+          "redirect": "URL Redirects",
+          "tracking": "External Tracking Support",
+          "apps": "Desktop & Mobile Apps"
+        },
+        "marketing": {
+          "emails": "Email Campaigns",
+          "creator": "Drag-and-drop Email Creator",
+          "html": "HTML Email Creator",
+          "templates": "Email Template Library",
+          "advanced": "Advanced Campaign Features",
+          "subscribe": "Auto Subscribe/Unsubscribe",
+          "triggerLinks": "Trigger Links",
+          "social": "Social Media Planner",
+          "prospecting": "Prospecting Tool",
+          "adManager": "Ad Manager"
+        },
+        "sites": {
+          "builder": "Website Builder & Templates",
+          "funnels": "Landing Pages & Funnels",
+          "blogs": "Blog Builder & Templates",
+          "editing": "Drag-and-drop Editing",
+          "forms": "Forms, Surveys & Quizzes",
+          "chat": "AI Chat Widget",
+          "wordpress": "WordPress Integration",
+          "stores": "E-commerce Stores"
+        },
+        "ai": {
+          "conv": "AI Conversational Agents",
+          "voice": "AI Voice Agents",
+          "studio": "Agent Studio",
+          "content": "AI Content Creator",
+          "knowledge": "AI Knowledge Base",
+          "integration": "Workflow & Calendar Integration",
+          "channels": "Multi-channel AI Support",
+          "employee": "Unlimited AI Employee",
+          "credits": "Included AI Credits"
+        },
+        "support": {
+          "self": "Self-onboarding",
+          "guided": "Guided Onboarding",
+          "strategy": "Strategy Sessions",
+          "human": "Human Support (Business Hours)",
+          "site": "Support Site (EN/ES)",
+          "bot": "Support Chatbot"
+        }
+      }
+    }
+  },
+  "trustedBy": {
+    "title": "Trusted by innovative companies worldwide",
+    "countries": {
+      "ca": "Canada",
+      "ar": "Argentina",
+      "mx": "Mexico",
+      "es": "Spain",
+      "ve": "Venezuela"
+    },
+    "globalOperations": "GLOBAL OPERATIONS"
+  },
+  "testimonials": {
+    "title": "Don't just take our word for it",
+    "subtitle": "Join the growing number of businesses that have transformed their sales process with Apturio.",
+    "items": [
+      {
+        "name": "Samuel Flores",
+        "text": "Excellent platform, service and team."
+      },
+      {
+        "name": "Yus Muro",
+        "text": "My experience with Apturio has been very personal and positive... wholeheartedly recommend them for seeking genuine and reliable support in medical marketing."
+      },
+      {
+        "name": "Bella Bellarda",
+        "text": "Apturio helped consolidate my entire database of over 5,000 contacts, and we'll be working with them on email marketing and much more. They're not only streamlining my processes but also giving me greater ease and insight into my business as an influencer. Thank you so much."
+      },
+      {
+        "name": "En Otro Idioma",
+        "text": "I want to thank Apturio for allowing us to host our website with them. The website will be going live very soon, and we're super excited about how it's looking so far. Thank you for all your support and attention—we truly appreciate it."
+      },
+      {
+        "name": "Venxel Team",
+        "text": "Apturio is a key strategic partner for Venxel. They've played a crucial role in strengthening our entire ecosystem — from CRM and automation to intelligent chatbot solutions that help our clients capture, qualify, and convert leads more efficiently. Beyond that, they also provide robust infrastructure across email marketing, hosting, databases, and many other essential systems that support both our internal operations and our clients' growth. Their technology allows us to go far beyond traditional marketing and deliver real, measurable systems. It's not just about generating leads — it's about managing, nurturing, and maximizing every opportunity, and Apturio makes that possible. Honestly, they are one of the best strategic partners Venxel could have. We truly see this as a long-term relationship that will continue to grow and create value on both sides. We're extremely grateful for their support and excited for everything we'll continue building together."
+      }
+    ]
+  },
+  "faq": {
+    "title": "FAQ",
+    "items": [
+      {
+        "q": "Do I need technical skills?",
+        "a": "Not at all. We handle the entire engineering setup, AI training, and CRM configuration for you. You just log in and sell."
+      },
+      {
+        "q": "Are there any long-term contracts?",
+        "a": "No. We believe in results, not golden handcuffs. You can cancel your monthly subscription at any time."
+      },
+      {
+        "q": "How fast can I be up and running?",
+        "a": "Our 'Ready-to-Sell' Sprint is designed to have you live in 30 days. This timeline is a high-intensity collaboration where our engineers execute your turnkey setup within an allocated 20-hour window, provided all client assets and accesses are delivered on time."
+      },
+      {
+        "q": "Does the AI sound like a robot?",
+        "a": "No. We use advanced NLP (Natural Language Processing) to ensure your AI assistant sounds human, professional, and stays on-brand."
+      },
+      {
+        "q": "Can I integrate my existing tools?",
+        "a": "Yes. Apturio is built to be the unified brain of your operation. We connect with your existing marketing stack via open APIs."
+      },
+      {
+        "q": "What happens after the setup is done? Will I be on my own?",
+        "a": "Absolutely not. You get priority support and continuous AI updates to ensure your engine never stops evolving. If you need additional custom implementations or ongoing strategy support, we offer flexible hourly packages tailored to your growth. You'll never be alone."
+      },
+      {
+        "q": "Are there any Pay-Per-Use fees?",
+        "a": "Yes, certain advanced features like AI usage, premium workflow actions, and telecom services (SMS, calls, emails) are billed on a pay-per-use basis directly through the platform. These rates are subject to change. Please review the [/pay-per-use]"
+      },
+      {
+        "q": "Do you offer Add-Ons?",
+        "a": "Yes! While our core plans give you everything you need to run your sales machine, we offer optional add-ons like dedicated Phone Systems, advanced Prospecting Tools, automated Ad Managers, and WordPress hosting. These are priced separately and subject to change. Please review the [/add-ons]"
+      }
+    ]
+  },
+  "strategy": {
+    "title": "Custom AI Roadmap Session",
+    "subtitle": "Select a time below to schedule your strategy call with our engineering team.",
+    "whatsapp": "Questions? Chat with us"
+  },
+  "thankyou": {
+    "title": "You're All Set!",
+    "subtitle": "Your strategy call has been successfully booked. We've sent a confirmation email with all the details.",
+    "nextSteps": "Next Steps:",
+    "steps": [
+      "Check your inbox for the calendar invite and meeting link.",
+      "Prepare any specific questions about your current sales process.",
+      "Make sure you're in a quiet place for our call."
+    ],
+    "button": "Return to Homepage"
+  },
+  "footer": {
+    "advantageTitle": "The $2,000 Implementation Advantage.",
+    "advantageBody": "While every other CRM sells you a subscription and wishes you luck, Apturio builds it for you. We include 20 hours of senior engineering setup for FREE so you can focus on scaling, not on configuring software.",
+    "advantageGoal": "Our goal is to have you live in 30 days. This sprint is a high-intensity collaboration; once your assets are provided, our engineers execute your turnkey setup within the allocated 20-hour window.",
+    "advantageSafety": "Setup subject to client cooperation and asset delivery within the 20-hour engineering limit.",
+    "bonus": "$2,000 BONUS INCLUDED",
+    "cancelAnytime": "Cancel anytime.",
+    "payPerUse": "Pay-Per-Use Pricing",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "rights": "All rights reserved.",
+    "copyright": "Apturio AI Engineering"
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: April 21, 2026",
+    "content": [
+      {
+        "title": "1. Information We Collect",
+        "text": "We collect information you provide directly to us, such as when you create an account, subscribe to our newsletter, or contact us for support. This may include your name, email address, phone number, and any other information you choose to provide."
+      },
+      {
+        "title": "2. How We Use Your Information",
+        "text": "We use the information we collect to provide, maintain, and improve our services, to communicate with you, and to develop new products and services."
+      },
+      {
+        "title": "3. Information Sharing",
+        "text": "We do not share your personal information with third parties except as described in this policy, such as with your consent or to comply with legal obligations."
+      },
+      {
+        "title": "4. Data Security",
+        "text": "We take reasonable measures to help protect information about you from loss, theft, misuse and unauthorized access, disclosure, alteration and destruction."
+      }
+    ]
+  },
+  "terms": {
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: April 21, 2026",
+    "content": [
+      {
+        "title": "1. Acceptance of Terms",
+        "text": "By accessing or using our services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services."
+      },
+      {
+        "title": "2. Description of Service",
+        "text": "Apturio provides AI-powered sales automation and CRM implementation services. We reserve the right to modify or discontinue the service at any time."
+      },
+      {
+        "title": "3. User Responsibilities",
+        "text": "You are responsible for maintaining the confidentiality of your account information and for all activities that occur under your account."
+      },
+      {
+        "title": "4. Limitation of Liability",
+        "text": "Apturio shall not be liable for any indirect, incidental, special, consequential or punitive damages resulting from your use of the service."
+      }
+    ]
+  },
+  "checkout": {
+    "title": "Finalize your order",
+    "subtitle": "Enter your details to activate your {planName} subscription.",
+    "summary": "Order Summary",
+    "billedMonthly": "Billed monthly",
+    "subtotal": "Subtotal",
+    "implementationFee": "Implementation Fee",
+    "totalDue": "Total Due Today",
+    "included": "What's Included:",
+    "waived": "WAIVED ($2,000 Value)",
+    "back": "Back to pricing",
+    "secure": "Secure 256-bit SSL encryption",
+    "comingSoon": "Checkout Coming Soon",
+    "provideLink": "Please provide the CRM checkout link for this plan."
+  },
+  "seo": {
+    "home": {
+      "title": "Apturio — Your AI-Powered Sales Machine",
+      "description": "Apturio is your AI-Powered Sales Machine, expertly built and ready to run. Get a fully Done-for-You AI CRM setup valued at $2,000."
+    },
+    "strategy": {
+      "title": "Custom AI Roadmap Session | Apturio",
+      "description": "Schedule your free custom AI roadmap session with our engineering team."
+    },
+    "checkout": {
+      "title": "Secure Checkout | Apturio",
+      "description": "Complete your secure checkout to get started with your Apturio AI CRM."
+    },
+    "privacy": {
+      "title": "Privacy Policy | Apturio",
+      "description": "Read our privacy policy to understand how we collect and protect your data."
+    },
+    "terms": {
+      "title": "Terms of Service | Apturio",
+      "description": "Read our terms of service to understand the rules and guidelines for using Apturio."
+    },
+    "thankyou": {
+      "title": "Thank You | Apturio",
+      "description": "Thank you for scheduling your strategy call. We look forward to speaking with you."
+    }
+  },
+  "blog": {
+    "eyebrow": "Apturio Journal",
+    "indexTitle": "Field notes on building your sales machine.",
+    "indexSubtitle": "Tactical playbooks, AI automation breakdowns, and real revenue stories from the founders and agencies scaling with Apturio.",
+    "all": "All",
+    "featured": "Featured",
+    "readPlaybook": "Read the playbook",
+    "latest": "Latest articles",
+    "latestSub": "Fresh from the engineering and growth team.",
+    "browseAll": "Browse all",
+    "loadMore": "Load more articles",
+    "minRead": "{count} min read",
+    "readArticle": "Read article",
+    "editorsPick": "Editor's pick",
+    "category": "Category",
+    "categoryCount": "{count, plural, one {# article} other {# articles}}",
+    "allInCategory": "All in this category",
+    "categoriesHeading": "Categories",
+    "onThisPage": "On this page",
+    "share": "Share",
+    "keepReading": "Keep reading",
+    "allArticles": "All articles",
+    "article": "Article",
+    "authors": "Authors",
+    "articlesBy": "Articles by {name}",
+    "follow": "Follow",
+    "statArticles": "Articles",
+    "statCategories": "Categories",
+    "statReads": "Reads",
+    "writesAbout": "Writes about",
+    "croBonus": "$2,000 Bonus Included",
+    "croName": "AI CRM Sales Engine",
+    "croSub": "The done-for-you foundation for automated sales.",
+    "croPerMonth": "/mo",
+    "croFeatureBot": "AI Conversational Bot",
+    "croFeatureQualify": "AI Lead Qualification",
+    "croFeatureBooking": "Automated Booking",
+    "croFeatureSetup": "FREE $2,000 Setup",
+    "croClaim": "Claim My Engine",
+    "croFine": "Live in 30 days · Cancel anytime",
+    "newsTitle": "The Weekly Engine",
+    "newsBody": "One tactical playbook in your inbox every Tuesday. No fluff.",
+    "newsPlaceholder": "you@company.com",
+    "newsSubscribe": "Subscribe free",
+    "blog": "Blog",
+    "newsSuccess": "Thanks — you are subscribed.",
+    "newsError": "Please enter a valid email."
+  }
+}
