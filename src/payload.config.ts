@@ -8,6 +8,7 @@ import { s3Storage } from '@payloadcms/storage-s3'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
+import { resendAdapter } from '@payloadcms/email-resend'
 import type { Plugin } from 'payload'
 import sharp from 'sharp'
 
@@ -94,6 +95,9 @@ const corePlugins: Plugin[] = [
 ]
 
 export default buildConfig({
+  // Public origin of the app. Drives CORS/CSRF allowlist + email links. Falls back
+  // to localhost in dev. Set NEXT_PUBLIC_SERVER_URL in prod (https://apturio.com).
+  serverURL: SERVER_URL,
   admin: {
     user: Users.slug,
     importMap: {
@@ -114,6 +118,16 @@ export default buildConfig({
       ],
     },
   },
+  // Resend email adapter. Used for password-reset, form-submission emails, etc.
+  // Requires RESEND_API_KEY + a verified sender domain in the Resend dashboard.
+  // Falls back to undefined (Payload logs emails to console) when the key is absent.
+  email: process.env.RESEND_API_KEY
+    ? resendAdapter({
+        defaultFromName: process.env.RESEND_FROM_NAME || 'Apturio',
+        defaultFromAddress: process.env.RESEND_FROM_ADDRESS || 'noreply@aprendoseo.com',
+        apiKey: process.env.RESEND_API_KEY,
+      })
+    : undefined,
   collections: [Posts, Pages, Categories, Authors, Faqs, Media, Users],
   localization: {
     locales: [

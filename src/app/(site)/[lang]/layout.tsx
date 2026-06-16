@@ -21,6 +21,11 @@ export function generateStaticParams() {
   return routing.locales.map((lang) => ({ lang }))
 }
 
+// Only `en`/`es` are valid locales. Reject any other `[lang]` value (e.g.
+// `/favicon.ico`, `/.well-known/...`) with a 404 BEFORE page code/generateMetadata
+// runs — otherwise the junk string reaches Payload as a locale and throws an enum error.
+export const dynamicParams = false
+
 export default async function LocaleLayout({
   children,
   params,

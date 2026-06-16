@@ -37,3 +37,6 @@ payload-generated-schema.ts
 
 # TS build cache
 *.tsbuildinfo
+
+# Local admin recovery script (not versioned)
+scripts/reset-admin.mjs
