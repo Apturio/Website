@@ -14,7 +14,8 @@
     "seed": "payload run src/seed.ts",
     "generate:types": "payload generate:types",
     "generate:importmap": "payload generate:importmap",
-    "validate:schema": "node scripts/validate-jsonld.mjs"
+    "validate:schema": "node scripts/validate-jsonld.mjs",
+    "test:icons": "node scripts/test-icon-parity.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
