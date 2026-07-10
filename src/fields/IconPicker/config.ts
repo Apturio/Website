@@ -23,7 +23,10 @@ export function iconPickerField(overrides: Partial<Field> = {}): Field {
     admin: {
       ...baseAdmin,
       ...overrideAdmin,
-      components: baseAdmin.components,
+      components: {
+        ...overrideAdmin?.components,
+        Field: baseAdmin.components.Field, // only force the Field slot
+      },
     },
     ...restOverrides,
   } as Field
