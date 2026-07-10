@@ -1,7 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { useField, Popup } from '@payloadcms/ui'
+import { useField, Popup, FieldError, FieldDescription } from '@payloadcms/ui'
 import type { TextFieldClientProps } from 'payload'
 import { ChevronDown, X } from 'lucide-react'
 import { iconList, getIcon } from './icons'
@@ -14,12 +14,18 @@ import './index.scss'
  * already stores today — this is purely an admin UI layer (type stays 'text').
  */
 export function IconPickerField(props: TextFieldClientProps) {
-  const { value, setValue } = useField<string>({ path: props.path })
+  const { value, setValue, showError, errorMessage, disabled } = useField<string>({
+    path: props.path,
+  })
   // Required must come from the field config (not useField's return, which
   // has no `required` key, and not inferred from the field name).
   const required = props.field?.required ?? false
   const label =
     typeof props.field?.label === 'string' ? props.field.label : undefined
+  // `disabled` (from useField) covers form-level processing/submission state;
+  // `props.readOnly` covers field-level admin.readOnly / access-control locking.
+  // Both must block interaction — a native Payload field respects both.
+  const isReadOnly = disabled || Boolean(props.readOnly)
 
   const [query, setQuery] = useState('')
 
@@ -30,7 +36,7 @@ export function IconPickerField(props: TextFieldClientProps) {
   }, [query])
 
   const Selected = value ? getIcon(value) : undefined
-  const showClear = Boolean(value) && !required
+  const showClear = Boolean(value) && !required && !isReadOnly
 
   return (
     <div className="field-type icon-picker">
@@ -38,8 +44,13 @@ export function IconPickerField(props: TextFieldClientProps) {
       <Popup
         size="medium"
         horizontalAlign="left"
+        disabled={isReadOnly}
         button={
-          <button type="button" className="icon-picker__trigger">
+          <button
+            type="button"
+            className="icon-picker__trigger"
+            disabled={isReadOnly}
+          >
             {Selected ? (
               <>
                 <Selected size={20} />
@@ -112,6 +123,8 @@ export function IconPickerField(props: TextFieldClientProps) {
           </div>
         )}
       />
+      <FieldError path={props.path} showError={showError} message={errorMessage} />
+      <FieldDescription path={props.path} description={props.field?.admin?.description} />
     </div>
   )
 }

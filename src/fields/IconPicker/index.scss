@@ -3,7 +3,7 @@
 
   &__label-top {
     display: block;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 500;
     margin-bottom: 4px;
   }
@@ -13,7 +13,7 @@
     align-items: center;
     gap: 8px;
     width: 100%;
-    padding: 8px 12px;
+    padding: 8px 16px;
     background: var(--theme-input-bg);
     border: 1px solid var(--theme-elevation-150);
     border-radius: 4px;
@@ -21,6 +21,11 @@
     line-height: 1.5;
     cursor: pointer;
     text-align: left;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
   }
 
   &__trigger-name {
@@ -60,7 +65,7 @@
 
   &__search {
     width: 100%;
-    padding: 8px 12px;
+    padding: 8px 16px;
     background: var(--theme-input-bg);
     border: 1px solid var(--theme-elevation-150);
     border-radius: 4px;
