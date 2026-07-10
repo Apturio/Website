@@ -34,7 +34,10 @@ export function toKebabName(pascal: string): string {
 }
 
 const PASCAL_EXPORT_RE = /^[A-Z][A-Za-z0-9]*$/
-const EXCLUDED_EXPORTS = new Set(['createLucideIcon', 'icons', 'default'])
+// Note: only 'createLucideIcon' is actually reachable here — PASCAL_EXPORT_RE
+// (checked first, above) already rejects lowercase-leading names like
+// 'icons' and 'default' before this set is ever consulted.
+const EXCLUDED_EXPORTS = new Set(['createLucideIcon'])
 
 function isRenderableComponent(value: unknown): value is ComponentType<LucideProps> {
   return typeof value === 'object' || typeof value === 'function'
