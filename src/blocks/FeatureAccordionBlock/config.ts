@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { iconPickerField } from '@/fields/IconPicker/config'
+
 /** FeatureAccordionBlock — media + exclusive accordion list (.acc-layout / .acc). */
 export const FeatureAccordionBlock: Block = {
   slug: 'featureAccordion',
@@ -15,7 +17,7 @@ export const FeatureAccordionBlock: Block = {
       type: 'array',
       labels: { singular: 'Item', plural: 'Items' },
       fields: [
-        { name: 'icon', type: 'text', admin: { description: 'Lucide icon name.' } },
+        iconPickerField({ name: 'icon', admin: { description: 'Icon.' } }),
         { name: 'title', type: 'text', required: true },
         { name: 'body', type: 'textarea', required: true },
       ],

@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { iconPickerField } from '@/fields/IconPicker/config'
+
 /** TabsBlock — use-case tabs with split panel (.tabs / .tab-nav / .tab-panel). */
 export const TabsBlock: Block = {
   slug: 'tabs',
@@ -13,7 +15,7 @@ export const TabsBlock: Block = {
       type: 'array',
       labels: { singular: 'Tab', plural: 'Tabs' },
       fields: [
-        { name: 'icon', type: 'text', admin: { description: 'Lucide icon name for the tab button.' } },
+        iconPickerField({ name: 'icon', admin: { description: 'Icon for the tab button.' } }),
         { name: 'label', type: 'text', required: true },
         { name: 'title', type: 'text', required: true },
         { name: 'description', type: 'textarea', required: true },

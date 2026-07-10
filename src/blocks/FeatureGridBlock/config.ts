@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { iconPickerField } from '@/fields/IconPicker/config'
+
 /** FeatureGridBlock — 3-up feature cards (.feat-grid / .feat-card). */
 export const FeatureGridBlock: Block = {
   slug: 'featureGrid',
@@ -20,7 +22,7 @@ export const FeatureGridBlock: Block = {
       type: 'array',
       labels: { singular: 'Card', plural: 'Cards' },
       fields: [
-        { name: 'icon', type: 'text', admin: { description: 'Lucide icon name.' } },
+        iconPickerField({ name: 'icon', admin: { description: 'Icon.' } }),
         { name: 'title', type: 'text', required: true },
         { name: 'description', type: 'textarea', required: true },
       ],
