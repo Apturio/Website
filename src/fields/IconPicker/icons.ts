@@ -27,6 +27,7 @@ export type IconEntry = {
  */
 export function toKebabName(pascal: string): string {
   return pascal
+    .replace(/([A-Z]+)([A-Z][a-z])/g, '$1-$2') // acronym run followed by new word
     .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
     .replace(/([a-zA-Z])([0-9])/g, '$1-$2')
     .toLowerCase()
@@ -49,8 +50,22 @@ function deriveIconList(): IconEntry[] {
     if (pascal.startsWith('Lucide')) continue
     if (!isRenderableComponent(value)) continue
 
+    const name = toKebabName(pascal)
+    if (entries.some((e) => e.name === name)) {
+      // Defensive guard: a future lucide-react release could introduce a
+      // genuinely distinct icon whose PascalCase name collapses to the same
+      // kebab string as an existing entry. Fail loudly in dev instead of
+      // silently rendering duplicate/mismatched grid cells.
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn(
+          `[IconPicker] Skipping duplicate icon name "${name}" derived from export "${pascal}".`,
+        )
+      }
+      continue
+    }
+
     entries.push({
-      name: toKebabName(pascal),
+      name,
       pascal,
       Component: value as ComponentType<LucideProps>,
     })
