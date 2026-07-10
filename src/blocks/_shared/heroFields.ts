@@ -1,6 +1,20 @@
-import type { Field } from 'payload'
+import type { Field, TextFieldValidation } from 'payload'
 
 import { iconPickerField } from '@/fields/IconPicker/config'
+
+/**
+ * Rejects href values that could execute as script when rendered directly as
+ * an anchor `href` (e.g. `javascript:`/`data:` URIs). Allows relative paths,
+ * `#anchor` links, `mailto:`, and http(s) URLs. Empty/undefined values pass,
+ * since these CTA href fields are optional.
+ */
+const validateHref: TextFieldValidation = (value) => {
+  if (!value) return true
+  return (
+    /^(https?:\/\/|\/|#|mailto:)/.test(value) ||
+    'Must be a relative path, #anchor, mailto:, or http(s) URL.'
+  )
+}
 
 /**
  * Shared field set for the four service-page hero variants. The headline is
@@ -37,10 +51,10 @@ export const heroFields: Field[] = [
   },
   { name: 'subtitle', type: 'textarea' },
   { name: 'ctaPrimaryLabel', type: 'text' },
-  { name: 'ctaPrimaryHref', type: 'text' },
+  { name: 'ctaPrimaryHref', type: 'text', validate: validateHref },
   iconPickerField({ name: 'ctaSecondaryIcon', admin: { description: 'Optional icon for the secondary CTA.' } }),
   { name: 'ctaSecondaryLabel', type: 'text' },
-  { name: 'ctaSecondaryHref', type: 'text' },
+  { name: 'ctaSecondaryHref', type: 'text', validate: validateHref },
   {
     name: 'micro',
     type: 'array',
