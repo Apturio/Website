@@ -1,7 +1,5 @@
 import type { CollectionConfig } from 'payload'
 
-import { iconPickerField } from '@/fields/IconPicker/config'
-
 export const Faqs: CollectionConfig = {
   slug: 'faqs',
   access: {
@@ -36,10 +34,5 @@ export const Faqs: CollectionConfig = {
         description: 'Display order (ascending).',
       },
     },
-    // TEMPORARY: remove in Plan 03 Task 3
-    iconPickerField({
-      name: 'testIcon',
-      label: 'Test Icon Picker (temporary — Phase 17 verification)',
-    }),
   ],
 }
