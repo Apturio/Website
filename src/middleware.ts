@@ -11,7 +11,7 @@ export const config = {
   //    a 307 locale-redirect from this middleware)
   //  - Static files (anything with a dot)
   matcher: [
-    // Root — let next-intl redirect `/` -> `/en` (307).
+    // Root — served directly as `en` (default locale, unprefixed).
     '/',
     '/((?!admin|api|_next|_vercel|pay-per-use|add-ons|strategy-call|privacy-policy|terms-of-service|thank-you|checkout|demo-spanish|.*\\..*).*)',
   ],
