@@ -1,4 +1,4 @@
-import type { Field } from 'payload'
+import type { Field, TextField } from 'payload'
 
 /**
  * Field factory for the Icon Picker admin field.
@@ -8,7 +8,9 @@ import type { Field } from 'payload'
  * supply their own `name`, `required`, `localized`, etc. via `overrides` —
  * this factory intentionally does not set a default `name`.
  */
-export function iconPickerField(overrides: Partial<Field> = {}): Field {
+export function iconPickerField(
+  overrides: Partial<Omit<TextField, 'type'>> = {},
+): Field {
   const baseAdmin = {
     description: 'Lucide icon name (e.g. calendar-check).',
     components: {
