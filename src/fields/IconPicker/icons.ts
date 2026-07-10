@@ -39,8 +39,16 @@ const PASCAL_EXPORT_RE = /^[A-Z][A-Za-z0-9]*$/
 // 'icons' and 'default' before this set is ever consulted.
 const EXCLUDED_EXPORTS = new Set(['createLucideIcon'])
 
+const REACT_FORWARD_REF_TYPE = Symbol.for('react.forward_ref')
+
 function isRenderableComponent(value: unknown): value is ComponentType<LucideProps> {
-  return typeof value === 'object' || typeof value === 'function'
+  if (typeof value === 'function') return true
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    '$$typeof' in value &&
+    (value as { $$typeof?: symbol }).$$typeof === REACT_FORWARD_REF_TYPE
+  )
 }
 
 function deriveIconList(): IconEntry[] {
