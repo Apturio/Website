@@ -9,6 +9,10 @@ import { getIcon } from '@/fields/IconPicker/icons'
  * Falls back to a check icon when the name is missing or doesn't resolve.
  */
 export function Icon({ name, ...props }: { name?: string | null } & LucideProps) {
-  const Cmp = (name && getIcon(name)) || Check
+  const resolved = name ? getIcon(name) : undefined
+  if (name && !resolved && process.env.NODE_ENV !== 'production') {
+    console.warn(`[Icon] Unresolved icon name "${name}", falling back to Check.`)
+  }
+  const Cmp = resolved || Check
   return <Cmp {...props} />
 }
