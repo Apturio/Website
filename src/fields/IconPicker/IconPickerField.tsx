@@ -55,11 +55,19 @@ export function IconPickerField(props: TextFieldClientProps) {
             {showClear && (
               <span
                 role="button"
+                tabIndex={0}
                 aria-label="Clear icon"
                 className="icon-picker__clear"
                 onClick={(e) => {
                   e.stopPropagation()
                   setValue('')
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setValue('')
+                  }
                 }}
               >
                 <X size={14} />
