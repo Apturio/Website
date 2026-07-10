@@ -45,6 +45,10 @@ export function IconPickerField(props: TextFieldClientProps) {
                 <Selected size={20} />
                 <span className="icon-picker__trigger-name">{value}</span>
               </>
+            ) : value ? (
+              <span className="icon-picker__trigger-name icon-picker__trigger-unresolved">
+                {value} (unknown icon)
+              </span>
             ) : (
               <span className="icon-picker__trigger-placeholder">Select icon…</span>
             )}
