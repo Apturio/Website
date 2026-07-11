@@ -17,7 +17,9 @@
     "validate:schema": "node scripts/validate-jsonld.mjs",
     "test:icons": "node scripts/test-icon-parity.ts",
     "generate:previews": "payload run scripts/generate-block-previews.ts",
-    "verify:previews": "node scripts/verify-block-previews.ts"
+    "verify:previews": "node scripts/verify-block-previews.ts",
+    "generate:variant-previews": "payload run scripts/generate-variant-previews.ts",
+    "verify:variant-previews": "node scripts/verify-variant-previews.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
