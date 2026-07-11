@@ -520,41 +520,116 @@ async function main(): Promise<void> {
     await payload.delete({ collection: 'pages', id: doc.id })
   }
 
+  // Publish the temp page (not draft): the front-end route renders published
+  // pages via the normal path, avoiding draft/preview-cookie complexity. It is
+  // deleted in the finally block, so it is live only for the duration of the run.
   const tempPage = await payload.create({
     collection: 'pages',
     locale: 'en',
     data: {
       title: 'Block Preview (temporary — auto-deleted)',
       slug: TEMP_SLUG,
-      _status: 'draft',
+      _status: 'published',
       layout: sampleBlocks,
     } as never,
   })
+
+  // Diagnostic: confirm the doc persisted with a full layout server-side.
+  const readback = await payload.findByID({
+    collection: 'pages',
+    id: tempPage.id,
+    locale: 'en',
+    depth: 0,
+  })
+  console.log(
+    `[generate-block-previews] temp page id=${tempPage.id} slug=${(readback as { slug?: string }).slug} ` +
+      `layout=${((readback as { layout?: unknown[] }).layout ?? []).length} blocks status=${(readback as { _status?: string })._status}`,
+  )
 
   let devServer: ChildProcess | undefined
   let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined
 
   try {
-    devServer = spawn('npx', ['next', 'dev', '-p', String(PORT)], {
-      cwd: websiteRoot,
-      stdio: 'inherit',
-      detached: true,
-    })
+    // Reuse an already-running dev server on PORT if present (warm iteration);
+    // otherwise spawn our own and tear it down in finally.
+    let serverAlreadyUp = false
+    try {
+      const probe = await fetch(`${baseUrl}/`)
+      if (probe.status) serverAlreadyUp = true
+    } catch {
+      /* not up — we spawn our own */
+    }
 
-    await waitForReady(`${baseUrl}/en`)
+    if (!serverAlreadyUp) {
+      devServer = spawn('npx', ['next', 'dev', '-p', String(PORT)], {
+        cwd: websiteRoot,
+        stdio: 'inherit',
+        detached: true,
+      })
+      await waitForReady(`${baseUrl}/`, 300_000)
+    } else {
+      console.log(`[generate-block-previews] reusing dev server already listening on ${baseUrl}`)
+    }
 
     browser = await chromium.launch()
     const page = await browser.newPage({ viewport: { width: 1280, height: 800 } })
-    await page.goto(`${baseUrl}/en/${TEMP_SLUG}?draft=true`, { waitUntil: 'networkidle' })
+    // `networkidle` never resolves in `next dev` (persistent HMR websocket keeps
+    // the network "busy"), so wait for `load`. First request also pays the
+    // one-time dev-mode compile + Neon cold-start introspection cost (90s+),
+    // hence the generous navigation timeout. The default locale (en) is served
+    // UNPREFIXED, so the temp page lives at /<slug>, not /en/<slug>.
+    await page.goto(`${baseUrl}/${TEMP_SLUG}`, { waitUntil: 'load', timeout: 300_000 })
 
     const blockEls = page.locator('main').locator(':scope > *')
+    await blockEls.first().waitFor({ state: 'visible', timeout: 30_000 })
     const count = await blockEls.count()
     console.log(`[generate-block-previews] found ${count} direct children of <main>`)
 
+    const failures: string[] = []
     for (const [i, slug] of blockOrder.entries()) {
       const target = join(previewsDir, `${slug}.png`)
-      await blockEls.nth(i).screenshot({ path: target })
-      console.log(`[generate-block-previews] captured ${slug}.png (${i + 1}/${blockOrder.length})`)
+      const el = blockEls.nth(i)
+      try {
+        if (slug === 'stickyCta') {
+          // The in-flow element is empty: the visible bar is a position:fixed
+          // element that only mounts (.svc-sticky.show) after scrolling past
+          // the hero (y > 620). Scroll to reveal it, then shoot the fixed bar.
+          await page.evaluate(() => window.scrollTo(0, 900))
+          const bar = page.locator('.svc-sticky.show .bar').first()
+          await bar.waitFor({ state: 'visible', timeout: 10_000 })
+          await bar.screenshot({ path: target, animations: 'disabled' })
+          await page.evaluate(() => window.scrollTo(0, 0))
+        } else {
+          await el.scrollIntoViewIfNeeded({ timeout: 5_000 }).catch(() => {})
+          // Element screenshot first; fixed/sticky blocks never reach
+          // Playwright's "stable" state, so fall back to a clipped page
+          // screenshot computed from the element's bounding box.
+          try {
+            await el.screenshot({ path: target, timeout: 12_000, animations: 'disabled' })
+          } catch {
+            const box = await el.boundingBox()
+            if (!box || box.width < 1 || box.height < 1) {
+              throw new Error(`no usable bounding box for '${slug}'`)
+            }
+            await page.screenshot({
+              path: target,
+              clip: {
+                x: Math.max(0, box.x),
+                y: Math.max(0, box.y),
+                width: box.width,
+                height: box.height,
+              },
+            })
+          }
+        }
+        console.log(`[generate-block-previews] captured ${slug}.png (${i + 1}/${blockOrder.length})`)
+      } catch (err) {
+        failures.push(slug)
+        console.error(`[generate-block-previews] FAILED ${slug} (${i + 1}/${blockOrder.length}): ${(err as Error).message}`)
+      }
+    }
+    if (failures.length > 0) {
+      throw new Error(`failed to capture ${failures.length} block(s): ${failures.join(', ')}`)
     }
   } finally {
     if (browser) await browser.close()
