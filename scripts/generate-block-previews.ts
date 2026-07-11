@@ -522,34 +522,37 @@ async function main(): Promise<void> {
 
   // Publish the temp page (not draft): the front-end route renders published
   // pages via the normal path, avoiding draft/preview-cookie complexity. It is
-  // deleted in the finally block, so it is live only for the duration of the run.
-  const tempPage = await payload.create({
-    collection: 'pages',
-    locale: 'en',
-    data: {
-      title: 'Block Preview (temporary — auto-deleted)',
-      slug: TEMP_SLUG,
-      _status: 'published',
-      layout: sampleBlocks,
-    } as never,
-  })
-
-  // Diagnostic: confirm the doc persisted with a full layout server-side.
-  const readback = await payload.findByID({
-    collection: 'pages',
-    id: tempPage.id,
-    locale: 'en',
-    depth: 0,
-  })
-  console.log(
-    `[generate-block-previews] temp page id=${tempPage.id} slug=${(readback as { slug?: string }).slug} ` +
-      `layout=${((readback as { layout?: unknown[] }).layout ?? []).length} blocks status=${(readback as { _status?: string })._status}`,
-  )
-
+  // deleted in the finally block below, so it is live only for the duration of
+  // the run — the create+readback are inside the try/finally so a failure
+  // between create and the browser work can never leave it orphaned.
+  let tempPage: Awaited<ReturnType<typeof payload.create>> | undefined
   let devServer: ChildProcess | undefined
   let browser: Awaited<ReturnType<typeof chromium.launch>> | undefined
 
   try {
+    tempPage = await payload.create({
+      collection: 'pages',
+      locale: 'en',
+      data: {
+        title: 'Block Preview (temporary — auto-deleted)',
+        slug: TEMP_SLUG,
+        _status: 'published',
+        layout: sampleBlocks,
+      } as never,
+    })
+
+    // Diagnostic: confirm the doc persisted with a full layout server-side.
+    const readback = await payload.findByID({
+      collection: 'pages',
+      id: tempPage.id,
+      locale: 'en',
+      depth: 0,
+    })
+    console.log(
+      `[generate-block-previews] temp page id=${tempPage.id} slug=${(readback as { slug?: string }).slug} ` +
+        `layout=${((readback as { layout?: unknown[] }).layout ?? []).length} blocks status=${(readback as { _status?: string })._status}`,
+    )
+
     // Reuse an already-running dev server on PORT if present (warm iteration);
     // otherwise spawn our own and tear it down in finally.
     let serverAlreadyUp = false
@@ -565,6 +568,9 @@ async function main(): Promise<void> {
         cwd: websiteRoot,
         stdio: 'inherit',
         detached: true,
+      })
+      devServer.on('error', (err) => {
+        console.error(`[generate-block-previews] dev server spawn error: ${err.message}`)
       })
       await waitForReady(`${baseUrl}/`, 300_000)
     } else {
@@ -584,6 +590,12 @@ async function main(): Promise<void> {
     await blockEls.first().waitFor({ state: 'visible', timeout: 30_000 })
     const count = await blockEls.count()
     console.log(`[generate-block-previews] found ${count} direct children of <main>`)
+    if (count !== blockOrder.length) {
+      throw new Error(
+        `expected ${blockOrder.length} rendered blocks under <main>, found ${count} — ` +
+          `refusing to screenshot (index misalignment would save screenshots under wrong slugs)`,
+      )
+    }
 
     const failures: string[] = []
     for (const [i, slug] of blockOrder.entries()) {
@@ -632,9 +644,24 @@ async function main(): Promise<void> {
       throw new Error(`failed to capture ${failures.length} block(s): ${failures.join(', ')}`)
     }
   } finally {
-    if (browser) await browser.close()
-    await payload.delete({ collection: 'pages', id: tempPage.id })
-    if (devServer) await killDevServer(devServer)
+    // Each cleanup step is independently guarded: a failure in one (e.g.
+    // browser already crashed, transient DB error on delete) must never skip
+    // the others — the dev-server process group must ALWAYS be killed.
+    if (browser) {
+      await browser.close().catch((e) =>
+        console.error(`[generate-block-previews] failed to close browser: ${(e as Error).message}`),
+      )
+    }
+    if (tempPage) {
+      await payload.delete({ collection: 'pages', id: tempPage.id }).catch((e) =>
+        console.error(`[generate-block-previews] failed to delete temp page: ${(e as Error).message}`),
+      )
+    }
+    if (devServer) {
+      await killDevServer(devServer).catch((e) =>
+        console.error(`[generate-block-previews] failed to kill dev server: ${(e as Error).message}`),
+      )
+    }
   }
 
   console.log(`[generate-block-previews] done — ${blockOrder.length} PNGs in public/block-previews/`)
