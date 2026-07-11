@@ -15,7 +15,9 @@
     "generate:types": "payload generate:types",
     "generate:importmap": "payload generate:importmap",
     "validate:schema": "node scripts/validate-jsonld.mjs",
-    "test:icons": "node scripts/test-icon-parity.ts"
+    "test:icons": "node scripts/test-icon-parity.ts",
+    "generate:previews": "node scripts/generate-block-previews.ts",
+    "verify:previews": "node scripts/verify-block-previews.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -56,7 +58,12 @@
     "@radix-ui/react-toggle": "^1.1.10",
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
+    "@tailwindcss/typography": "^0.5.16",
     "@tanstack/react-query": "^5.83.0",
+    "@types/node": "^22.16.5",
+    "@types/react": "19.2.17",
+    "@types/react-dom": "19.2.3",
+    "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
@@ -69,6 +76,7 @@
     "next-intl": "^4.13.0",
     "next-themes": "^0.3.0",
     "payload": "3.85.0",
+    "postcss": "^8.5.6",
     "react": "19.2.7",
     "react-day-picker": "^8.10.2",
     "react-dom": "19.2.7",
@@ -79,22 +87,17 @@
     "sharp": "0.34.5",
     "sonner": "^1.7.4",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7",
-    "vaul": "^0.9.9",
-    "zod": "^3.25.76",
-    "@tailwindcss/typography": "^0.5.16",
-    "@types/node": "^22.16.5",
-    "@types/react": "19.2.17",
-    "@types/react-dom": "19.2.3",
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.6",
     "tailwindcss": "^3.4.19",
-    "typescript": "^5.8.3"
+    "tailwindcss-animate": "^1.0.7",
+    "typescript": "^5.8.3",
+    "vaul": "^0.9.9",
+    "zod": "^3.25.76"
   },
   "devDependencies": {
     "@adobe/structured-data-validator": "1.7.0",
     "eslint": "^9.32.0",
-    "eslint-config-next": "16.2.7"
+    "eslint-config-next": "16.2.7",
+    "playwright": "^1.61.1"
   },
   "overrides": {
     "react": "19.2.7",
