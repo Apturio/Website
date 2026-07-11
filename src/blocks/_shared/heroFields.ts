@@ -1,6 +1,7 @@
 import type { Field, TextFieldValidation } from 'payload'
 
 import { iconPickerField } from '@/fields/IconPicker/config'
+import { selectVariantField } from '@/fields/SelectVariantPreview/config'
 
 /**
  * Rejects href values that could execute as script when rendered directly as
@@ -40,15 +41,20 @@ export const heroFields: Field[] = [
     type: 'text',
     admin: { description: 'Headline text after the accented phrase.' },
   },
-  {
-    name: 'accentColor',
-    type: 'select',
-    defaultValue: 'brand',
-    options: [
-      { label: 'Periwinkle (brand)', value: 'brand' },
-      { label: 'Green', value: 'green' },
-    ],
-  },
+  selectVariantField(
+    {
+      name: 'accentColor',
+      defaultValue: 'brand',
+      options: [
+        { label: 'Periwinkle (brand)', value: 'brand' },
+        { label: 'Green', value: 'green' },
+      ],
+    },
+    {
+      brand: '/variant-previews/brand.png',
+      green: '/variant-previews/green.png',
+    },
+  ),
   { name: 'subtitle', type: 'textarea' },
   { name: 'ctaPrimaryLabel', type: 'text' },
   { name: 'ctaPrimaryHref', type: 'text', validate: validateHref },
