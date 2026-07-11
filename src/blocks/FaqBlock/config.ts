@@ -13,6 +13,8 @@ export const FaqBlock: Block = {
     singular: 'FAQ',
     plural: 'FAQs',
   },
+  imageURL: '/block-previews/faq.png',
+  imageAltText: 'FAQ block preview',
   fields: [
     {
       name: 'heading',

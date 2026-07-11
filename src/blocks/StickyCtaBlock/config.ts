@@ -5,6 +5,8 @@ export const StickyCtaBlock: Block = {
   slug: 'stickyCta',
   interfaceName: 'StickyCtaBlock',
   labels: { singular: 'Sticky CTA', plural: 'Sticky CTAs' },
+  imageURL: '/block-previews/stickyCta.png',
+  imageAltText: 'Sticky CTA block preview',
   fields: [
     { name: 'title', type: 'text', required: true },
     { name: 'subtitle', type: 'text', admin: { description: 'Green secondary line (e.g. bonus).' } },

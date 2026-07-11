@@ -7,6 +7,8 @@ export const TimelineBlock: Block = {
   slug: 'timeline',
   interfaceName: 'TimelineBlock',
   labels: { singular: 'Timeline', plural: 'Timelines' },
+  imageURL: '/block-previews/timeline.png',
+  imageAltText: 'Timeline block preview',
   fields: [
     { name: 'eyebrow', type: 'text' },
     { name: 'heading', type: 'text', required: true },

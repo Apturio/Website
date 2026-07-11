@@ -7,6 +7,8 @@ export const HeroDashboardBlock: Block = {
   slug: 'heroDashboard',
   interfaceName: 'HeroDashboardBlock',
   labels: { singular: 'Hero — Dashboard', plural: 'Heroes — Dashboard' },
+  imageURL: '/block-previews/heroDashboard.png',
+  imageAltText: 'Hero — Dashboard block preview',
   fields: [
     ...heroFields,
     { name: 'image', type: 'upload', relationTo: 'media' },

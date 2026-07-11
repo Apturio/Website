@@ -7,6 +7,8 @@ export const FeatureGridBlock: Block = {
   slug: 'featureGrid',
   interfaceName: 'FeatureGridBlock',
   labels: { singular: 'Feature Grid', plural: 'Feature Grids' },
+  imageURL: '/block-previews/featureGrid.png',
+  imageAltText: 'Feature Grid block preview',
   fields: [
     { name: 'eyebrow', type: 'text' },
     { name: 'heading', type: 'text', required: true },

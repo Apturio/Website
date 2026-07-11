@@ -8,6 +8,8 @@ export const HeroBoldBlock: Block = {
   slug: 'heroBold',
   interfaceName: 'HeroBoldBlock',
   labels: { singular: 'Hero — Bold', plural: 'Heroes — Bold' },
+  imageURL: '/block-previews/heroBold.png',
+  imageAltText: 'Hero — Bold block preview',
   fields: [
     ...heroFields,
     {

@@ -7,6 +7,8 @@ export const FeatureAccordionBlock: Block = {
   slug: 'featureAccordion',
   interfaceName: 'FeatureAccordionBlock',
   labels: { singular: 'Feature Accordion', plural: 'Feature Accordions' },
+  imageURL: '/block-previews/featureAccordion.png',
+  imageAltText: 'Feature Accordion block preview',
   fields: [
     { name: 'eyebrow', type: 'text' },
     { name: 'heading', type: 'text', required: true },

@@ -12,6 +12,8 @@ export const LogosBlock: Block = {
     singular: 'Logos / Trusted By',
     plural: 'Logos / Trusted By',
   },
+  imageURL: '/block-previews/logos.png',
+  imageAltText: 'Logos / Trusted By block preview',
   fields: [
     {
       name: 'heading',

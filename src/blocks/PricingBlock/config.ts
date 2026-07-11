@@ -14,6 +14,8 @@ export const PricingBlock: Block = {
     singular: 'Pricing',
     plural: 'Pricing',
   },
+  imageURL: '/block-previews/pricing.png',
+  imageAltText: 'Pricing block preview',
   fields: [
     {
       name: 'heading',

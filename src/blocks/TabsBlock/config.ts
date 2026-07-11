@@ -7,6 +7,8 @@ export const TabsBlock: Block = {
   slug: 'tabs',
   interfaceName: 'TabsBlock',
   labels: { singular: 'Tabs', plural: 'Tabs' },
+  imageURL: '/block-previews/tabs.png',
+  imageAltText: 'Tabs block preview',
   fields: [
     { name: 'eyebrow', type: 'text' },
     { name: 'heading', type: 'text', required: true },

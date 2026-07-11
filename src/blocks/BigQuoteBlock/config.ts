@@ -5,6 +5,8 @@ export const BigQuoteBlock: Block = {
   slug: 'bigQuote',
   interfaceName: 'BigQuoteBlock',
   labels: { singular: 'Big Quote', plural: 'Big Quotes' },
+  imageURL: '/block-previews/bigQuote.png',
+  imageAltText: 'Big Quote block preview',
   fields: [
     {
       name: 'glowTop',

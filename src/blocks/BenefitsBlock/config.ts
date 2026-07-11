@@ -12,6 +12,8 @@ export const BenefitsBlock: Block = {
     singular: 'Benefits',
     plural: 'Benefits',
   },
+  imageURL: '/block-previews/benefits.png',
+  imageAltText: 'Benefits block preview',
   fields: [
     {
       name: 'heading',

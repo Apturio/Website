@@ -5,6 +5,8 @@ export const MetricsBlock: Block = {
   slug: 'metrics',
   interfaceName: 'MetricsBlock',
   labels: { singular: 'Metrics', plural: 'Metrics' },
+  imageURL: '/block-previews/metrics.png',
+  imageAltText: 'Metrics block preview',
   fields: [
     {
       name: 'glowTop',
