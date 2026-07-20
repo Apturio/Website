@@ -20,6 +20,12 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Icon } from "@/blocks/_shared/Icon";
 import { ComingSoonBadge } from "@/components/ComingSoonBadge";
 import { navMenus, navDirectLinks, type NavLink as NavLinkEntry } from "@/lib/nav-links";
@@ -81,6 +87,41 @@ function DesktopMegaMenuRow({
           </span>
         )}
       </div>
+    </div>
+  );
+}
+
+function MobileMegaMenuRow({
+  item,
+  home,
+  t,
+  onNavigate,
+}: {
+  item: NavLinkEntry;
+  home: string;
+  t: TFunction;
+  onNavigate: () => void;
+}) {
+  if (item.status === "live" && item.href) {
+    return (
+      <Link
+        href={`${home}${item.href}`}
+        onClick={onNavigate}
+        className="flex min-h-[44px] items-center gap-4 rounded-xl p-4 transition-colors hover:bg-white/5"
+      >
+        {item.icon && <Icon name={item.icon} className="h-5 w-5 shrink-0 text-white" />}
+        <span className="text-[16px] font-semibold text-white">{t(item.labelKey)}</span>
+      </Link>
+    );
+  }
+
+  return (
+    <div aria-disabled="true" className="flex min-h-[44px] items-center gap-4 rounded-xl p-4 cursor-default">
+      {item.icon && (
+        <Icon name={item.icon} className="h-5 w-5 shrink-0 text-slate-500 opacity-50" />
+      )}
+      <span className="text-[16px] font-semibold text-slate-500">{t(item.labelKey)}</span>
+      <ComingSoonBadge label={t("nav.comingSoon")} />
     </div>
   );
 }
@@ -234,7 +275,7 @@ export function Navbar() {
       </div>
 
       {isOpen && (
-        <div className="fixed inset-0 z-[99999] bg-black w-screen h-screen flex flex-col pt-[80px] px-[24px] pb-8 animate-in slide-in-from-right duration-300">
+        <div className="fixed inset-0 z-[99999] bg-black w-screen h-screen flex flex-col pt-[80px] px-[24px] pb-8 animate-in slide-in-from-right duration-300 overflow-y-auto lg:hidden">
           <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="absolute top-4 right-4 hover:bg-white/10">
             <X className="h-8 w-8 text-white" />
           </Button>
@@ -262,19 +303,71 @@ export function Navbar() {
               </div>
             </div>
 
-            {/* TODO(21-02 Task 2): replace with an Accordion built from navMenus + navDirectLinks */}
-            <a href={`${home}#pricing`} onClick={() => setIsOpen(false)} className="flex items-center gap-4 p-4 rounded-xl bg-white/10 hover:bg-white/15 transition-colors">
-              <span className="text-[22px] font-bold text-white">{t('nav.pricing')}</span>
-            </a>
+            <Accordion type="single" collapsible className="w-full">
+              {navMenus.map((menu) => (
+                <AccordionItem key={menu.triggerLabelKey} value={menu.triggerLabelKey} className="border-white/10">
+                  <AccordionTrigger className="min-h-[44px] px-4 py-4 text-[18px] font-semibold text-white hover:no-underline [&>svg]:text-white">
+                    {t(menu.triggerLabelKey)}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-0">
+                    <div className="flex flex-col gap-1 px-4">
+                      {menu.columns
+                        .flatMap((column) => column.items)
+                        .map((item) => (
+                          <MobileMegaMenuRow
+                            key={item.labelKey}
+                            item={item}
+                            home={home}
+                            t={t}
+                            onNavigate={() => setIsOpen(false)}
+                          />
+                        ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+
+            <div className="flex flex-col gap-1 mt-2">
+              {navDirectLinks.map((link) =>
+                link.status === "live" && link.href ? (
+                  <Link
+                    key={link.labelKey}
+                    href={`${home}${link.href}`}
+                    onClick={() => setIsOpen(false)}
+                    className="flex min-h-[44px] items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors"
+                  >
+                    <span className="text-[18px] font-bold text-white">{t(link.labelKey)}</span>
+                  </Link>
+                ) : (
+                  <div
+                    key={link.labelKey}
+                    aria-disabled="true"
+                    className="flex min-h-[44px] items-center gap-4 p-4 rounded-xl cursor-default"
+                  >
+                    <span className="text-[18px] font-bold text-slate-500">{t(link.labelKey)}</span>
+                    <ComingSoonBadge label={t("nav.comingSoon")} />
+                  </div>
+                ),
+              )}
+            </div>
           </div>
 
           <div className="h-[1px] bg-white/10 my-8" />
 
-          <a href={`${home}#pricing`} onClick={() => setIsOpen(false)} className="w-full">
-            <Button className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-14 text-[18px] shadow-[0_0_15px_rgba(120,125,255,0.4)] hover:shadow-[0_0_25px_rgba(120,125,255,0.6)] transition-all">
-              {t('nav.getStarted')}
-            </Button>
-          </a>
+          {ctaExternal ? (
+            <a href={ctaHref} target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)} className="w-full">
+              <Button className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-14 text-[18px] shadow-[0_0_15px_rgba(120,125,255,0.4)] hover:shadow-[0_0_25px_rgba(120,125,255,0.6)] transition-all">
+                {t('nav.getStarted')}
+              </Button>
+            </a>
+          ) : (
+            <Link href={ctaHref} onClick={() => setIsOpen(false)} className="w-full">
+              <Button className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-14 text-[18px] shadow-[0_0_15px_rgba(120,125,255,0.4)] hover:shadow-[0_0_25px_rgba(120,125,255,0.6)] transition-all">
+                {t('nav.getStarted')}
+              </Button>
+            </Link>
+          )}
 
           <div className="mt-auto text-center">
             <span className="text-[12px] uppercase text-slate-500 font-medium tracking-widest">{t('footer.copyright')} • {new Date().getFullYear()}</span>
