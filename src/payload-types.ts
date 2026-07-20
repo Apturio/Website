@@ -605,7 +605,7 @@ export interface CtaBlock {
  */
 export interface HeroCenteredBlock {
   /**
-   * Lucide icon name for the eyebrow pill (e.g. calendar-check).
+   * Icon for the eyebrow pill.
    */
   pillIcon?: string | null;
   pillText: string;
@@ -626,7 +626,7 @@ export interface HeroCenteredBlock {
   ctaPrimaryLabel?: string | null;
   ctaPrimaryHref?: string | null;
   /**
-   * Optional lucide icon name for the secondary CTA.
+   * Optional icon for the secondary CTA.
    */
   ctaSecondaryIcon?: string | null;
   ctaSecondaryLabel?: string | null;
@@ -650,7 +650,7 @@ export interface HeroCenteredBlock {
  */
 export interface HeroSplitBlock {
   /**
-   * Lucide icon name for the eyebrow pill (e.g. calendar-check).
+   * Icon for the eyebrow pill.
    */
   pillIcon?: string | null;
   pillText: string;
@@ -671,7 +671,7 @@ export interface HeroSplitBlock {
   ctaPrimaryLabel?: string | null;
   ctaPrimaryHref?: string | null;
   /**
-   * Optional lucide icon name for the secondary CTA.
+   * Optional icon for the secondary CTA.
    */
   ctaSecondaryIcon?: string | null;
   ctaSecondaryLabel?: string | null;
@@ -700,7 +700,7 @@ export interface HeroSplitBlock {
  */
 export interface HeroDashboardBlock {
   /**
-   * Lucide icon name for the eyebrow pill (e.g. calendar-check).
+   * Icon for the eyebrow pill.
    */
   pillIcon?: string | null;
   pillText: string;
@@ -721,7 +721,7 @@ export interface HeroDashboardBlock {
   ctaPrimaryLabel?: string | null;
   ctaPrimaryHref?: string | null;
   /**
-   * Optional lucide icon name for the secondary CTA.
+   * Optional icon for the secondary CTA.
    */
   ctaSecondaryIcon?: string | null;
   ctaSecondaryLabel?: string | null;
@@ -750,7 +750,7 @@ export interface HeroDashboardBlock {
  */
 export interface HeroBoldBlock {
   /**
-   * Lucide icon name for the eyebrow pill (e.g. calendar-check).
+   * Icon for the eyebrow pill.
    */
   pillIcon?: string | null;
   pillText: string;
@@ -771,7 +771,7 @@ export interface HeroBoldBlock {
   ctaPrimaryLabel?: string | null;
   ctaPrimaryHref?: string | null;
   /**
-   * Optional lucide icon name for the secondary CTA.
+   * Optional icon for the secondary CTA.
    */
   ctaSecondaryIcon?: string | null;
   ctaSecondaryLabel?: string | null;
@@ -788,7 +788,7 @@ export interface HeroBoldBlock {
   cards?:
     | {
         /**
-         * Lucide icon name.
+         * Icon.
          */
         icon?: string | null;
         big: string;
@@ -819,7 +819,7 @@ export interface FeatureGridBlock {
   cards?:
     | {
         /**
-         * Lucide icon name.
+         * Icon.
          */
         icon?: string | null;
         title: string;
@@ -873,7 +873,7 @@ export interface FeatureAccordionBlock {
   items?:
     | {
         /**
-         * Lucide icon name.
+         * Icon.
          */
         icon?: string | null;
         title: string;
@@ -913,7 +913,7 @@ export interface TimelineBlock {
   items?:
     | {
         /**
-         * Lucide icon name for the dot.
+         * Icon for the dot.
          */
         icon?: string | null;
         /**
@@ -939,7 +939,7 @@ export interface TabsBlock {
   tabs?:
     | {
         /**
-         * Lucide icon name for the tab button.
+         * Icon for the tab button.
          */
         icon?: string | null;
         label: string;

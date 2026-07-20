@@ -7,6 +7,8 @@ export const HeroSplitBlock: Block = {
   slug: 'heroSplit',
   interfaceName: 'HeroSplitBlock',
   labels: { singular: 'Hero — Split', plural: 'Heroes — Split' },
+  imageURL: '/block-previews/heroSplit.png',
+  imageAltText: 'Hero — Split block preview',
   fields: [
     ...heroFields,
     { name: 'image', type: 'upload', relationTo: 'media' },

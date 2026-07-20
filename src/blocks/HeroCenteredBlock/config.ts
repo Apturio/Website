@@ -7,5 +7,7 @@ export const HeroCenteredBlock: Block = {
   slug: 'heroCentered',
   interfaceName: 'HeroCenteredBlock',
   labels: { singular: 'Hero — Centered', plural: 'Heroes — Centered' },
+  imageURL: '/block-previews/heroCentered.png',
+  imageAltText: 'Hero — Centered block preview',
   fields: heroFields,
 }

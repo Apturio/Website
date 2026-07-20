@@ -1,4 +1,21 @@
-import type { Field } from 'payload'
+import type { Field, TextFieldValidation } from 'payload'
+
+import { iconPickerField } from '@/fields/IconPicker/config'
+import { selectVariantField } from '@/fields/SelectVariantPreview/config'
+
+/**
+ * Rejects href values that could execute as script when rendered directly as
+ * an anchor `href` (e.g. `javascript:`/`data:` URIs). Allows relative paths,
+ * `#anchor` links, `mailto:`, and http(s) URLs. Empty/undefined values pass,
+ * since these CTA href fields are optional.
+ */
+const validateHref: TextFieldValidation = (value) => {
+  if (!value) return true
+  return (
+    /^(https?:\/\/|\/|#|mailto:)/.test(value) ||
+    'Must be a relative path, #anchor, mailto:, or http(s) URL.'
+  )
+}
 
 /**
  * Shared field set for the four service-page hero variants. The headline is
@@ -6,11 +23,7 @@ import type { Field } from 'payload'
  * accent color, mirroring the prototype's `<span class="accent|green">`.
  */
 export const heroFields: Field[] = [
-  {
-    name: 'pillIcon',
-    type: 'text',
-    admin: { description: 'Lucide icon name for the eyebrow pill (e.g. calendar-check).' },
-  },
+  iconPickerField({ name: 'pillIcon', admin: { description: 'Icon for the eyebrow pill.' } }),
   { name: 'pillText', type: 'text', required: true },
   {
     name: 'titleStart',
@@ -28,25 +41,26 @@ export const heroFields: Field[] = [
     type: 'text',
     admin: { description: 'Headline text after the accented phrase.' },
   },
-  {
-    name: 'accentColor',
-    type: 'select',
-    defaultValue: 'brand',
-    options: [
-      { label: 'Periwinkle (brand)', value: 'brand' },
-      { label: 'Green', value: 'green' },
-    ],
-  },
+  selectVariantField(
+    {
+      name: 'accentColor',
+      defaultValue: 'brand',
+      options: [
+        { label: 'Periwinkle (brand)', value: 'brand' },
+        { label: 'Green', value: 'green' },
+      ],
+    },
+    {
+      brand: '/variant-previews/brand.png',
+      green: '/variant-previews/green.png',
+    },
+  ),
   { name: 'subtitle', type: 'textarea' },
   { name: 'ctaPrimaryLabel', type: 'text' },
-  { name: 'ctaPrimaryHref', type: 'text' },
-  {
-    name: 'ctaSecondaryIcon',
-    type: 'text',
-    admin: { description: 'Optional lucide icon name for the secondary CTA.' },
-  },
+  { name: 'ctaPrimaryHref', type: 'text', validate: validateHref },
+  iconPickerField({ name: 'ctaSecondaryIcon', admin: { description: 'Optional icon for the secondary CTA.' } }),
   { name: 'ctaSecondaryLabel', type: 'text' },
-  { name: 'ctaSecondaryHref', type: 'text' },
+  { name: 'ctaSecondaryHref', type: 'text', validate: validateHref },
   {
     name: 'micro',
     type: 'array',

@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { selectVariantField } from '@/fields/SelectVariantPreview/config'
+
 /**
  * PricingBlock — the three-tier pricing grid. The plan cards are editable here;
  * the supporting "implementation advantage", "enterprise" and the full feature
@@ -14,6 +16,8 @@ export const PricingBlock: Block = {
     singular: 'Pricing',
     plural: 'Pricing',
   },
+  imageURL: '/block-previews/pricing.png',
+  imageAltText: 'Pricing block preview',
   fields: [
     {
       name: 'heading',
@@ -29,17 +33,23 @@ export const PricingBlock: Block = {
       type: 'array',
       labels: { singular: 'Plan', plural: 'Plans' },
       fields: [
-        {
-          name: 'planId',
-          type: 'select',
-          required: true,
-          options: [
-            { label: 'Foundation', value: 'foundation' },
-            { label: 'Engine (highlighted)', value: 'engine' },
-            { label: 'Growth', value: 'growth' },
-          ],
-          admin: { description: 'Drives the per-tier styling (engine = highlighted center card).' },
-        },
+        selectVariantField(
+          {
+            name: 'planId',
+            required: true,
+            options: [
+              { label: 'Foundation', value: 'foundation' },
+              { label: 'Engine (highlighted)', value: 'engine' },
+              { label: 'Growth', value: 'growth' },
+            ],
+            admin: { description: 'Drives the per-tier styling (engine = highlighted center card).' },
+          },
+          {
+            foundation: '/variant-previews/foundation.png',
+            engine: '/variant-previews/engine.png',
+            growth: '/variant-previews/growth.png',
+          },
+        ),
         { name: 'name', type: 'text', required: true },
         { name: 'price', type: 'text', required: true, admin: { description: 'e.g. $199' } },
         { name: 'period', type: 'text', admin: { description: 'e.g. " / month" (falls back to i18n).' } },

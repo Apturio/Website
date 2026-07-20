@@ -12,6 +12,8 @@ export const TestimonialsBlock: Block = {
     singular: 'Testimonials',
     plural: 'Testimonials',
   },
+  imageURL: '/block-previews/testimonials.png',
+  imageAltText: 'Testimonials block preview',
   fields: [
     {
       name: 'heading',

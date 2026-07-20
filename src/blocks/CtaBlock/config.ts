@@ -14,6 +14,8 @@ export const CtaBlock: Block = {
     singular: 'CTA Band',
     plural: 'CTA Bands',
   },
+  imageURL: '/block-previews/cta.png',
+  imageAltText: 'CTA Band block preview',
   fields: [
     {
       name: 'badge',

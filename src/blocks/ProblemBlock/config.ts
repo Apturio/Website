@@ -21,6 +21,8 @@ export const ProblemBlock: Block = {
     singular: 'Problem',
     plural: 'Problems',
   },
+  imageURL: '/block-previews/problem.png',
+  imageAltText: 'Problem block preview',
   fields: [
     {
       name: 'heading',

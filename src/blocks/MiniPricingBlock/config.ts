@@ -5,6 +5,8 @@ export const MiniPricingBlock: Block = {
   slug: 'miniPricing',
   interfaceName: 'MiniPricingBlock',
   labels: { singular: 'Mini Pricing', plural: 'Mini Pricing' },
+  imageURL: '/block-previews/miniPricing.png',
+  imageAltText: 'Mini Pricing block preview',
   fields: [
     { name: 'eyebrow', type: 'text' },
     { name: 'heading', type: 'text' },

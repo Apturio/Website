@@ -5,6 +5,8 @@ export const FeatureZigzagBlock: Block = {
   slug: 'featureZigzag',
   interfaceName: 'FeatureZigzagBlock',
   labels: { singular: 'Feature Zigzag', plural: 'Feature Zigzags' },
+  imageURL: '/block-previews/featureZigzag.png',
+  imageAltText: 'Feature Zigzag block preview',
   fields: [
     { name: 'eyebrow', type: 'text' },
     { name: 'heading', type: 'text' },

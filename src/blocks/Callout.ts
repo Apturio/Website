@@ -1,5 +1,7 @@
 import type { Block } from 'payload'
 
+import { selectVariantField } from '@/fields/SelectVariantPreview/config'
+
 /**
  * Callout — a custom Lexical block ("Key Takeaway" style) editors can insert
  * anywhere in Post/Page content. Rendered in Phase 9 via the Lexical-to-JSX
@@ -18,21 +20,28 @@ export const Callout: Block = {
     plural: 'Callouts',
   },
   fields: [
-    {
-      name: 'variant',
-      type: 'select',
-      required: true,
-      defaultValue: 'keyTakeaway',
-      options: [
-        { label: 'Key Takeaway', value: 'keyTakeaway' },
-        { label: 'Info', value: 'info' },
-        { label: 'Success', value: 'success' },
-        { label: 'Warning', value: 'warning' },
-      ],
-      admin: {
-        description: 'Visual style of the callout box.',
+    selectVariantField(
+      {
+        name: 'variant',
+        required: true,
+        defaultValue: 'keyTakeaway',
+        options: [
+          { label: 'Key Takeaway', value: 'keyTakeaway' },
+          { label: 'Info', value: 'info' },
+          { label: 'Success', value: 'success' },
+          { label: 'Warning', value: 'warning' },
+        ],
+        admin: {
+          description: 'Visual style of the callout box.',
+        },
       },
-    },
+      {
+        keyTakeaway: '/variant-previews/keyTakeaway.png',
+        info: '/variant-previews/info.png',
+        success: '/variant-previews/success.png',
+        warning: '/variant-previews/warning.png',
+      },
+    ),
     {
       name: 'heading',
       type: 'text',

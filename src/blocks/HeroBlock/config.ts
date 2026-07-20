@@ -12,6 +12,8 @@ export const HeroBlock: Block = {
     singular: 'Hero',
     plural: 'Heroes',
   },
+  imageURL: '/block-previews/hero.png',
+  imageAltText: 'Hero block preview',
   fields: [
     {
       name: 'badge',

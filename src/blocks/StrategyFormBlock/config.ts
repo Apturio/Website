@@ -5,6 +5,8 @@ export const StrategyFormBlock: Block = {
   slug: 'strategyForm',
   interfaceName: 'StrategyFormBlock',
   labels: { singular: 'Strategy Form', plural: 'Strategy Forms' },
+  imageURL: '/block-previews/strategyForm.png',
+  imageAltText: 'Strategy Form block preview',
   fields: [
     { name: 'eyebrow', type: 'text', defaultValue: 'Free Strategy Call' },
     { name: 'heading', type: 'text', required: true, defaultValue: 'Book your free strategy call' },
