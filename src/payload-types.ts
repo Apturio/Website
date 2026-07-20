@@ -327,6 +327,8 @@ export interface Page {
         | StrategyFormBlock
         | StickyCtaBlock
         | BonusBannerBlock
+        | IntegrationsBlock
+        | ComparisonTableBlock
       )[]
     | null;
   /**
@@ -1121,6 +1123,74 @@ export interface BonusBannerBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IntegrationsBlock".
+ */
+export interface IntegrationsBlock {
+  eyebrow?: string | null;
+  heading: string;
+  subtitle?: string | null;
+  items?:
+    | {
+        name: string;
+        description: string;
+        logo?: (number | null) | Media;
+        /**
+         * Optional link to the integration doc page.
+         */
+        href?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'integrations';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ComparisonTableBlock".
+ */
+export interface ComparisonTableBlock {
+  eyebrow?: string | null;
+  heading: string;
+  subtitle?: string | null;
+  /**
+   * Comparison column headers (the row-label column is implicit).
+   */
+  columns?:
+    | {
+        label: string;
+        /**
+         * Render this whole column in the brand/green accent (e.g. the Apturio column).
+         */
+        highlight?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  rows?:
+    | {
+        label: string;
+        /**
+         * One value per column, in the same order as the columns above.
+         */
+        values?:
+          | {
+              text: string;
+              /**
+               * Render this cell in the green accent (e.g. the winning value).
+               */
+              highlight?: boolean | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'comparisonTable';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "faqs".
  */
 export interface Faq {
@@ -1559,6 +1629,8 @@ export interface PagesSelect<T extends boolean = true> {
         strategyForm?: T | StrategyFormBlockSelect<T>;
         stickyCta?: T | StickyCtaBlockSelect<T>;
         bonusBanner?: T | BonusBannerBlockSelect<T>;
+        integrations?: T | IntegrationsBlockSelect<T>;
+        comparisonTable?: T | ComparisonTableBlockSelect<T>;
       };
   content?: T;
   publishedAt?: T;
@@ -2101,6 +2173,57 @@ export interface BonusBannerBlockSelect<T extends boolean = true> {
   ctaSecondaryLabel?: T;
   ctaSecondaryHref?: T;
   fine?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "IntegrationsBlock_select".
+ */
+export interface IntegrationsBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subtitle?: T;
+  items?:
+    | T
+    | {
+        name?: T;
+        description?: T;
+        logo?: T;
+        href?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ComparisonTableBlock_select".
+ */
+export interface ComparisonTableBlockSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  subtitle?: T;
+  columns?:
+    | T
+    | {
+        label?: T;
+        highlight?: T;
+        id?: T;
+      };
+  rows?:
+    | T
+    | {
+        label?: T;
+        values?:
+          | T
+          | {
+              text?: T;
+              highlight?: T;
+              id?: T;
+            };
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }

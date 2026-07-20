@@ -25,6 +25,8 @@ import { MiniPricingBlockComponent } from './MiniPricingBlock/Component'
 import { StrategyFormBlockComponent } from './StrategyFormBlock/Component'
 import { StickyCtaBlockComponent } from './StickyCtaBlock/Component'
 import { BonusBannerBlockComponent } from './BonusBannerBlock/Component'
+import { IntegrationsBlockComponent } from './IntegrationsBlock/Component'
+import { ComparisonTableBlockComponent } from './ComparisonTableBlock/Component'
 
 type LayoutBlock = NonNullable<Page['layout']>[number]
 
@@ -90,6 +92,10 @@ export function RenderBlocks({ layout, lang }: { layout?: LayoutBlock[] | null; 
             return <StickyCtaBlockComponent key={key} block={block} lang={lang} />
           case 'bonusBanner':
             return <BonusBannerBlockComponent key={key} block={block} lang={lang} />
+          case 'integrations':
+            return <IntegrationsBlockComponent key={key} block={block} lang={lang} />
+          case 'comparisonTable':
+            return <ComparisonTableBlockComponent key={key} block={block} lang={lang} />
           default:
             return null
         }
