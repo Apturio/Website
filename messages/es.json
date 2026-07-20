@@ -5,7 +5,79 @@
     "pricing": "Precios",
     "faq": "Preguntas Frecuentes",
     "getStarted": "Empezar",
-    "language": "Idioma"
+    "language": "Idioma",
+    "producto": "Producto",
+    "industrias": "Industrias",
+    "recursos": "Recursos",
+    "plataforma": "Plataforma",
+    "funcionalidades": "Funcionalidades",
+    "comingSoon": "Próximamente",
+    "pipelineCrm": {
+      "label": "Pipeline CRM",
+      "description": "Embudo de ventas visual para organizar y cerrar más deals"
+    },
+    "chatbotIa": {
+      "label": "Chatbot IA",
+      "description": "Vendedor virtual que atiende, vende y agenda 24/7"
+    },
+    "automatizaciones": {
+      "label": "Automatizaciones",
+      "description": "Secuencias, recordatorios, mensajes masivos y follow-up"
+    },
+    "implementacion": {
+      "label": "Implementación",
+      "description": "Done-for-you: te configuramos todo en 72 horas"
+    },
+    "softwareVentas": {
+      "label": "Software de ventas"
+    },
+    "chatbotWhatsapp": {
+      "label": "Chatbot WhatsApp"
+    },
+    "instagramChatbot": {
+      "label": "Instagram Chatbot"
+    },
+    "gestionReservas": {
+      "label": "Gestión de reservas"
+    },
+    "recordatorios": {
+      "label": "Recordatorios automáticos"
+    },
+    "clinicas": {
+      "label": "Clínicas"
+    },
+    "esteticas": {
+      "label": "Estéticas"
+    },
+    "bienesRaices": {
+      "label": "Bienes raíces"
+    },
+    "academias": {
+      "label": "Academias"
+    },
+    "blog": {
+      "label": "Blog",
+      "description": "Guías, tutoriales y estrategias de ventas"
+    },
+    "casosEstudio": {
+      "label": "Casos de estudio",
+      "description": "Resultados reales de clientes con Apturio"
+    },
+    "herramientasGratis": {
+      "label": "Herramientas gratis",
+      "description": "Link generator, calculadora ROI, plantillas"
+    },
+    "comparativas": {
+      "label": "Comparativas",
+      "description": "Apturio vs otros CRM del mercado",
+      "leadsales": "Apturio vs LeadSales",
+      "kommo": "Apturio vs Kommo",
+      "pipedrive": "Apturio vs PipeDrive",
+      "hubspot": "Apturio vs HubSpot"
+    },
+    "sobreNosotros": {
+      "label": "Sobre nosotros"
+    }
   },
   "hero": {
     "badge": "Configuración 'Llave en mano' valorada en $2.000",

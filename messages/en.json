@@ -5,7 +5,79 @@
     "pricing": "Pricing",
     "faq": "FAQ",
     "getStarted": "Get Started",
-    "language": "Language"
+    "language": "Language",
+    "producto": "Product",
+    "industrias": "Industries",
+    "recursos": "Resources",
+    "plataforma": "Platform",
+    "funcionalidades": "Features",
+    "comingSoon": "Coming soon",
+    "pipelineCrm": {
+      "label": "Pipeline CRM",
+      "description": "Visual sales pipeline to organize and close more deals"
+    },
+    "chatbotIa": {
+      "label": "AI Chatbot",
+      "description": "Virtual salesperson that engages, sells, and books around the clock"
+    },
+    "automatizaciones": {
+      "label": "Automations",
+      "description": "Sequences, reminders, bulk messages, and follow up"
+    },
+    "implementacion": {
+      "label": "Implementation",
+      "description": "Done for you: we set everything up in 72 hours"
+    },
+    "softwareVentas": {
+      "label": "Sales software"
+    },
+    "chatbotWhatsapp": {
+      "label": "WhatsApp Chatbot"
+    },
+    "instagramChatbot": {
+      "label": "Instagram Chatbot"
+    },
+    "gestionReservas": {
+      "label": "Booking management"
+    },
+    "recordatorios": {
+      "label": "Automated reminders"
+    },
+    "clinicas": {
+      "label": "Clinics"
+    },
+    "esteticas": {
+      "label": "Aesthetics"
+    },
+    "bienesRaices": {
+      "label": "Real estate"
+    },
+    "academias": {
+      "label": "Academies"
+    },
+    "blog": {
+      "label": "Blog",
+      "description": "Guides, tutorials, and sales strategies"
+    },
+    "casosEstudio": {
+      "label": "Case studies",
+      "description": "Real results from Apturio customers"
+    },
+    "herramientasGratis": {
+      "label": "Free tools",
+      "description": "Link generator, ROI calculator, templates"
+    },
+    "comparativas": {
+      "label": "Comparisons",
+      "description": "Apturio vs other CRMs on the market",
+      "leadsales": "Apturio vs LeadSales",
+      "kommo": "Apturio vs Kommo",
+      "pipedrive": "Apturio vs PipeDrive",
+      "hubspot": "Apturio vs HubSpot"
+    },
+    "sobreNosotros": {
+      "label": "About us"
+    }
   },
   "hero": {
     "badge": "Done-for-You Setup Valued at $2,000",
