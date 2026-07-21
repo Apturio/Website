@@ -42,7 +42,22 @@ const run = async (): Promise<void> => {
     process.exit(0)
   }
 
-  const drizzle = (payload.db as unknown as { drizzle: { execute: (q: unknown) => Promise<{ rows: Array<{ table_name: string }> }> } }).drizzle
+  // WR-06: `.drizzle` is an undocumented internal property of the Postgres
+  // adapter (mirrors @payloadcms/drizzle/dist/migrate.js internals, pinned
+  // against payload@3.85.0 per this file's own doc comment) — not part of
+  // Payload's public API, and can silently disappear/rename on a
+  // Payload/@payloadcms/db-postgres version bump. Fail loudly with a clear
+  // message instead of a cryptic "Cannot read properties of undefined" if a
+  // future accidental re-run hits that.
+  const drizzle = (payload.db as unknown as { drizzle?: { execute: (q: unknown) => Promise<{ rows: Array<{ table_name: string }> }> } }).drizzle
+  if (!drizzle) {
+    throw new Error(
+      '[reconcile] payload.db.drizzle is undefined — the internal Postgres adapter shape has likely ' +
+        'changed since this script was written (pinned against payload@3.85.0). This script is a one-off ' +
+        'reconciliation reference, not a maintained integration; do not blindly retry, inspect ' +
+        '@payloadcms/db-postgres\'s current adapter internals before proceeding.',
+    )
+  }
   const { sql } = await import('@payloadcms/db-postgres')
   const placeholders = sql.join(
     EXPECTED_TABLES.map((t) => sql`${t}`),
