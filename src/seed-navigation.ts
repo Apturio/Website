@@ -269,6 +269,22 @@ const collectFooterColumnLabels = (footerCols: unknown): string[] => {
 const seedNavigation = async (): Promise<void> => {
   const payload = await getPayload({ config })
 
+  // CR-02 idempotency guard: this script is a ONE-OFF seed but remains
+  // committed and re-runnable per its own doc comment. Once an admin has
+  // edited navigation through the CMS, an accidental re-run (e.g. a CI/deploy
+  // step, or someone following the "Run with" comment literally) would
+  // silently clobber every admin edit with the original static snapshot.
+  // Mirror the "already recorded" short-circuit used by the sibling
+  // reconcile-*.ts scripts: refuse to write if the Global already has
+  // content, unless explicitly overridden.
+  const existing = await payload.findGlobal({ slug: 'navigation', locale: 'en', depth: 0 })
+  if (Array.isArray(existing?.megaMenus) && existing.megaMenus.length > 0 && !process.env.FORCE_SEED_NAVIGATION) {
+    payload.logger.warn(
+      '[seed-navigation] Navigation Global already has content — refusing to overwrite. Set FORCE_SEED_NAVIGATION=1 to override.',
+    )
+    process.exit(1)
+  }
+
   const enData = buildGlobalData('en')
 
   // EN first — establishes structure/order/non-localized fields (href/status/icon)
