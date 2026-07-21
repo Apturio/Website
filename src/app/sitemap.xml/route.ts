@@ -237,10 +237,19 @@ ${urls}
 }
 
 export async function GET() {
-  const payload = await getPayload({ config })
-
   const staticEntries = buildStaticEntries()
-  const dynamicEntries = await collectDynamicEntries(payload)
+
+  // Guard the ENTIRE dynamic portion — including `getPayload()` itself — so
+  // a DB-init failure degrades to a static-only sitemap (200) instead of a
+  // full 500. This mirrors the per-collection resilience in
+  // `collectDynamicEntries` and `src/lib/navigation.ts`'s `getNavigationView`.
+  let dynamicEntries: SitemapEntry[] = []
+  try {
+    const payload = await getPayload({ config })
+    dynamicEntries = await collectDynamicEntries(payload)
+  } catch (err) {
+    console.error('[sitemap] payload init failed — serving static-only sitemap', err)
+  }
 
   // Dedupe by `loc` (statics first) so a CMS slug that collides with a
   // hardcoded static route can never produce a duplicate <url>.
