@@ -213,7 +213,7 @@ export const revalidatePostPaths: CollectionAfterChangeHook = async ({ doc, req 
 }
 
 // Slugs that map to the locale root (`/en`, `/es`) rather than `/en/<slug>`.
-const HOME_MARKER_SLUGS = new Set(['home', 'index', ''])
+export const HOME_MARKER_SLUGS = new Set(['home', 'index', ''])
 
 /**
  * afterChange (Pages) — invalidate BOTH locales' localized URLs (or the locale

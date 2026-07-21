@@ -1,6 +1,7 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { SITE_URL, localizedAlternates } from '@/lib/site'
+import { HOME_MARKER_SLUGS } from '@/lib/hooks'
 
 // ISR — the sitemap does not need per-request freshness (consistent with the
 // rest of the app's DB-backed prerendering).
@@ -142,7 +143,14 @@ async function collectCollectionEntries(
     const slugMap = normalizeSlugMap(doc.slug)
     if (Object.keys(slugMap).length === 0) continue
     // The homepage is already the STATIC '' entry — never double-list it.
-    if (spec.collection === 'pages' && Object.values(slugMap).includes('home')) continue
+    // Reuses the same HOME_MARKER_SLUGS convention as src/lib/hooks.ts'
+    // revalidatePagePaths, since 'home'/'index'/'' are all valid homepage
+    // slug values elsewhere in this codebase.
+    if (
+      spec.collection === 'pages' &&
+      Object.values(slugMap).some((s) => HOME_MARKER_SLUGS.has(s))
+    )
+      continue
 
     const updatedAtRaw = doc.updatedAt
     const lastmod = new Date(
