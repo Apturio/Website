@@ -170,3 +170,112 @@ export const navDirectLinks: NavLink[] = [
     status: 'comingSoon',
   },
 ]
+
+/**
+ * Footer-only extension of the shared registry (Phase 22, LINKSTATE-03).
+ *
+ * `footerColumns` is composed BY REFERENCE from `navMenus` / `navDirectLinks`
+ * above plus a handful of footer-only entries (Pago por uso, Add-Ons,
+ * Plantillas, Contacto, Privacy, Terms) that the navbar doesn't surface.
+ * Because the reused items are references (not copies), flipping a status in
+ * `navMenus` / `navDirectLinks` (comingSoon -> live) reflects in both the
+ * Navbar and the Footer with no structural edit here.
+ */
+
+export interface FooterSubgroup {
+  /** Translation key for the subgroup's small heading (e.g. "Features"). */
+  headingKey: string
+  items: NavLink[]
+}
+
+export interface FooterColumn {
+  /** Translation key for the column's primary heading (e.g. "Producto"). */
+  headingKey: string
+  items: NavLink[]
+  subgroup?: FooterSubgroup
+}
+
+// Footer-only links: not present anywhere in navMenus/navDirectLinks.
+const footerPayPerUse: NavLink = {
+  labelKey: 'footer.payPerUse',
+  status: 'live',
+  href: '/pay-per-use',
+}
+
+const footerAddOns: NavLink = {
+  labelKey: 'footer.addOns',
+  status: 'live',
+  href: '/add-ons',
+}
+
+const footerPlantillas: NavLink = {
+  labelKey: 'footer.plantillas',
+  status: 'comingSoon',
+}
+
+const footerContacto: NavLink = {
+  labelKey: 'footer.contacto',
+  status: 'comingSoon',
+}
+
+const footerPrivacy: NavLink = {
+  labelKey: 'footer.privacy',
+  status: 'live',
+  href: '/privacy-policy',
+}
+
+const footerTerms: NavLink = {
+  labelKey: 'footer.terms',
+  status: 'live',
+  href: '/terms-of-service',
+}
+
+// Comparativas is a single collapsed item in the navbar (its 4 comparison
+// pages live under `.children`); the footer expands those 4 children inline
+// inside the Industrias column's "Comparativas" subgroup instead.
+const comparativasEntry = navMenus[2].columns[0].items.find(
+  (item) => item.labelKey === 'nav.comparativas.label',
+)
+if (!comparativasEntry?.children) {
+  throw new Error(
+    'nav-links: expected navMenus[2] to contain a nav.comparativas.label entry with children',
+  )
+}
+const comparativasItems = comparativasEntry.children
+
+export const footerColumns: FooterColumn[] = [
+  {
+    headingKey: 'footer.col.producto',
+    items: [
+      ...navMenus[0].columns[0].items,
+      navDirectLinks[0],
+      footerPayPerUse,
+      footerAddOns,
+    ],
+    subgroup: {
+      headingKey: 'footer.subgroup.features',
+      items: navMenus[0].columns[1].items,
+    },
+  },
+  {
+    headingKey: 'footer.col.industrias',
+    items: navMenus[1].columns[0].items,
+    subgroup: {
+      headingKey: 'footer.subgroup.comparativas',
+      items: comparativasItems,
+    },
+  },
+  {
+    headingKey: 'footer.col.recursos',
+    items: [
+      ...navMenus[2].columns[0].items.filter(
+        (item) => item.labelKey !== 'nav.comparativas.label',
+      ),
+      footerPlantillas,
+    ],
+    subgroup: {
+      headingKey: 'footer.subgroup.empresa',
+      items: [navDirectLinks[1], footerContacto, footerPrivacy, footerTerms],
+    },
+  },
+]
