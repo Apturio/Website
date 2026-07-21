@@ -213,7 +213,14 @@ export const revalidatePostPaths: CollectionAfterChangeHook = async ({ doc, req 
 }
 
 // Slugs that map to the locale root (`/en`, `/es`) rather than `/en/<slug>`.
-export const HOME_MARKER_SLUGS = new Set(['home', 'index', ''])
+// NOTE: '' is intentionally NOT included here. Both call sites that read a
+// slug value before checking this set (this file's own `getLocalizedSlugs`,
+// line ~121, and sitemap.xml/route.ts's `normalizeSlugMap`) already strip
+// empty-string slug entries before they ever reach a `HOME_MARKER_SLUGS.has()`
+// check — an empty slug for a locale is treated as "no slug for this locale"
+// upstream, not as "this locale's homepage". Adding '' here would be dead
+// code that can never match in the current pipeline.
+export const HOME_MARKER_SLUGS = new Set(['home', 'index'])
 
 /**
  * afterChange (Pages) — invalidate BOTH locales' localized URLs (or the locale
