@@ -4,7 +4,7 @@ import { getTranslations, getLocale } from "next-intl/server";
 
 import { AdvantageCTA } from "@/components/AdvantageCTA";
 import { ComingSoonBadge } from "@/components/ComingSoonBadge";
-import { getNavigationView, type NavItemView } from "@/lib/navigation";
+import { getNavigationView, isExternalHref, type NavItemView } from "@/lib/navigation";
 
 // Shared live/comingSoon row renderer for the 3 registry-driven columns —
 // mirrors Navbar.tsx's DesktopMegaMenuRow / MobileMegaMenuRow treatment so
@@ -20,11 +20,24 @@ function FooterLinkRow({
   comingSoonLabel: string;
 }) {
   if (item.status === "live" && item.href) {
+    const external = isExternalHref(item.href);
+    const resolvedHref = external ? item.href : `${home}${item.href}`;
     return (
       <li>
-        <Link href={`${home}${item.href}`} className="text-sm text-slate-400 hover:text-primary transition-colors">
-          {item.label}
-        </Link>
+        {external ? (
+          <a
+            href={resolvedHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-slate-400 hover:text-primary transition-colors"
+          >
+            {item.label}
+          </a>
+        ) : (
+          <Link href={resolvedHref} className="text-sm text-slate-400 hover:text-primary transition-colors">
+            {item.label}
+          </Link>
+        )}
       </li>
     );
   }

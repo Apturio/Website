@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/accordion";
 import { Icon } from "@/blocks/_shared/Icon";
 import { ComingSoonBadge } from "@/components/ComingSoonBadge";
-import type { NavigationView, NavItemView } from "@/lib/navigation";
+import { isExternalHref, type NavigationView, type NavItemView } from "@/lib/navigation";
 import { cn } from "@/lib/utils";
 
 type TFunction = ReturnType<typeof useTranslations>;
@@ -49,24 +49,42 @@ function DesktopMegaMenuRow({
   t: TFunction;
 }) {
   if (item.status === "live" && item.href) {
+    const external = isExternalHref(item.href);
+    const resolvedHref = external ? item.href : `${home}${item.href}`;
+    const rowContent = (
+      <>
+        {item.icon && (
+          <Icon name={item.icon} className="mt-0.5 h-5 w-5 shrink-0 text-foreground" />
+        )}
+        <div className="flex flex-col gap-0.5">
+          <span className="text-sm font-semibold text-foreground">{item.label}</span>
+          {item.description && (
+            <span className="text-[13px] font-normal text-muted-foreground">
+              {item.description}
+            </span>
+          )}
+        </div>
+      </>
+    );
     return (
       <NavigationMenuLink asChild>
-        <Link
-          href={`${home}${item.href}`}
-          className="flex items-start gap-3 rounded-md p-3 transition-colors hover:bg-primary/5"
-        >
-          {item.icon && (
-            <Icon name={item.icon} className="mt-0.5 h-5 w-5 shrink-0 text-foreground" />
-          )}
-          <div className="flex flex-col gap-0.5">
-            <span className="text-sm font-semibold text-foreground">{item.label}</span>
-            {item.description && (
-              <span className="text-[13px] font-normal text-muted-foreground">
-                {item.description}
-              </span>
-            )}
-          </div>
-        </Link>
+        {external ? (
+          <a
+            href={resolvedHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-start gap-3 rounded-md p-3 transition-colors hover:bg-primary/5"
+          >
+            {rowContent}
+          </a>
+        ) : (
+          <Link
+            href={resolvedHref}
+            className="flex items-start gap-3 rounded-md p-3 transition-colors hover:bg-primary/5"
+          >
+            {rowContent}
+          </Link>
+        )}
       </NavigationMenuLink>
     );
   }
@@ -103,14 +121,31 @@ function MobileMegaMenuRow({
   onNavigate: () => void;
 }) {
   if (item.status === "live" && item.href) {
-    return (
-      <Link
-        href={`${home}${item.href}`}
+    const external = isExternalHref(item.href);
+    const resolvedHref = external ? item.href : `${home}${item.href}`;
+    const rowContent = (
+      <>
+        {item.icon && <Icon name={item.icon} className="h-5 w-5 shrink-0 text-white" />}
+        <span className="text-[16px] font-semibold text-white">{item.label}</span>
+      </>
+    );
+    return external ? (
+      <a
+        href={resolvedHref}
+        target="_blank"
+        rel="noopener noreferrer"
         onClick={onNavigate}
         className="flex min-h-[44px] items-center gap-4 rounded-xl p-4 transition-colors hover:bg-white/5"
       >
-        {item.icon && <Icon name={item.icon} className="h-5 w-5 shrink-0 text-white" />}
-        <span className="text-[16px] font-semibold text-white">{item.label}</span>
+        {rowContent}
+      </a>
+    ) : (
+      <Link
+        href={resolvedHref}
+        onClick={onNavigate}
+        className="flex min-h-[44px] items-center gap-4 rounded-xl p-4 transition-colors hover:bg-white/5"
+      >
+        {rowContent}
       </Link>
     );
   }
@@ -219,9 +254,15 @@ export function NavbarClient({ view }: { view: NavigationView }) {
               link.status === "live" && link.href ? (
                 <NavigationMenuItem key={link.label}>
                   <NavigationMenuLink asChild>
-                    <Link href={`${home}${link.href}`} className={navTriggerClassName}>
-                      {link.label}
-                    </Link>
+                    {isExternalHref(link.href) ? (
+                      <a href={link.href} target="_blank" rel="noopener noreferrer" className={navTriggerClassName}>
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link href={`${home}${link.href}`} className={navTriggerClassName}>
+                        {link.label}
+                      </Link>
+                    )}
                   </NavigationMenuLink>
                 </NavigationMenuItem>
               ) : (
@@ -331,14 +372,27 @@ export function NavbarClient({ view }: { view: NavigationView }) {
             <div className="flex flex-col gap-1 mt-2">
               {view.directLinks.map((link) =>
                 link.status === "live" && link.href ? (
-                  <Link
-                    key={link.label}
-                    href={`${home}${link.href}`}
-                    onClick={() => setIsOpen(false)}
-                    className="flex min-h-[44px] items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors"
-                  >
-                    <span className="text-[18px] font-bold text-white">{link.label}</span>
-                  </Link>
+                  isExternalHref(link.href) ? (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setIsOpen(false)}
+                      className="flex min-h-[44px] items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors"
+                    >
+                      <span className="text-[18px] font-bold text-white">{link.label}</span>
+                    </a>
+                  ) : (
+                    <Link
+                      key={link.label}
+                      href={`${home}${link.href}`}
+                      onClick={() => setIsOpen(false)}
+                      className="flex min-h-[44px] items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors"
+                    >
+                      <span className="text-[18px] font-bold text-white">{link.label}</span>
+                    </Link>
+                  )
                 ) : (
                   <div
                     key={link.label}

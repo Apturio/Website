@@ -56,6 +56,16 @@ export interface NavigationView {
   footerColumns: FooterColumnView[]
 }
 
+/**
+ * True when `href` is an absolute http(s) URL rather than a locale-relative
+ * path. `href` is validated (globals/Navigation.ts's `validateNavHref`) to
+ * accept either shape, so every consumer must branch on this before
+ * concatenating the locale prefix (CR-01) — an admin-entered absolute URL
+ * must render as-is, never as `${home}${href}`.
+ */
+export const isExternalHref = (href?: string | null): boolean =>
+  !!href && /^https?:\/\//i.test(href)
+
 /** Resolves a translation key (or nav-links.ts label/description) to display text. */
 type Translator = (key: string) => string
 
