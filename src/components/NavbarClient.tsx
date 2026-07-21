@@ -28,7 +28,8 @@ import {
 } from "@/components/ui/accordion";
 import { Icon } from "@/blocks/_shared/Icon";
 import { ComingSoonBadge } from "@/components/ComingSoonBadge";
-import { isExternalHref, type NavigationView, type NavItemView } from "@/lib/navigation";
+import type { NavigationView, NavItemView } from "@/lib/navigation";
+import { isExternalHref } from "@/lib/nav-href";
 import { cn } from "@/lib/utils";
 
 type TFunction = ReturnType<typeof useTranslations>;
