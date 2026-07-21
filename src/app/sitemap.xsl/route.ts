@@ -103,8 +103,8 @@ const XSL = `<?xml version="1.0" encoding="UTF-8"?>
               <thead>
                 <tr>
                   <th>URL</th>
-                  <th>Ultima modificacion</th>
-                  <th>Prioridad</th>
+                  <th>Last modified</th>
+                  <th>Priority</th>
                 </tr>
               </thead>
               <tbody>
@@ -121,12 +121,12 @@ const XSL = `<?xml version="1.0" encoding="UTF-8"?>
         </xsl:if>
         <xsl:if test="sitemap:urlset/sitemap:url[${LOCALE_PREDICATE}='es']">
           <section>
-            <h2>Espanol</h2>
+            <h2>Español</h2>
             <table>
               <thead>
                 <tr>
                   <th>URL</th>
-                  <th>Ultima modificacion</th>
+                  <th>Última modificación</th>
                   <th>Prioridad</th>
                 </tr>
               </thead>
