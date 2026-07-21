@@ -230,6 +230,18 @@ const footerTerms: NavLink = {
   href: '/terms-of-service',
 }
 
+// NOTE (24-REVIEW CR-02): This entry only updates the STATIC fallback
+// registry consumed when the Payload `navigation` Global is empty/unreachable
+// (see src/lib/navigation.ts header docs). It does NOT change the live
+// Global, which is the actual source rendered by the Footer/sitemap.html
+// under normal operation (nav-links.ts is only the seed source, per
+// src/seed-navigation.ts). For this link to appear on the live footer,
+// someone with production DB/admin access must add the equivalent item to
+// the persisted Navigation Global — either via the Payload admin UI
+// (Navigation > Footer > Recursos > Empresa subgroup) or by re-running
+// seed-navigation.ts against that environment — as a manual, one-time
+// post-deploy step. This sandbox has no live Postgres access to do that
+// here (see 23-02 SUMMARYs for the same limitation).
 const footerSitemap: NavLink = {
   labelKey: 'footer.sitemap',
   status: 'live',
