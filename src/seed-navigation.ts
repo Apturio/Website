@@ -92,6 +92,90 @@ const buildGlobalData = (lang: Lang) => {
   }
 }
 
+type ArrayRow = { id?: unknown; children?: ArrayRow[] }
+
+/**
+ * Same shape as `mapItem`, but threads the `id` of the matching row from a
+ * PRIOR write's returned doc — required so a second locale write UPDATES the
+ * existing array rows instead of creating a parallel set. Payload treats an
+ * array-field write with no `id` on a row as a brand-new row (Payload array
+ * localization pitfall): writing ES without EN's row ids orphans the EN text
+ * on now-unreferenced rows, which is exactly what produced the "57 empty
+ * labels" readback failure on the first seed run.
+ */
+const mapItemWithId = (
+  item: NavLink,
+  priorRow: ArrayRow | undefined,
+  messages: Messages,
+  lang: Lang,
+): Record<string, unknown> => ({
+  id: priorRow?.id,
+  label: resolveRequired(messages, item.labelKey, lang),
+  href: item.href,
+  status: item.status,
+  icon: item.icon,
+  description: item.descriptionKey ? get(messages, item.descriptionKey) : undefined,
+  children: item.children
+    ? item.children.map((child, i) => mapItemWithId(child, priorRow?.children?.[i], messages, lang))
+    : undefined,
+})
+
+type EnResultDoc = {
+  megaMenus?: Array<{ id?: unknown; columns?: Array<{ id?: unknown; items?: ArrayRow[] }> }>
+  directLinks?: ArrayRow[]
+  footerColumns?: Array<{ id?: unknown; items?: ArrayRow[]; subgroupItems?: ArrayRow[] }>
+}
+
+/**
+ * Builds a locale's Global payload REUSING the array-row ids from a prior
+ * write's returned doc (see `mapItemWithId`), so this write updates existing
+ * rows rather than creating orphaned duplicates.
+ */
+const buildGlobalDataWithIds = (lang: Lang, priorResult: EnResultDoc) => {
+  const messages = messagesFor(lang)
+
+  return {
+    megaMenus: navMenus.map((menu, mi) => {
+      const priorMenu = priorResult.megaMenus?.[mi]
+      return {
+        id: priorMenu?.id,
+        triggerLabel: resolveRequired(messages, menu.triggerLabelKey, lang),
+        columns: menu.columns.map((column, ci) => {
+          const priorColumn = priorMenu?.columns?.[ci]
+          return {
+            id: priorColumn?.id,
+            columnLabel: column.labelKey ? get(messages, column.labelKey) : undefined,
+            items: column.items.map((item, ii) =>
+              mapItemWithId(item, priorColumn?.items?.[ii], messages, lang),
+            ),
+          }
+        }),
+      }
+    }),
+    directLinks: navDirectLinks.map((item, ii) =>
+      mapItemWithId(item, priorResult.directLinks?.[ii], messages, lang),
+    ),
+    footerColumns: sourceFooterColumns.map((column, fi) => {
+      const priorFooter = priorResult.footerColumns?.[fi]
+      return {
+        id: priorFooter?.id,
+        heading: resolveRequired(messages, column.headingKey, lang),
+        items: column.items.map((item, ii) =>
+          mapItemWithId(item, priorFooter?.items?.[ii], messages, lang),
+        ),
+        subgroupHeading: column.subgroup
+          ? get(messages, column.subgroup.headingKey)
+          : undefined,
+        subgroupItems: column.subgroup
+          ? column.subgroup.items.map((item, ii) =>
+              mapItemWithId(item, priorFooter?.subgroupItems?.[ii], messages, lang),
+            )
+          : undefined,
+      }
+    }),
+  }
+}
+
 type ReadbackDoc = {
   megaMenus?: unknown[]
   directLinks?: unknown[]
@@ -186,18 +270,20 @@ const seedNavigation = async (): Promise<void> => {
   const payload = await getPayload({ config })
 
   const enData = buildGlobalData('en')
-  const esData = buildGlobalData('es')
 
-  // EN first — establishes structure/order/non-localized fields (href/status/icon).
-  await payload.updateGlobal({
+  // EN first — establishes structure/order/non-localized fields (href/status/icon)
+  // and (critically) the array-row ids every later write must reuse.
+  const enResult = (await payload.updateGlobal({
     slug: 'navigation',
     locale: 'en',
     data: enData as never,
-  })
+  })) as EnResultDoc
   payload.logger.info('[seed-navigation] wrote EN navigation data')
 
-  // ES second — supplies ES label/description/heading, keeping
-  // href/status/icon/order identical to the EN write.
+  // ES second — reuses EN's row ids (buildGlobalDataWithIds) so this UPDATES
+  // the existing rows' localized fields instead of creating a parallel set
+  // that leaves the EN rows' text orphaned (see mapItemWithId doc comment).
+  const esData = buildGlobalDataWithIds('es', enResult)
   await payload.updateGlobal({
     slug: 'navigation',
     locale: 'es',
