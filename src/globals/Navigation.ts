@@ -93,8 +93,13 @@ const navItemFields: Field[] = [
     type: 'array',
     labels: { singular: 'Child link', plural: 'Child links' },
     admin: {
+      // WR-05: this field saves successfully but no Navbar/Footer renderer
+      // currently reads item.children — no error is surfaced anywhere in the
+      // admin UI, so state that limitation explicitly here.
       description:
-        'Optional grouped child links (e.g. Comparativas\' 4 comparison pages). One level deep only.',
+        'Optional grouped child links (e.g. Comparativas\' 4 comparison pages). One level deep only. ' +
+        'NOTE: child links are not currently rendered anywhere on the live site — adding or editing ' +
+        'them here has no visible effect until a renderer is built to display them.',
     },
     fields: childFields,
   },
