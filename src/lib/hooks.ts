@@ -2,9 +2,10 @@ import type {
   CollectionBeforeValidateHook,
   CollectionBeforeChangeHook,
   CollectionAfterChangeHook,
+  GlobalAfterChangeHook,
   Payload,
 } from 'payload'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 
 import { routing } from '@/i18n/routing'
 import { slugify } from '@/lib/slugify'
@@ -232,5 +233,39 @@ export const revalidatePagePaths: CollectionAfterChangeHook = async ({ doc, req 
   }
 
   safeRevalidate('/sitemap.xml')
+  return doc
+}
+
+// ---------- afterChange: Navigation Global revalidation (Phase 23) ----------
+
+/**
+ * Call `revalidateTag` defensively. Like `revalidatePath`, `revalidateTag` throws
+ * when invoked outside a Next.js request/render scope — e.g. during
+ * `payload run src/seed-navigation.ts` or `payload migrate` — so we swallow that
+ * error to keep seed/migration from crashing. The `'max'` profile is Next.js
+ * 16's replacement for the old single-argument call (immediate on-demand
+ * purge, not a timed cache-life window) — required since Next 16.2.
+ */
+function safeRevalidateTag(tag: string): void {
+  try {
+    revalidateTag(tag, 'max')
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `[Payload] revalidateTag("${tag}") skipped (outside request scope): ${
+        err instanceof Error ? err.message : String(err)
+      }`,
+    )
+  }
+}
+
+/**
+ * afterChange (Navigation Global) — on save/publish, invalidate the single
+ * site-wide `navigation` cache tag so Navbar/Footer refetch without waiting
+ * for a redeploy. The Global has no per-locale or per-path structure worth
+ * branching on (NAVCMS-06) — one tag covers the whole site.
+ */
+export const revalidateNavigation: GlobalAfterChangeHook = ({ doc }) => {
+  safeRevalidateTag('navigation')
   return doc
 }
