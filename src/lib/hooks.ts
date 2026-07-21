@@ -243,8 +243,14 @@ export const revalidatePagePaths: CollectionAfterChangeHook = async ({ doc, req 
  * when invoked outside a Next.js request/render scope — e.g. during
  * `payload run src/seed-navigation.ts` or `payload migrate` — so we swallow that
  * error to keep seed/migration from crashing. The `'max'` profile is Next.js
- * 16's replacement for the old single-argument call (immediate on-demand
- * purge, not a timed cache-life window) — required since Next 16.2.
+ * 16's replacement for the old single-argument call — required since Next
+ * 16.2 — but it is stale-while-revalidate, NOT an immediate on-demand purge:
+ * per Next's own docs, marking the tag stale does not itself trigger
+ * revalidation; the *first* visitor after this call is served the stale
+ * (pre-change) content while a background refetch happens, and only
+ * subsequent visitors see the fresh navigation. If truly-immediate
+ * invalidation is ever required, use `revalidateTag(tag, { expire: 0 })`
+ * instead, weighing the tradeoff against SWR's benefit on high-traffic paths.
  */
 function safeRevalidateTag(tag: string): void {
   try {
