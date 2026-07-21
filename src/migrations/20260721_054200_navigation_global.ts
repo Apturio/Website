@@ -1,5 +1,29 @@
 import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-postgres'
 
+/**
+ * WR-03 (documentation only — this migration is already applied, do NOT
+ * regenerate/split it retroactively):
+ *
+ * This file bundles TWO unrelated features because Payload's migration
+ * generator diffed the whole schema at once: (1) the Navigation Global
+ * (this migration's namesake) and (2) the `pages_blocks_comparison_table*` /
+ * `_pages_v_blocks_comparison_table*` tables for the unrelated
+ * ComparisonTableBlock feature (wired in commit 5503935, "feat: wire
+ * IntegrationsBlock + ComparisonTableBlock...", the day before this
+ * migration was generated, without its own migration file).
+ *
+ * IMPORTANT: `down()` below CASCADE-drops BOTH feature sets together. Do
+ * NOT run `down` on this migration expecting to touch only Navigation — it
+ * will also destroy the already-shipped, already-seeded ComparisonTableBlock
+ * tables and any content stored in them. If Navigation specifically needs to
+ * be rolled back, write a new hand-authored migration that drops only the
+ * `navigation*` tables instead of reverting this file.
+ *
+ * Going forward, generate/commit schema changes per-feature as they land
+ * (see the "reconcile dev-push -> payload migrate" debt already called out
+ * in reconcile-integrations-migration.ts) so migrations stay independently
+ * revertible.
+ */
 export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.execute(sql`
    CREATE TYPE "public"."enum_navigation_mega_menus_columns_items_children_status" AS ENUM('live', 'comingSoon');
