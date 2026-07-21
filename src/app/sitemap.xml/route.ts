@@ -142,15 +142,6 @@ async function collectCollectionEntries(
   for (const doc of docs as unknown as Array<Record<string, unknown>>) {
     const slugMap = normalizeSlugMap(doc.slug)
     if (Object.keys(slugMap).length === 0) continue
-    // The homepage is already the STATIC '' entry — never double-list it.
-    // Reuses the same HOME_MARKER_SLUGS convention as src/lib/hooks.ts'
-    // revalidatePagePaths, since 'home'/'index'/'' are all valid homepage
-    // slug values elsewhere in this codebase.
-    if (
-      spec.collection === 'pages' &&
-      Object.values(slugMap).some((s) => HOME_MARKER_SLUGS.has(s))
-    )
-      continue
 
     const updatedAtRaw = doc.updatedAt
     const lastmod = new Date(
@@ -158,6 +149,14 @@ async function collectCollectionEntries(
     ).toISOString()
 
     for (const locale of Object.keys(slugMap)) {
+      // The homepage is already the STATIC '' entry for THIS locale — never
+      // double-list it. Checked per-locale (not per-document) so a page that
+      // is the homepage in one locale but has a real, distinct slug in the
+      // other locale is only skipped for the locale where it's actually the
+      // homepage, not dropped from the sitemap entirely. Reuses the same
+      // HOME_MARKER_SLUGS convention as src/lib/hooks.ts's revalidatePagePaths.
+      if (spec.collection === 'pages' && HOME_MARKER_SLUGS.has(slugMap[locale])) continue
+
       const { canonical, languages } = localizedAlternates(
         locale as 'en' | 'es',
         slugMap,
