@@ -44,8 +44,12 @@ const run = async (): Promise<void> => {
 
   const drizzle = (payload.db as unknown as { drizzle: { execute: (q: unknown) => Promise<{ rows: Array<{ table_name: string }> }> } }).drizzle
   const { sql } = await import('@payloadcms/db-postgres')
+  const placeholders = sql.join(
+    EXPECTED_TABLES.map((t) => sql`${t}`),
+    sql.raw(', '),
+  )
   const result = await drizzle.execute(
-    sql`SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name = ANY(${EXPECTED_TABLES})`,
+    sql`SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' AND table_name IN (${placeholders})`,
   )
   const foundTables = new Set(result.rows.map((r) => r.table_name))
   const missing = EXPECTED_TABLES.filter((t) => !foundTables.has(t))
