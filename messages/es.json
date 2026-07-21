@@ -456,7 +456,26 @@
     "privacy": "Política de Privacidad",
     "terms": "Términos de Servicio",
     "rights": "Todos los derechos reservados.",
-    "copyright": "Apturio Ingeniería de IA"
+    "copyright": "Apturio Ingeniería de IA",
+    "tagline": "El CRM con IA que vende, agenda y da seguimiento por ti. Configuración llave en mano para que tú no toques nada.",
+    "col": {
+      "producto": "Producto",
+      "industrias": "Industrias",
+      "recursos": "Recursos"
+    },
+    "subgroup": {
+      "features": "Features",
+      "comparativas": "Comparativas",
+      "empresa": "Empresa"
+    },
+    "addOns": "Precios de Add-Ons",
+    "plantillas": "Plantillas",
+    "contacto": "Contacto",
+    "social": {
+      "whatsapp": "Chatea por WhatsApp",
+      "instagram": "Síguenos en Instagram",
+      "linkedin": "Síguenos en LinkedIn"
+    }
   },
   "privacy": {
     "title": "Política de Privacidad",

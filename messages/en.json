@@ -456,7 +456,26 @@
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "rights": "All rights reserved.",
-    "copyright": "Apturio AI Engineering"
+    "copyright": "Apturio AI Engineering",
+    "tagline": "The AI CRM that sells, books, and follows up for you. Turnkey setup so you do not touch a thing.",
+    "col": {
+      "producto": "Product",
+      "industrias": "Industries",
+      "recursos": "Resources"
+    },
+    "subgroup": {
+      "features": "Features",
+      "comparativas": "Comparisons",
+      "empresa": "Company"
+    },
+    "addOns": "Add-Ons Pricing",
+    "plantillas": "Templates",
+    "contacto": "Contact",
+    "social": {
+      "whatsapp": "Chat on WhatsApp",
+      "instagram": "Follow us on Instagram",
+      "linkedin": "Follow us on LinkedIn"
+    }
   },
   "privacy": {
     "title": "Privacy Policy",
