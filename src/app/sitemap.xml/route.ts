@@ -157,10 +157,19 @@ async function collectCollectionEntries(
       // HOME_MARKER_SLUGS convention as src/lib/hooks.ts's revalidatePagePaths.
       if (spec.collection === 'pages' && HOME_MARKER_SLUGS.has(slugMap[locale])) continue
 
+      // Home-marker slugs (e.g. 'home'/'index') never resolve through
+      // spec.makeUrl here — that would emit `${SITE_URL}/{loc}/home`, which
+      // is not the actual static homepage URL and is excluded from
+      // generateStaticParams (see [...slug]/page.tsx). Substitute the bare
+      // locale root instead, so every alternate (including x-default, which
+      // derives from languages['en']) points at a real, indexable URL.
       const { canonical, languages } = localizedAlternates(
         locale as 'en' | 'es',
         slugMap,
-        spec.makeUrl,
+        (loc, slug) =>
+          spec.collection === 'pages' && HOME_MARKER_SLUGS.has(slug)
+            ? `${SITE_URL}/${loc}`
+            : spec.makeUrl(loc, slug),
       )
       entries.push({
         loc: canonical,
