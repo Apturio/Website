@@ -230,6 +230,12 @@ const footerTerms: NavLink = {
   href: '/terms-of-service',
 }
 
+const footerSitemap: NavLink = {
+  labelKey: 'footer.sitemap',
+  status: 'live',
+  href: '/sitemap.html',
+}
+
 // Comparativas is a single collapsed item in the navbar (its 4 comparison
 // pages live under `.children`); the footer expands those 4 children inline
 // inside the Industrias column's "Comparativas" subgroup instead.
@@ -275,7 +281,7 @@ export const footerColumns: FooterColumn[] = [
     ],
     subgroup: {
       headingKey: 'footer.subgroup.empresa',
-      items: [navDirectLinks[1], footerContacto, footerPrivacy, footerTerms],
+      items: [navDirectLinks[1], footerContacto, footerPrivacy, footerTerms, footerSitemap],
     },
   },
 ]

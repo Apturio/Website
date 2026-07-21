@@ -455,6 +455,7 @@
     "payPerUse": "Pay-Per-Use Pricing",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
+    "sitemap": "Sitemap",
     "rights": "All rights reserved.",
     "copyright": "Apturio AI Engineering",
     "tagline": "The AI CRM that sells, books, and follows up for you. Turnkey setup so you do not touch a thing.",
@@ -520,6 +521,10 @@
         "text": "Apturio shall not be liable for any indirect, incidental, special, consequential or punitive damages resulting from your use of the service."
       }
     ]
+  },
+  "sitemap": {
+    "title": "Sitemap",
+    "description": "Browse every page on the Apturio site, grouped by section."
   },
   "checkout": {
     "title": "Finalize your order",

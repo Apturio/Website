@@ -455,6 +455,7 @@
     "payPerUse": "Precios de Pago por Uso",
     "privacy": "Política de Privacidad",
     "terms": "Términos de Servicio",
+    "sitemap": "Mapa del sitio",
     "rights": "Todos los derechos reservados.",
     "copyright": "Apturio Ingeniería de IA",
     "tagline": "El CRM con IA que vende, agenda y da seguimiento por ti. Configuración llave en mano para que tú no toques nada.",
@@ -520,6 +521,10 @@
         "text": "Apturio no será responsable de ningún daño indirecto, incidental, especial, consecuente o punitivo que resulte de su uso del servicio."
       }
     ]
+  },
+  "sitemap": {
+    "title": "Mapa del sitio",
+    "description": "Explora todas las páginas del sitio de Apturio, agrupadas por sección."
   },
   "checkout": {
     "title": "Finaliza tu pedido",
