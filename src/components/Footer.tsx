@@ -4,9 +4,7 @@ import { getTranslations, getLocale } from "next-intl/server";
 
 import { AdvantageCTA } from "@/components/AdvantageCTA";
 import { ComingSoonBadge } from "@/components/ComingSoonBadge";
-import { footerColumns, type NavLink as NavLinkEntry } from "@/lib/nav-links";
-
-type TFunction = Awaited<ReturnType<typeof getTranslations>>;
+import { getNavigationView, type NavItemView } from "@/lib/navigation";
 
 // Shared live/comingSoon row renderer for the 3 registry-driven columns —
 // mirrors Navbar.tsx's DesktopMegaMenuRow / MobileMegaMenuRow treatment so
@@ -15,19 +13,17 @@ type TFunction = Awaited<ReturnType<typeof getTranslations>>;
 function FooterLinkRow({
   item,
   home,
-  t,
   comingSoonLabel,
 }: {
-  item: NavLinkEntry;
+  item: NavItemView;
   home: string;
-  t: TFunction;
   comingSoonLabel: string;
 }) {
   if (item.status === "live" && item.href) {
     return (
       <li>
         <Link href={`${home}${item.href}`} className="text-sm text-slate-400 hover:text-primary transition-colors">
-          {t(item.labelKey)}
+          {item.label}
         </Link>
       </li>
     );
@@ -35,7 +31,7 @@ function FooterLinkRow({
 
   return (
     <li aria-disabled="true" className="flex items-center gap-2 cursor-default">
-      <span className="text-sm text-slate-400">{t(item.labelKey)}</span>
+      <span className="text-sm text-slate-400">{item.label}</span>
       <ComingSoonBadge label={comingSoonLabel} />
     </li>
   );
@@ -48,6 +44,7 @@ function FooterLinkRow({
 export async function Footer({ showAdvantage = true }: { showAdvantage?: boolean } = {}) {
   const t = await getTranslations();
   const language = await getLocale();
+  const view = await getNavigationView(language, t);
   const home = `/${language}`;
   const comingSoonLabel = t("nav.comingSoon");
 
@@ -73,21 +70,21 @@ export async function Footer({ showAdvantage = true }: { showAdvantage?: boolean
             <p className="mt-4 text-sm text-slate-400">{t('footer.tagline')}</p>
           </div>
 
-          {footerColumns.map((column) => (
-            <div key={column.headingKey}>
-              <p className="text-sm font-semibold">{t(column.headingKey)}</p>
+          {view.footerColumns.map((column) => (
+            <div key={column.heading}>
+              <p className="text-sm font-semibold">{column.heading}</p>
               <ul className="mt-4 space-y-2">
                 {column.items.map((item) => (
-                  <FooterLinkRow key={item.labelKey} item={item} home={home} t={t} comingSoonLabel={comingSoonLabel} />
+                  <FooterLinkRow key={item.label} item={item} home={home} comingSoonLabel={comingSoonLabel} />
                 ))}
               </ul>
 
               {column.subgroup && (
                 <>
-                  <p className="mt-6 text-[10px] uppercase text-muted-foreground/70">{t(column.subgroup.headingKey)}</p>
+                  <p className="mt-6 text-[10px] uppercase text-muted-foreground/70">{column.subgroup.heading}</p>
                   <ul className="mt-4 space-y-2">
                     {column.subgroup.items.map((item) => (
-                      <FooterLinkRow key={item.labelKey} item={item} home={home} t={t} comingSoonLabel={comingSoonLabel} />
+                      <FooterLinkRow key={item.label} item={item} home={home} comingSoonLabel={comingSoonLabel} />
                     ))}
                   </ul>
                 </>
