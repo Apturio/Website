@@ -31,6 +31,14 @@ import {
 } from '@/lib/nav-links'
 
 export interface NavItemView {
+  /**
+   * Stable identity for this row: the Payload-generated array-row id when
+   * sourced from the Global, or an index-synthesized id when sourced from
+   * the static nav-links.ts fallback (WR-01) — `label` is admin-editable
+   * free text with no uniqueness constraint, so it must never be used alone
+   * as a React `key` or Radix Accordion `value`.
+   */
+  id?: string
   label: string
   href?: string
   status: 'live' | 'comingSoon'
@@ -40,11 +48,13 @@ export interface NavItemView {
 }
 
 export interface NavMenuView {
+  id?: string
   triggerLabel: string
-  columns: { label?: string; items: NavItemView[] }[]
+  columns: { id?: string; label?: string; items: NavItemView[] }[]
 }
 
 export interface FooterColumnView {
+  id?: string
   heading: string
   items: NavItemView[]
   subgroup?: { heading: string; items: NavItemView[] }
@@ -71,6 +81,7 @@ type Translator = (key: string) => string
 
 /** Structural shape shared by every raw item across megaMenus/directLinks/footerColumns. */
 interface RawItemLike {
+  id?: string | null
   label: string
   href?: string | null
   status: 'live' | 'comingSoon'
@@ -100,6 +111,7 @@ const getCachedNavigationGlobal = unstable_cache(
 
 function adaptRawItem(item: RawItemLike): NavItemView {
   return {
+    id: item.id ?? undefined,
     label: item.label,
     href: item.href ?? undefined,
     status: item.status,
@@ -112,14 +124,17 @@ function adaptRawItem(item: RawItemLike): NavItemView {
 function adaptGlobalToView(raw: Navigation): NavigationView {
   return {
     megaMenus: (raw.megaMenus ?? []).map((menu) => ({
+      id: menu.id ?? undefined,
       triggerLabel: menu.triggerLabel,
       columns: (menu.columns ?? []).map((column) => ({
+        id: column.id ?? undefined,
         label: column.columnLabel ?? undefined,
         items: (column.items ?? []).map(adaptRawItem),
       })),
     })),
     directLinks: (raw.directLinks ?? []).map(adaptRawItem),
     footerColumns: (raw.footerColumns ?? []).map((column) => ({
+      id: column.id ?? undefined,
       heading: column.heading,
       items: (column.items ?? []).map(adaptRawItem),
       subgroup: column.subgroupHeading
@@ -132,8 +147,14 @@ function adaptGlobalToView(raw: Navigation): NavigationView {
   }
 }
 
+// WR-01: the static nav-links.ts registry has no Payload-generated row ids,
+// but its labelKey/triggerLabelKey/headingKey strings ARE developer-controlled
+// and structurally unique (they were the pre-migration React `key` values —
+// see git history on Navbar.tsx before the Payload Global swap), so they are
+// reused here as a stable id fallback for the emergency static path.
 function adaptStaticItem(t: Translator, item: StaticNavLink): NavItemView {
   return {
+    id: item.labelKey,
     label: t(item.labelKey),
     href: item.href,
     status: item.status,
@@ -145,8 +166,10 @@ function adaptStaticItem(t: Translator, item: StaticNavLink): NavItemView {
 
 function adaptStaticMenu(t: Translator, menu: StaticNavMenu): NavMenuView {
   return {
+    id: menu.triggerLabelKey,
     triggerLabel: t(menu.triggerLabelKey),
-    columns: menu.columns.map((column) => ({
+    columns: menu.columns.map((column, colIdx) => ({
+      id: column.labelKey ?? `col-${colIdx}`,
       label: column.labelKey ? t(column.labelKey) : undefined,
       items: column.items.map((item) => adaptStaticItem(t, item)),
     })),
@@ -155,6 +178,7 @@ function adaptStaticMenu(t: Translator, menu: StaticNavMenu): NavMenuView {
 
 function adaptStaticFooterColumn(t: Translator, column: StaticFooterColumn): FooterColumnView {
   return {
+    id: column.headingKey,
     heading: t(column.headingKey),
     items: column.items.map((item) => adaptStaticItem(t, item)),
     subgroup: column.subgroup

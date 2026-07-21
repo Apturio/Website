@@ -222,7 +222,7 @@ export function NavbarClient({ view }: { view: NavigationView }) {
         <NavigationMenu className="hidden lg:flex" delayDuration={150}>
           <NavigationMenuList>
             {view.megaMenus.map((menu) => (
-              <NavigationMenuItem key={menu.triggerLabel}>
+              <NavigationMenuItem key={menu.id ?? menu.triggerLabel}>
                 <NavigationMenuTrigger className={navTriggerClassName}>
                   {menu.triggerLabel}
                 </NavigationMenuTrigger>
@@ -234,14 +234,14 @@ export function NavbarClient({ view }: { view: NavigationView }) {
                     )}
                   >
                     {menu.columns.map((column, colIdx) => (
-                      <div key={column.label ?? colIdx} className="flex flex-col gap-1">
+                      <div key={column.id ?? column.label ?? colIdx} className="flex flex-col gap-1">
                         {column.label && (
                           <span className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                             {column.label}
                           </span>
                         )}
                         {column.items.map((item) => (
-                          <DesktopMegaMenuRow key={item.label} item={item} home={home} t={t} />
+                          <DesktopMegaMenuRow key={item.id ?? item.label} item={item} home={home} t={t} />
                         ))}
                       </div>
                     ))}
@@ -252,7 +252,7 @@ export function NavbarClient({ view }: { view: NavigationView }) {
 
             {view.directLinks.map((link) =>
               link.status === "live" && link.href ? (
-                <NavigationMenuItem key={link.label}>
+                <NavigationMenuItem key={link.id ?? link.label}>
                   <NavigationMenuLink asChild>
                     {isExternalHref(link.href) ? (
                       <a href={link.href} target="_blank" rel="noopener noreferrer" className={navTriggerClassName}>
@@ -266,7 +266,7 @@ export function NavbarClient({ view }: { view: NavigationView }) {
                   </NavigationMenuLink>
                 </NavigationMenuItem>
               ) : (
-                <NavigationMenuItem key={link.label}>
+                <NavigationMenuItem key={link.id ?? link.label}>
                   <div
                     aria-disabled="true"
                     className={cn(
@@ -346,7 +346,11 @@ export function NavbarClient({ view }: { view: NavigationView }) {
 
             <Accordion type="single" collapsible className="w-full">
               {view.megaMenus.map((menu) => (
-                <AccordionItem key={menu.triggerLabel} value={menu.triggerLabel} className="border-white/10">
+                <AccordionItem
+                  key={menu.id ?? menu.triggerLabel}
+                  value={menu.id ?? menu.triggerLabel}
+                  className="border-white/10"
+                >
                   <AccordionTrigger className="min-h-[44px] px-4 py-4 text-[18px] font-semibold text-white hover:no-underline [&>svg]:text-white">
                     {menu.triggerLabel}
                   </AccordionTrigger>
@@ -356,7 +360,7 @@ export function NavbarClient({ view }: { view: NavigationView }) {
                         .flatMap((column) => column.items)
                         .map((item) => (
                           <MobileMegaMenuRow
-                            key={item.label}
+                            key={item.id ?? item.label}
                             item={item}
                             home={home}
                             t={t}
@@ -374,7 +378,7 @@ export function NavbarClient({ view }: { view: NavigationView }) {
                 link.status === "live" && link.href ? (
                   isExternalHref(link.href) ? (
                     <a
-                      key={link.label}
+                      key={link.id ?? link.label}
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -385,7 +389,7 @@ export function NavbarClient({ view }: { view: NavigationView }) {
                     </a>
                   ) : (
                     <Link
-                      key={link.label}
+                      key={link.id ?? link.label}
                       href={`${home}${link.href}`}
                       onClick={() => setIsOpen(false)}
                       className="flex min-h-[44px] items-center gap-4 p-4 rounded-xl hover:bg-white/5 transition-colors"
@@ -395,7 +399,7 @@ export function NavbarClient({ view }: { view: NavigationView }) {
                   )
                 ) : (
                   <div
-                    key={link.label}
+                    key={link.id ?? link.label}
                     aria-disabled="true"
                     className="flex min-h-[44px] items-center gap-4 p-4 rounded-xl cursor-default"
                   >

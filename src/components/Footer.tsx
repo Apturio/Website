@@ -84,11 +84,11 @@ export async function Footer({ showAdvantage = true }: { showAdvantage?: boolean
           </div>
 
           {view.footerColumns.map((column) => (
-            <div key={column.heading}>
+            <div key={column.id ?? column.heading}>
               <p className="text-sm font-semibold">{column.heading}</p>
               <ul className="mt-4 space-y-2">
                 {column.items.map((item) => (
-                  <FooterLinkRow key={item.label} item={item} home={home} comingSoonLabel={comingSoonLabel} />
+                  <FooterLinkRow key={item.id ?? item.label} item={item} home={home} comingSoonLabel={comingSoonLabel} />
                 ))}
               </ul>
 
@@ -97,7 +97,7 @@ export async function Footer({ showAdvantage = true }: { showAdvantage?: boolean
                   <p className="mt-6 text-[10px] uppercase text-muted-foreground/70">{column.subgroup.heading}</p>
                   <ul className="mt-4 space-y-2">
                     {column.subgroup.items.map((item) => (
-                      <FooterLinkRow key={item.label} item={item} home={home} comingSoonLabel={comingSoonLabel} />
+                      <FooterLinkRow key={item.id ?? item.label} item={item} home={home} comingSoonLabel={comingSoonLabel} />
                     ))}
                   </ul>
                 </>
