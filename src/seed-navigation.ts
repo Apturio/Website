@@ -195,14 +195,49 @@ const collectLabels = (items: unknown, acc: string[] = []): string[] => {
 }
 
 /**
+ * WR-07: recursively counts every item in a source NavLink tree (each item
+ * plus its children), so nested `columns`/`items`/`children`/`subgroupItems`
+ * cardinality can be verified against the readback doc, not just top-level
+ * array lengths. Mirrors `countReadbackItems` below.
+ */
+const countNavLinks = (items: NavLink[] | undefined): number => {
+  if (!items) return 0
+  return items.reduce((sum, item) => sum + 1 + countNavLinks(item.children), 0)
+}
+
+/** Same recursive count as `countNavLinks`, but over a readback doc's untyped item tree. */
+const countReadbackItems = (items: unknown): number => {
+  if (!Array.isArray(items)) return 0
+  return items.reduce((sum: number, raw) => {
+    if (!raw || typeof raw !== 'object') return sum
+    const item = raw as { children?: unknown }
+    return sum + 1 + countReadbackItems(item.children)
+  }, 0)
+}
+
+/**
  * Self-verification gate (NAVCMS-07 zero-regression readback assertion):
- * asserts megaMenus/directLinks/footerColumns counts match the source arrays
- * and that no item has an empty label, for one locale's readback doc.
+ * asserts megaMenus/directLinks/footerColumns top-level counts AND nested
+ * item counts (recursively through columns/items/children/subgroupItems)
+ * match the source registry structure, and that no item has an empty label,
+ * for one locale's readback doc. The nested counts close the gap the
+ * top-level-only check had: a row orphaned by an id-reuse mismatch at a
+ * nested level could previously read back a non-empty EN-fallback label
+ * (via `localization.fallback: true`) and pass, without actually
+ * representing correct ES-localized content — because nested cardinality
+ * was never confirmed.
  */
 const assertReadback = (
   lang: Lang,
   doc: ReadbackDoc,
-  expected: { megaMenus: number; directLinks: number; footerColumns: number },
+  expected: {
+    megaMenus: number
+    directLinks: number
+    footerColumns: number
+    megaMenuItems: number
+    directLinkItems: number
+    footerItems: number
+  },
 ): string[] => {
   const errors: string[] = []
 
@@ -219,6 +254,49 @@ const assertReadback = (
   if (footerColumnsLen !== expected.footerColumns) {
     errors.push(
       `[${lang}] footerColumns length ${footerColumnsLen} !== expected ${expected.footerColumns}`,
+    )
+  }
+
+  const megaMenuItemsLen = (Array.isArray(doc.megaMenus) ? doc.megaMenus : []).reduce(
+    (sum: number, raw) => {
+      if (!raw || typeof raw !== 'object') return sum
+      const menu = raw as { columns?: unknown }
+      if (!Array.isArray(menu.columns)) return sum
+      return (
+        sum +
+        menu.columns.reduce((s: number, col) => {
+          if (!col || typeof col !== 'object') return s
+          const column = col as { items?: unknown }
+          return s + countReadbackItems(column.items)
+        }, 0)
+      )
+    },
+    0,
+  )
+  if (megaMenuItemsLen !== expected.megaMenuItems) {
+    errors.push(
+      `[${lang}] recursive megaMenus item count ${megaMenuItemsLen} !== expected ${expected.megaMenuItems} (nested columns/items/children mismatch)`,
+    )
+  }
+
+  const directLinkItemsLen = countReadbackItems(doc.directLinks)
+  if (directLinkItemsLen !== expected.directLinkItems) {
+    errors.push(
+      `[${lang}] recursive directLinks item count ${directLinkItemsLen} !== expected ${expected.directLinkItems} (nested children mismatch)`,
+    )
+  }
+
+  const footerItemsLen = (Array.isArray(doc.footerColumns) ? doc.footerColumns : []).reduce(
+    (sum: number, raw) => {
+      if (!raw || typeof raw !== 'object') return sum
+      const column = raw as { items?: unknown; subgroupItems?: unknown }
+      return sum + countReadbackItems(column.items) + countReadbackItems(column.subgroupItems)
+    },
+    0,
+  )
+  if (footerItemsLen !== expected.footerItems) {
+    errors.push(
+      `[${lang}] recursive footerColumns item count ${footerItemsLen} !== expected ${expected.footerItems} (nested items/subgroupItems/children mismatch)`,
     )
   }
 
@@ -311,6 +389,18 @@ const seedNavigation = async (): Promise<void> => {
     megaMenus: navMenus.length,
     directLinks: navDirectLinks.length,
     footerColumns: sourceFooterColumns.length,
+    // WR-07: recursive nested counts, computed from the same source-of-truth
+    // registry the top-level counts already use.
+    megaMenuItems: navMenus.reduce(
+      (sum, menu) => sum + menu.columns.reduce((s, column) => s + countNavLinks(column.items), 0),
+      0,
+    ),
+    directLinkItems: countNavLinks(navDirectLinks),
+    footerItems: sourceFooterColumns.reduce(
+      (sum, column) =>
+        sum + countNavLinks(column.items) + (column.subgroup ? countNavLinks(column.subgroup.items) : 0),
+      0,
+    ),
   }
 
   const [enReadback, esReadback] = await Promise.all([
