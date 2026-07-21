@@ -103,8 +103,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('en' | 'es') | ('en' | 'es')[];
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    navigation: Navigation;
+  };
+  globalsSelect: {
+    navigation: NavigationSelect<false> | NavigationSelect<true>;
+  };
   locale: 'en' | 'es';
   widgets: {
     collections: CollectionsWidget;
@@ -2526,6 +2530,389 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Navbar mega menus, direct links, and footer columns. Mirrors website/src/lib/nav-links.ts (the emergency fallback used if this Global cannot be read).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation".
+ */
+export interface Navigation {
+  id: number;
+  /**
+   * Top-level navbar mega-menu triggers (e.g. Producto, Industrias, Recursos).
+   */
+  megaMenus?:
+    | {
+        /**
+         * Label shown on the navbar trigger button.
+         */
+        triggerLabel: string;
+        /**
+         * Columns rendered inside this mega-menu dropdown.
+         */
+        columns?:
+          | {
+              /**
+               * Optional column heading. Omit for single-column, headingless menus.
+               */
+              columnLabel?: string | null;
+              /**
+               * Links inside this column.
+               */
+              items?:
+                | {
+                    /**
+                     * Visible link label (localized EN/ES).
+                     */
+                    label: string;
+                    /**
+                     * Locale-relative path with a leading slash (e.g. "/pipeline-crm") or an absolute https URL. Leave empty for "comingSoon" items.
+                     */
+                    href?: string | null;
+                    /**
+                     * "Live" items are clickable and use href. "Coming soon" items render as a disabled badge, ignoring href.
+                     */
+                    status: 'live' | 'comingSoon';
+                    /**
+                     * Optional lucide icon shown next to the label (e.g. calendar-check).
+                     */
+                    icon?: string | null;
+                    /**
+                     * Optional one-line description shown in mega-menu columns.
+                     */
+                    description?: string | null;
+                    /**
+                     * Optional grouped child links (e.g. Comparativas' 4 comparison pages). One level deep only.
+                     */
+                    children?:
+                      | {
+                          /**
+                           * Visible link label (localized EN/ES).
+                           */
+                          label: string;
+                          /**
+                           * Locale-relative path with a leading slash (e.g. "/pipeline-crm") or an absolute https URL. Leave empty for "comingSoon" items.
+                           */
+                          href?: string | null;
+                          /**
+                           * "Live" items are clickable and use href. "Coming soon" items render as a disabled badge, ignoring href.
+                           */
+                          status: 'live' | 'comingSoon';
+                          /**
+                           * Optional lucide icon shown next to the label (e.g. calendar-check).
+                           */
+                          icon?: string | null;
+                          /**
+                           * Optional one-line description shown in mega-menu columns.
+                           */
+                          description?: string | null;
+                          id?: string | null;
+                        }[]
+                      | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Flat navbar links outside mega menus (e.g. Precios, Sobre nosotros).
+   */
+  directLinks?:
+    | {
+        /**
+         * Visible link label (localized EN/ES).
+         */
+        label: string;
+        /**
+         * Locale-relative path with a leading slash (e.g. "/pipeline-crm") or an absolute https URL. Leave empty for "comingSoon" items.
+         */
+        href?: string | null;
+        /**
+         * "Live" items are clickable and use href. "Coming soon" items render as a disabled badge, ignoring href.
+         */
+        status: 'live' | 'comingSoon';
+        /**
+         * Optional lucide icon shown next to the label (e.g. calendar-check).
+         */
+        icon?: string | null;
+        /**
+         * Optional one-line description shown in mega-menu columns.
+         */
+        description?: string | null;
+        /**
+         * Optional grouped child links (e.g. Comparativas' 4 comparison pages). One level deep only.
+         */
+        children?:
+          | {
+              /**
+               * Visible link label (localized EN/ES).
+               */
+              label: string;
+              /**
+               * Locale-relative path with a leading slash (e.g. "/pipeline-crm") or an absolute https URL. Leave empty for "comingSoon" items.
+               */
+              href?: string | null;
+              /**
+               * "Live" items are clickable and use href. "Coming soon" items render as a disabled badge, ignoring href.
+               */
+              status: 'live' | 'comingSoon';
+              /**
+               * Optional lucide icon shown next to the label (e.g. calendar-check).
+               */
+              icon?: string | null;
+              /**
+               * Optional one-line description shown in mega-menu columns.
+               */
+              description?: string | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Footer columns (e.g. Producto, Industrias, Recursos).
+   */
+  footerColumns?:
+    | {
+        /**
+         * Column heading.
+         */
+        heading: string;
+        /**
+         * Primary links in this column.
+         */
+        items?:
+          | {
+              /**
+               * Visible link label (localized EN/ES).
+               */
+              label: string;
+              /**
+               * Locale-relative path with a leading slash (e.g. "/pipeline-crm") or an absolute https URL. Leave empty for "comingSoon" items.
+               */
+              href?: string | null;
+              /**
+               * "Live" items are clickable and use href. "Coming soon" items render as a disabled badge, ignoring href.
+               */
+              status: 'live' | 'comingSoon';
+              /**
+               * Optional lucide icon shown next to the label (e.g. calendar-check).
+               */
+              icon?: string | null;
+              /**
+               * Optional one-line description shown in mega-menu columns.
+               */
+              description?: string | null;
+              /**
+               * Optional grouped child links (e.g. Comparativas' 4 comparison pages). One level deep only.
+               */
+              children?:
+                | {
+                    /**
+                     * Visible link label (localized EN/ES).
+                     */
+                    label: string;
+                    /**
+                     * Locale-relative path with a leading slash (e.g. "/pipeline-crm") or an absolute https URL. Leave empty for "comingSoon" items.
+                     */
+                    href?: string | null;
+                    /**
+                     * "Live" items are clickable and use href. "Coming soon" items render as a disabled badge, ignoring href.
+                     */
+                    status: 'live' | 'comingSoon';
+                    /**
+                     * Optional lucide icon shown next to the label (e.g. calendar-check).
+                     */
+                    icon?: string | null;
+                    /**
+                     * Optional one-line description shown in mega-menu columns.
+                     */
+                    description?: string | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        /**
+         * Optional subgroup heading (e.g. a "Features" or "Comparativas" sub-block within the column).
+         */
+        subgroupHeading?: string | null;
+        /**
+         * Links inside the optional subgroup.
+         */
+        subgroupItems?:
+          | {
+              /**
+               * Visible link label (localized EN/ES).
+               */
+              label: string;
+              /**
+               * Locale-relative path with a leading slash (e.g. "/pipeline-crm") or an absolute https URL. Leave empty for "comingSoon" items.
+               */
+              href?: string | null;
+              /**
+               * "Live" items are clickable and use href. "Coming soon" items render as a disabled badge, ignoring href.
+               */
+              status: 'live' | 'comingSoon';
+              /**
+               * Optional lucide icon shown next to the label (e.g. calendar-check).
+               */
+              icon?: string | null;
+              /**
+               * Optional one-line description shown in mega-menu columns.
+               */
+              description?: string | null;
+              /**
+               * Optional grouped child links (e.g. Comparativas' 4 comparison pages). One level deep only.
+               */
+              children?:
+                | {
+                    /**
+                     * Visible link label (localized EN/ES).
+                     */
+                    label: string;
+                    /**
+                     * Locale-relative path with a leading slash (e.g. "/pipeline-crm") or an absolute https URL. Leave empty for "comingSoon" items.
+                     */
+                    href?: string | null;
+                    /**
+                     * "Live" items are clickable and use href. "Coming soon" items render as a disabled badge, ignoring href.
+                     */
+                    status: 'live' | 'comingSoon';
+                    /**
+                     * Optional lucide icon shown next to the label (e.g. calendar-check).
+                     */
+                    icon?: string | null;
+                    /**
+                     * Optional one-line description shown in mega-menu columns.
+                     */
+                    description?: string | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation_select".
+ */
+export interface NavigationSelect<T extends boolean = true> {
+  megaMenus?:
+    | T
+    | {
+        triggerLabel?: T;
+        columns?:
+          | T
+          | {
+              columnLabel?: T;
+              items?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                    status?: T;
+                    icon?: T;
+                    description?: T;
+                    children?:
+                      | T
+                      | {
+                          label?: T;
+                          href?: T;
+                          status?: T;
+                          icon?: T;
+                          description?: T;
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  directLinks?:
+    | T
+    | {
+        label?: T;
+        href?: T;
+        status?: T;
+        icon?: T;
+        description?: T;
+        children?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              status?: T;
+              icon?: T;
+              description?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  footerColumns?:
+    | T
+    | {
+        heading?: T;
+        items?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              status?: T;
+              icon?: T;
+              description?: T;
+              children?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                    status?: T;
+                    icon?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+        subgroupHeading?: T;
+        subgroupItems?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+              status?: T;
+              icon?: T;
+              description?: T;
+              children?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                    status?: T;
+                    icon?: T;
+                    description?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
