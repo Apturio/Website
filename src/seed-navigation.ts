@@ -355,10 +355,29 @@ const seedNavigation = async (): Promise<void> => {
   // Mirror the "already recorded" short-circuit used by the sibling
   // reconcile-*.ts scripts: refuse to write if the Global already has
   // content, unless explicitly overridden.
-  const existing = await payload.findGlobal({ slug: 'navigation', locale: 'en', depth: 0 })
-  if (Array.isArray(existing?.megaMenus) && existing.megaMenus.length > 0 && !process.env.FORCE_SEED_NAVIGATION) {
+  //
+  // WR-09: the original guard only inspected `megaMenus.length` on the `en`
+  // locale. An admin who deliberately empties every mega menu while leaving
+  // `directLinks`/`footerColumns` (or the `es` locale) populated would have
+  // that content silently clobbered, since the guard's precondition would
+  // never trigger. Check all three top-level arrays across both locales.
+  const hasContent = (
+    doc:
+      | { megaMenus?: unknown[] | null; directLinks?: unknown[] | null; footerColumns?: unknown[] | null }
+      | null
+      | undefined,
+  ): boolean =>
+    (doc?.megaMenus?.length ?? 0) > 0 ||
+    (doc?.directLinks?.length ?? 0) > 0 ||
+    (doc?.footerColumns?.length ?? 0) > 0
+
+  const [existingEn, existingEs] = await Promise.all([
+    payload.findGlobal({ slug: 'navigation', locale: 'en', depth: 0 }),
+    payload.findGlobal({ slug: 'navigation', locale: 'es', depth: 0 }),
+  ])
+  if ((hasContent(existingEn) || hasContent(existingEs)) && !process.env.FORCE_SEED_NAVIGATION) {
     payload.logger.warn(
-      '[seed-navigation] Navigation Global already has content — refusing to overwrite. Set FORCE_SEED_NAVIGATION=1 to override.',
+      '[seed-navigation] Navigation Global already has content (en or es) — refusing to overwrite. Set FORCE_SEED_NAVIGATION=1 to override.',
     )
     process.exit(1)
   }
