@@ -53,6 +53,16 @@ const childFields: Field[] = [
       description:
         'Locale-relative path with a leading slash (e.g. "/pipeline-crm") or an absolute https URL. Leave empty for "comingSoon" items.',
     },
+    // WR-08: validateNavHref validates a *trimmed* copy of `href` but Payload
+    // was persisting the raw, untrimmed value — an href saved with incidental
+    // whitespace (e.g. a leading space from a copy-paste) passed validation as
+    // a valid absolute URL yet rendered as a broken relative link at runtime,
+    // because isExternalHref (lib/navigation.ts) tests the raw stored value.
+    // Trim once here, at write time, so the *stored* value always matches what
+    // was validated — closes the gap for every consumer, not just isExternalHref.
+    hooks: {
+      beforeChange: [({ value }) => (typeof value === 'string' ? value.trim() : value)],
+    },
   },
   {
     name: 'status',
