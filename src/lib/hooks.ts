@@ -2,9 +2,10 @@ import type {
   CollectionBeforeValidateHook,
   CollectionBeforeChangeHook,
   CollectionAfterChangeHook,
+  GlobalAfterChangeHook,
   Payload,
 } from 'payload'
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 
 import { routing } from '@/i18n/routing'
 import { slugify } from '@/lib/slugify'
@@ -212,7 +213,14 @@ export const revalidatePostPaths: CollectionAfterChangeHook = async ({ doc, req 
 }
 
 // Slugs that map to the locale root (`/en`, `/es`) rather than `/en/<slug>`.
-const HOME_MARKER_SLUGS = new Set(['home', 'index', ''])
+// NOTE: '' is intentionally NOT included here. Both call sites that read a
+// slug value before checking this set (this file's own `getLocalizedSlugs`,
+// line ~121, and sitemap.xml/route.ts's `normalizeSlugMap`) already strip
+// empty-string slug entries before they ever reach a `HOME_MARKER_SLUGS.has()`
+// check — an empty slug for a locale is treated as "no slug for this locale"
+// upstream, not as "this locale's homepage". Adding '' here would be dead
+// code that can never match in the current pipeline.
+export const HOME_MARKER_SLUGS = new Set(['home', 'index'])
 
 /**
  * afterChange (Pages) — invalidate BOTH locales' localized URLs (or the locale
@@ -232,5 +240,45 @@ export const revalidatePagePaths: CollectionAfterChangeHook = async ({ doc, req 
   }
 
   safeRevalidate('/sitemap.xml')
+  return doc
+}
+
+// ---------- afterChange: Navigation Global revalidation (Phase 23) ----------
+
+/**
+ * Call `revalidateTag` defensively. Like `revalidatePath`, `revalidateTag` throws
+ * when invoked outside a Next.js request/render scope — e.g. during
+ * `payload run src/seed-navigation.ts` or `payload migrate` — so we swallow that
+ * error to keep seed/migration from crashing. The `'max'` profile is Next.js
+ * 16's replacement for the old single-argument call — required since Next
+ * 16.2 — but it is stale-while-revalidate, NOT an immediate on-demand purge:
+ * per Next's own docs, marking the tag stale does not itself trigger
+ * revalidation; the *first* visitor after this call is served the stale
+ * (pre-change) content while a background refetch happens, and only
+ * subsequent visitors see the fresh navigation. If truly-immediate
+ * invalidation is ever required, use `revalidateTag(tag, { expire: 0 })`
+ * instead, weighing the tradeoff against SWR's benefit on high-traffic paths.
+ */
+function safeRevalidateTag(tag: string): void {
+  try {
+    revalidateTag(tag, 'max')
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `[Payload] revalidateTag("${tag}") skipped (outside request scope): ${
+        err instanceof Error ? err.message : String(err)
+      }`,
+    )
+  }
+}
+
+/**
+ * afterChange (Navigation Global) — on save/publish, invalidate the single
+ * site-wide `navigation` cache tag so Navbar/Footer refetch without waiting
+ * for a redeploy. The Global has no per-locale or per-path structure worth
+ * branching on (NAVCMS-06) — one tag covers the whole site.
+ */
+export const revalidateNavigation: GlobalAfterChangeHook = ({ doc }) => {
+  safeRevalidateTag('navigation')
   return doc
 }

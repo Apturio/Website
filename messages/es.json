@@ -5,7 +5,79 @@
     "pricing": "Precios",
     "faq": "Preguntas Frecuentes",
     "getStarted": "Empezar",
-    "language": "Idioma"
+    "language": "Idioma",
+    "producto": "Producto",
+    "industrias": "Industrias",
+    "recursos": "Recursos",
+    "plataforma": "Plataforma",
+    "funcionalidades": "Funcionalidades",
+    "comingSoon": "Próximamente",
+    "pipelineCrm": {
+      "label": "Pipeline CRM",
+      "description": "Embudo de ventas visual para organizar y cerrar más deals"
+    },
+    "chatbotIa": {
+      "label": "Chatbot IA",
+      "description": "Vendedor virtual que atiende, vende y agenda 24/7"
+    },
+    "automatizaciones": {
+      "label": "Automatizaciones",
+      "description": "Secuencias, recordatorios, mensajes masivos y follow-up"
+    },
+    "implementacion": {
+      "label": "Implementación",
+      "description": "Done-for-you: te configuramos todo en 72 horas"
+    },
+    "softwareVentas": {
+      "label": "Software de ventas"
+    },
+    "chatbotWhatsapp": {
+      "label": "Chatbot WhatsApp"
+    },
+    "instagramChatbot": {
+      "label": "Instagram Chatbot"
+    },
+    "gestionReservas": {
+      "label": "Gestión de reservas"
+    },
+    "recordatorios": {
+      "label": "Recordatorios automáticos"
+    },
+    "clinicas": {
+      "label": "Clínicas"
+    },
+    "esteticas": {
+      "label": "Estéticas"
+    },
+    "bienesRaices": {
+      "label": "Bienes raíces"
+    },
+    "academias": {
+      "label": "Academias"
+    },
+    "blog": {
+      "label": "Blog",
+      "description": "Guías, tutoriales y estrategias de ventas"
+    },
+    "casosEstudio": {
+      "label": "Casos de estudio",
+      "description": "Resultados reales de clientes con Apturio"
+    },
+    "herramientasGratis": {
+      "label": "Herramientas gratis",
+      "description": "Link generator, calculadora ROI, plantillas"
+    },
+    "comparativas": {
+      "label": "Comparativas",
+      "description": "Apturio vs otros CRM del mercado",
+      "leadsales": "Apturio vs LeadSales",
+      "kommo": "Apturio vs Kommo",
+      "pipedrive": "Apturio vs PipeDrive",
+      "hubspot": "Apturio vs HubSpot"
+    },
+    "sobreNosotros": {
+      "label": "Sobre nosotros"
+    }
   },
   "hero": {
     "badge": "Configuración 'Llave en mano' valorada en $2.000",
@@ -383,8 +455,28 @@
     "payPerUse": "Precios de Pago por Uso",
     "privacy": "Política de Privacidad",
     "terms": "Términos de Servicio",
+    "sitemap": "Mapa del sitio",
     "rights": "Todos los derechos reservados.",
-    "copyright": "Apturio Ingeniería de IA"
+    "copyright": "Apturio Ingeniería de IA",
+    "tagline": "El CRM con IA que vende, agenda y da seguimiento por ti. Configuración llave en mano para que tú no toques nada.",
+    "col": {
+      "producto": "Producto",
+      "industrias": "Industrias",
+      "recursos": "Recursos"
+    },
+    "subgroup": {
+      "features": "Features",
+      "comparativas": "Comparativas",
+      "empresa": "Empresa"
+    },
+    "addOns": "Precios de Add-Ons",
+    "plantillas": "Plantillas",
+    "contacto": "Contacto",
+    "social": {
+      "whatsapp": "Chatea por WhatsApp",
+      "instagram": "Síguenos en Instagram",
+      "linkedin": "Síguenos en LinkedIn"
+    }
   },
   "privacy": {
     "title": "Política de Privacidad",
@@ -429,6 +521,10 @@
         "text": "Apturio no será responsable de ningún daño indirecto, incidental, especial, consecuente o punitivo que resulte de su uso del servicio."
       }
     ]
+  },
+  "sitemap": {
+    "title": "Mapa del sitio",
+    "description": "Explora todas las páginas del sitio de Apturio, agrupadas por sección."
   },
   "checkout": {
     "title": "Finaliza tu pedido",

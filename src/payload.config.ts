@@ -19,6 +19,7 @@ import { Pages } from './collections/Pages'
 import { Categories } from './collections/Categories'
 import { Authors } from './collections/Authors'
 import { Faqs } from './collections/Faqs'
+import { Navigation } from './globals/Navigation'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -129,6 +130,7 @@ export default buildConfig({
       })
     : undefined,
   collections: [Posts, Pages, Categories, Authors, Faqs, Media, Users],
+  globals: [Navigation],
   localization: {
     locales: [
       { code: 'en', label: 'English' },

@@ -451,3 +451,24 @@
   .svc-sticky .bar { flex-direction: column; align-items: stretch; border-radius: var(--radius-xl); padding: 16px; }
   .svc-sticky .txt { justify-content: center; text-align: center; }
 }
+
+/* ---- Comparison table (row label × N columns) ---- */
+.svc .cmp-scroll { overflow-x: auto; border: 1px solid var(--border-strong); border-radius: var(--radius-xl); }
+.svc .cmp-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+.svc .cmp-table th, .svc .cmp-table td { padding: 16px 20px; text-align: left; white-space: nowrap; }
+.svc .cmp-table thead th {
+  font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--fg-muted);
+  border-bottom: 1px solid var(--border-strong); font-weight: 600;
+}
+.svc .cmp-table thead th.is-highlight { color: var(--green-400); }
+.svc .cmp-table tbody th {
+  font-weight: 600; color: #fff; font: var(--body); white-space: normal;
+}
+.svc .cmp-table tbody td { color: var(--fg-muted); font-weight: 600; }
+.svc .cmp-table tbody td.is-highlight { color: var(--green-400); }
+.svc .cmp-table tbody tr { border-top: 1px solid var(--border-strong); }
+.svc .cmp-table tbody tr:first-child { border-top: none; }
+
+@media (max-width: 720px) {
+  .svc .cmp-table th, .svc .cmp-table td { padding: 12px 16px; }
+}

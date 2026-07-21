@@ -28,6 +28,8 @@ import { MiniPricingBlock } from '@/blocks/MiniPricingBlock/config'
 import { StrategyFormBlock } from '@/blocks/StrategyFormBlock/config'
 import { StickyCtaBlock } from '@/blocks/StickyCtaBlock/config'
 import { BonusBannerBlock } from '@/blocks/BonusBannerBlock/config'
+import { IntegrationsBlock } from '@/blocks/IntegrationsBlock/config'
+import { ComparisonTableBlock } from '@/blocks/ComparisonTableBlock/config'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -98,6 +100,8 @@ export const Pages: CollectionConfig = {
         StrategyFormBlock,
         StickyCtaBlock,
         BonusBannerBlock,
+        IntegrationsBlock,
+        ComparisonTableBlock,
       ],
     },
     {

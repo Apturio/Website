@@ -46,10 +46,9 @@ export function IconPickerField(props: TextFieldClientProps) {
         horizontalAlign="left"
         disabled={isReadOnly}
         button={
-          <button
-            type="button"
+          <div
             className="icon-picker__trigger"
-            disabled={isReadOnly}
+            aria-disabled={isReadOnly}
           >
             {Selected ? (
               <>
@@ -85,7 +84,7 @@ export function IconPickerField(props: TextFieldClientProps) {
               </span>
             )}
             <ChevronDown size={16} className="icon-picker__chevron" />
-          </button>
+          </div>
         }
         render={({ close }) => (
           <div className="icon-picker__popover">
