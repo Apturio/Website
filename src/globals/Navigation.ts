@@ -11,8 +11,20 @@ import { iconPickerField } from '@/fields/IconPicker/config'
  * defense-in-depth for a trusted-admin field. Empty values pass (comingSoon
  * items intentionally omit href).
  */
-const validateNavHref: TextFieldValidation = (value) => {
-  if (!value) return true
+/**
+ * WR-02: `status: 'live'` items are documented ("'Live' items are clickable
+ * and use href") and rendered ("item.status === 'live' && item.href") as
+ * requiring a non-empty href — but nothing previously enforced that. A
+ * `live` item left with an empty href silently fell into the `comingSoon`
+ * render branch, with no signal anywhere (admin UI or logs) that the data
+ * was misconfigured. Reject that combination at validation time instead.
+ */
+const validateNavHref: TextFieldValidation = (value, { siblingData }) => {
+  if (!value) {
+    return (siblingData as { status?: string } | undefined)?.status === 'live'
+      ? 'Href is required when status is "Live".'
+      : true
+  }
   if (typeof value !== 'string') return 'Href must be text.'
   const trimmed = value.trim()
   if (/^\//.test(trimmed) || /^https?:\/\//i.test(trimmed)) return true
