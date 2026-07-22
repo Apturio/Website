@@ -12,6 +12,10 @@ const nextConfig = {
   images: {
     // Cloudflare R2 public bucket hostname (media offload — wired for later phases)
     remotePatterns: [{ protocol: 'https', hostname: '*.r2.dev' }],
+    // Un solo formato (evita duplicar transformaciones avif+webp) y cache
+    // largo: las imágenes no cambian de URL al editarse.
+    formats: ['image/webp'],
+    minimumCacheTTL: 2678400,
   },
   async redirects() {
     // statusCode: 301 (not `permanent: true`, which emits 308) so old SPA links
