@@ -21,10 +21,12 @@ export function generateStaticParams() {
   return routing.locales.map((lang) => ({ lang }))
 }
 
-// Only `en`/`es` are valid locales. Reject any other `[lang]` value (e.g.
-// `/favicon.ico`, `/.well-known/...`) with a 404 BEFORE page code/generateMetadata
-// runs — otherwise the junk string reaches Payload as a locale and throws an enum error.
-export const dynamicParams = false
+// `dynamicParams = false` on this top-level `[lang]` segment crashes legit
+// requests with `Internal: NoFallbackError` on Next.js 16.2.7
+// (vercel/next.js#84738). Left `true` (the default); the `hasLocale` + `notFound()`
+// check below still rejects invalid locales (e.g. `/favicon.ico`), just slightly
+// later in the request lifecycle.
+export const dynamicParams = true
 
 export default async function LocaleLayout({
   children,
