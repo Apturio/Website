@@ -81,10 +81,6 @@ export const navMenus: NavMenu[] = [
         labelKey: 'nav.funcionalidades',
         items: [
           {
-            labelKey: 'nav.softwareVentas.label',
-            status: 'comingSoon',
-          },
-          {
             labelKey: 'nav.chatbotWhatsapp.label',
             status: 'live',
             href: '/chatbot-whatsapp',
@@ -136,22 +132,6 @@ export const navMenus: NavMenu[] = [
             labelKey: 'nav.casosEstudio.label',
             descriptionKey: 'nav.casosEstudio.description',
             status: 'comingSoon',
-          },
-          {
-            labelKey: 'nav.herramientasGratis.label',
-            descriptionKey: 'nav.herramientasGratis.description',
-            status: 'comingSoon',
-          },
-          {
-            labelKey: 'nav.comparativas.label',
-            descriptionKey: 'nav.comparativas.description',
-            status: 'comingSoon',
-            children: [
-              { labelKey: 'nav.comparativas.leadsales', status: 'comingSoon' },
-              { labelKey: 'nav.comparativas.kommo', status: 'comingSoon' },
-              { labelKey: 'nav.comparativas.pipedrive', status: 'comingSoon' },
-              { labelKey: 'nav.comparativas.hubspot', status: 'comingSoon' },
-            ],
           },
         ],
       },
@@ -248,19 +228,6 @@ const footerSitemap: NavLink = {
   href: '/sitemap.html',
 }
 
-// Comparativas is a single collapsed item in the navbar (its 4 comparison
-// pages live under `.children`); the footer expands those 4 children inline
-// inside the Industrias column's "Comparativas" subgroup instead.
-const comparativasEntry = navMenus[2].columns[0].items.find(
-  (item) => item.labelKey === 'nav.comparativas.label',
-)
-if (!comparativasEntry?.children) {
-  throw new Error(
-    'nav-links: expected navMenus[2] to contain a nav.comparativas.label entry with children',
-  )
-}
-const comparativasItems = comparativasEntry.children
-
 export const footerColumns: FooterColumn[] = [
   {
     headingKey: 'footer.col.producto',
@@ -278,19 +245,10 @@ export const footerColumns: FooterColumn[] = [
   {
     headingKey: 'footer.col.industrias',
     items: navMenus[1].columns[0].items,
-    subgroup: {
-      headingKey: 'footer.subgroup.comparativas',
-      items: comparativasItems,
-    },
   },
   {
     headingKey: 'footer.col.recursos',
-    items: [
-      ...navMenus[2].columns[0].items.filter(
-        (item) => item.labelKey !== 'nav.comparativas.label',
-      ),
-      footerPlantillas,
-    ],
+    items: [...navMenus[2].columns[0].items, footerPlantillas],
     subgroup: {
       headingKey: 'footer.subgroup.empresa',
       items: [navDirectLinks[1], footerContacto, footerPrivacy, footerTerms, footerSitemap],
