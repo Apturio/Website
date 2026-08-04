@@ -36,6 +36,26 @@ const hasS3 = Boolean(
 // Front-end origin used for live-preview iframes. Falls back to localhost in dev.
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 
+// CORS/CSRF allowlist. `serverURL` alone only covers ONE origin — insufficient
+// while the app is reachable from more than one host at once (temporary hosting
+// domains during migration, the eventual apturio.com). Without its origin in
+// this list, the browser's admin-panel writes (POST/PATCH) get silently
+// rejected by Payload's CSRF check ("You are not allowed to perform this
+// action"), even though the user is authenticated and has no access restriction.
+// `ADDITIONAL_ALLOWED_ORIGINS` (comma-separated) covers any other host without
+// a redeploy.
+const ALLOWED_ORIGINS = Array.from(
+  new Set(
+    [
+      SERVER_URL,
+      'https://apturio.com',
+      'https://apturio.aprendoclub.com',
+      'https://seagreen-rat-707084.hostingersite.com',
+      ...(process.env.ADDITIONAL_ALLOWED_ORIGINS?.split(',').map((origin) => origin.trim()) ?? []),
+    ].filter(Boolean),
+  ),
+)
+
 /**
  * Build the front-end preview URL for a Pages/Posts document. Includes the
  * active locale + `?draft=true` so the route renders the draft version inside
@@ -96,9 +116,11 @@ const corePlugins: Plugin[] = [
 ]
 
 export default buildConfig({
-  // Public origin of the app. Drives CORS/CSRF allowlist + email links. Falls back
+  // Public origin of the app. Drives email links + live-preview. Falls back
   // to localhost in dev. Set NEXT_PUBLIC_SERVER_URL in prod (https://apturio.com).
   serverURL: SERVER_URL,
+  cors: ALLOWED_ORIGINS,
+  csrf: ALLOWED_ORIGINS,
   admin: {
     user: Users.slug,
     importMap: {
