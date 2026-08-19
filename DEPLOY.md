@@ -133,6 +133,27 @@ and production uses R2 automatically once the vars are set. No code toggle neede
   | `S3_ENDPOINT` | `https://<accountid>.r2.cloudflarestorage.com` | Required for R2 (else SDK targets AWS). |
   | `S3_ACCESS_KEY_ID` | R2 token key id | |
   | `S3_SECRET_ACCESS_KEY` | R2 token secret | |
+  | `MEDIA_DIR` | `/home/<user>/domains/<domain>/uploads` | Self-hosted only, when R2 is **not** used. Absolute path **outside** the release directory — see below. |
+
+**Local-disk uploads on a self-hosted box (`MEDIA_DIR`).** Without the S3 vars,
+Payload writes uploads to disk. Its default `staticDir` resolves against the
+running process's cwd, which on Hostinger is the per-build release directory
+(`.../hbuilds/source/repository`). Every deploy checks out a *new* release dir,
+so the previous one's uploads are left behind and `/api/media/file/<name>`
+answers `500 {"errors":[{"message":"Something went wrong."}]}` — Payload's
+"file is missing on the disk" branch. Set `MEDIA_DIR` to an absolute path that
+lives outside the release directory (and make it writable by the Node user):
+
+```
+mkdir -p /home/<user>/domains/<domain>/uploads
+# recover files stranded in the previous release, if that dir still exists:
+cp -a /home/<user>/domains/<domain>/hbuilds/source/repository/media/. \
+      /home/<user>/domains/<domain>/uploads/
+```
+
+Files already lost to an overwritten release dir cannot be recovered from the
+DB — the Media records survive, so re-uploading the same filenames restores
+them in place. Moving to R2 removes the problem entirely.
 
 - [ ] [M] Deploy. Note the generated `https://<project>.vercel.app` preview URL —
       run the §5 gates against it **before** DNS cutover.
