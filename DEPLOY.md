@@ -99,11 +99,27 @@ and production uses R2 automatically once the vars are set. No code toggle neede
       or `engines.node` in `package.json` which already pins `>=20.9.0`).
 - [ ] [M] Set the **Build Command** to:
       ```
-      payload migrate && payload generate:importmap && payload generate:types && next build
+      payload generate:importmap && next build
       ```
-      (This is already the repo's `npm run build` script — Vercel can use the
-      default. Migrations are idempotent; running them in the build is the only
-      serverless-safe option.)
+      (This is already the repo's `npm run build` script — the provider can use the
+      default.)
+
+      **`payload migrate` is deliberately NOT part of the build.** The live DB was
+      built by Payload dev schema-push (see the "Dev DB caveat" above), so `migrate`
+      opens an interactive prompt — *"you've run Payload in dev mode… data loss will
+      occur. Would you like to proceed? (y/N)"* — which no CI runner can answer. On
+      the Hostinger runner that stall pushed a 31-minute build past the platform's
+      build timeout and the deploy was killed. Forcing it through with
+      `--forceAcceptWarning` (the real flag; `--yes` does not exist) would answer
+      **yes** to that data-loss prompt against production — do not add it to the
+      build. Run migrations deliberately instead, against a DB you intend to migrate:
+      ```
+      npm run migrate            # interactive, answer the prompt yourself
+      ```
+      `payload generate:types` was dropped from the build for the same
+      cost reason: `src/payload-types.ts` is committed, and `next build` already
+      type-checks against it, so regenerating it on the runner only re-loads the
+      whole Payload config for no gain.
 - [ ] [M] Set **Environment Variables** (Production scope; use a separate Neon
       branch URL for Preview scope):
 

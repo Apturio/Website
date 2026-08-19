@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "payload migrate && payload generate:importmap && payload generate:types && next build --webpack",
+    "build": "payload generate:importmap && next build --webpack",
+    "migrate": "payload migrate",
     "postbuild": "cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/",
     "build:next": "next build",
     "start": "next start",

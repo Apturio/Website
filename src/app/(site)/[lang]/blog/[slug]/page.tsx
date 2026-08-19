@@ -177,7 +177,16 @@ export default async function BlogPostPage({
         <div className="wrap">
           <div className="post-hero">
             {hero?.url ? (
-              <img src={hero.url} alt={hero.alt ?? post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 32 }} />
+              // Frame follows the upload's intrinsic ratio (portrait, square or
+              // panorama all render uncropped); CSS caps the height so a very
+              // tall image can't push the article below the fold.
+              <img
+                src={hero.url}
+                alt={hero.alt ?? post.title}
+                width={hero.width ?? undefined}
+                height={hero.height ?? undefined}
+                className="post-hero-img"
+              />
             ) : (
               <div className="img-slot" />
             )}
