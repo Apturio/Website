@@ -26,6 +26,8 @@ export async function generateStaticParams() {
     const { docs } = await payload.find({
       collection: 'pages',
       locale: lang,
+      // No fallback: a page that only exists in another language has no slug here.
+      fallbackLocale: false,
       where: { _status: { equals: 'published' } },
       limit: 1000,
       depth: 0,

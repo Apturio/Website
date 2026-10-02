@@ -1,6 +1,7 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { localeUrl, localizedAlternates } from '@/lib/site'
+import { docHasLocaleContent } from '@/lib/localized-content'
 import { HOME_MARKER_SLUGS } from '@/lib/hooks'
 
 // ISR — the sitemap does not need per-request freshness (consistent with the
@@ -38,6 +39,59 @@ function escapeXml(value: string): string {
 }
 
 type DynamicCollection = 'pages' | 'posts' | 'categories' | 'authors'
+
+/** Per locale: ids of the categories/authors that have at least one real post in it. */
+interface PostIndex {
+  categories: Record<string, Set<string>>
+  authors: Record<string, Set<string>>
+}
+
+const idOf = (v: unknown): string | null => {
+  const raw = v && typeof v === 'object' ? (v as { id?: unknown }).id : v
+  return raw == null ? null : String(raw)
+}
+
+async function buildPostIndex(payload: Awaited<ReturnType<typeof getPayload>>): Promise<PostIndex> {
+  const index: PostIndex = { categories: {}, authors: {} }
+  for (const locale of LOCALES) {
+    index.categories[locale] = new Set()
+    index.authors[locale] = new Set()
+  }
+  const { docs } = await payload.find({
+    collection: 'posts',
+    locale: 'all',
+    where: { _status: { equals: 'published' } },
+    depth: 0,
+    pagination: false,
+    overrideAccess: false,
+  })
+  for (const post of docs as unknown as Array<Record<string, unknown>>) {
+    const cat = idOf(post.category)
+    const author = idOf(post.author)
+    for (const locale of LOCALES) {
+      if (!docHasLocaleContent('posts', post, locale)) continue
+      if (cat) index.categories[locale].add(cat)
+      if (author) index.authors[locale].add(author)
+    }
+  }
+  return index
+}
+
+function localeHasContent(
+  collection: DynamicCollection,
+  doc: Record<string, unknown>,
+  locale: string,
+  index: PostIndex,
+): boolean {
+  const id = idOf(doc.id)
+  if (collection === 'authors') {
+    return docHasLocaleContent('authors', doc, locale) || (!!id && !!index.authors[locale]?.has(id))
+  }
+  if (collection === 'categories') {
+    return docHasLocaleContent('categories', doc, locale) && !!id && !!index.categories[locale]?.has(id)
+  }
+  return docHasLocaleContent(collection, doc, locale)
+}
 
 interface CollectionSpec {
   collection: DynamicCollection
@@ -127,6 +181,7 @@ function buildStaticEntries(): SitemapEntry[] {
 async function collectCollectionEntries(
   payload: Awaited<ReturnType<typeof getPayload>>,
   spec: CollectionSpec,
+  index: PostIndex,
 ): Promise<SitemapEntry[]> {
   const entries: SitemapEntry[] = []
 
@@ -141,6 +196,12 @@ async function collectCollectionEntries(
 
   for (const doc of docs as unknown as Array<Record<string, unknown>>) {
     const slugMap = normalizeSlugMap(doc.slug)
+    // Only list a language where the document really exists: an untranslated post
+    // (or an empty category/author page) must not appear until someone writes it.
+    // The sitemap revalidates hourly and on every post/page save (see lib/hooks.ts).
+    for (const locale of Object.keys(slugMap)) {
+      if (!localeHasContent(spec.collection, doc, locale, index)) delete slugMap[locale]
+    }
     if (Object.keys(slugMap).length === 0) continue
 
     const updatedAtRaw = doc.updatedAt
@@ -196,26 +257,34 @@ async function collectDynamicEntries(
 ): Promise<SitemapEntry[]> {
   const entries: SitemapEntry[] = []
 
+  let index: PostIndex = { categories: {}, authors: {} }
   try {
-    entries.push(...(await collectCollectionEntries(payload, PAGES_SPEC)))
+    index = await buildPostIndex(payload)
+  } catch (err) {
+    // Without the index, categories/authors are omitted (safe) rather than listed blindly.
+    console.error('[sitemap] post index failed', err)
+  }
+
+  try {
+    entries.push(...(await collectCollectionEntries(payload, PAGES_SPEC, index)))
   } catch (err) {
     console.error('[sitemap] pages query failed', err)
   }
 
   try {
-    entries.push(...(await collectCollectionEntries(payload, POSTS_SPEC)))
+    entries.push(...(await collectCollectionEntries(payload, POSTS_SPEC, index)))
   } catch (err) {
     console.error('[sitemap] posts query failed', err)
   }
 
   try {
-    entries.push(...(await collectCollectionEntries(payload, CATEGORIES_SPEC)))
+    entries.push(...(await collectCollectionEntries(payload, CATEGORIES_SPEC, index)))
   } catch (err) {
     console.error('[sitemap] categories query failed', err)
   }
 
   try {
-    entries.push(...(await collectCollectionEntries(payload, AUTHORS_SPEC)))
+    entries.push(...(await collectCollectionEntries(payload, AUTHORS_SPEC, index)))
   } catch (err) {
     console.error('[sitemap] authors query failed', err)
   }

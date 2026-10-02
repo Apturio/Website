@@ -29,6 +29,7 @@ export async function generateStaticParams() {
     const { docs } = await payload.find({
       collection: 'categories',
       locale: lang,
+      fallbackLocale: false,
       depth: 0,
       select: { slug: true },
       limit: 200,

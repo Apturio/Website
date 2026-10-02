@@ -10,12 +10,14 @@ import {
   asAuthor,
   asCategory,
   asMedia,
+  categoryHasContent,
   extractHeadings,
   formatDate,
   getLocalizedSlugMap,
   getPayloadClient,
   getPostBySlug,
   getPublishedPosts,
+  postHasContent,
   readTimeLabel,
 } from '@/lib/blog'
 import type { Post } from '@/payload-types'
@@ -36,6 +38,9 @@ export async function generateStaticParams() {
     const { docs } = await payload.find({
       collection: 'posts',
       locale: lang,
+      // No fallback: a post written only in another language has no slug here
+      // and must not get a static page in this locale.
+      fallbackLocale: false,
       where: { _status: { equals: 'published' } },
       depth: 0,
       select: { slug: true },
@@ -104,13 +109,15 @@ export default async function BlogPostPage({
   if (!post) notFound()
 
   const author = asAuthor(post.author)
-  const category = asCategory(post.category)
+  // Category read with no fallback: hide it if it has no title in this language.
+  const rawCategory = asCategory(post.category)
+  const category = rawCategory && categoryHasContent(rawCategory) ? rawCategory : null
   const hero = asMedia(post.heroImage)
   const headings = extractHeadings(post.content)
 
   // Related: manual relatedPosts (depth-resolved) else recent same-locale posts.
   let related: Post[] = Array.isArray(post.relatedPosts)
-    ? post.relatedPosts.filter((p): p is Post => typeof p === 'object')
+    ? post.relatedPosts.filter((p): p is Post => typeof p === 'object' && postHasContent(p))
     : []
   if (related.length === 0) {
     const recent = await getPublishedPosts(lang, 4)
