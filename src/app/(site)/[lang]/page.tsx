@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
+import { hasLocale } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 
 import { routing } from '@/i18n/routing'
 import { pageMetadata, SITE_URL, type AppLocale } from '@/lib/site'
@@ -28,6 +30,7 @@ export async function generateMetadata({
   params: Promise<{ lang: string }>
 }): Promise<Metadata> {
   const { lang } = await params
+  if (!hasLocale(routing.locales, lang)) return {}
   const page = await getPageBySlug(lang, 'home')
   const t = await getTranslations({ locale: lang, namespace: 'seo.home' })
 
@@ -41,6 +44,7 @@ export async function generateMetadata({
 
 export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
+  if (!hasLocale(routing.locales, lang)) notFound()
   setRequestLocale(lang)
   const t = await getTranslations({ locale: lang })
 

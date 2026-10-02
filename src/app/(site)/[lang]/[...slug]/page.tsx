@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { notFound, permanentRedirect, redirect } from 'next/navigation'
+import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
@@ -47,6 +48,7 @@ export async function generateMetadata({
   params: Promise<{ lang: string; slug: string[] }>
 }): Promise<Metadata> {
   const { lang, slug } = await params
+  if (!hasLocale(routing.locales, lang)) return {}
   const page = await getPageBySlug(lang, slug.join('/'))
   if (!page) return {}
 
@@ -74,6 +76,7 @@ export default async function DynamicPage({
   const { lang, slug } = await params
   const { draft } = await searchParams
   const isDraft = draft === 'true'
+  if (!hasLocale(routing.locales, lang)) notFound()
   setRequestLocale(lang)
 
   const page = await getPageBySlug(lang, slug.join('/'), { draft: isDraft })

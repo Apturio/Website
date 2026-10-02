@@ -9,6 +9,8 @@ import { seoPlugin } from '@payloadcms/plugin-seo'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
 import { resendAdapter } from '@payloadcms/email-resend'
+import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
+import nodemailer from 'nodemailer'
 import type { Plugin } from 'payload'
 import sharp from 'sharp'
 
@@ -34,7 +36,11 @@ const hasS3 = Boolean(
 )
 
 // Front-end origin used for live-preview iframes. Falls back to localhost in dev.
-const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+// Trailing slashes are stripped so `${SERVER_URL}/${locale}` never yields `//`.
+const SERVER_URL = (process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000').replace(
+  /\/+$/,
+  '',
+)
 
 // CORS/CSRF allowlist. `serverURL` alone only covers ONE origin — insufficient
 // while the app is reachable from more than one host at once (temporary hosting
@@ -141,16 +147,30 @@ export default buildConfig({
       ],
     },
   },
-  // Resend email adapter. Used for password-reset, form-submission emails, etc.
-  // Requires RESEND_API_KEY + a verified sender domain in the Resend dashboard.
-  // Falls back to undefined (Payload logs emails to console) when the key is absent.
-  email: process.env.RESEND_API_KEY
-    ? resendAdapter({
-        defaultFromName: process.env.RESEND_FROM_NAME || 'Apturio',
-        defaultFromAddress: process.env.RESEND_FROM_ADDRESS || 'noreply@aprendoseo.com',
-        apiKey: process.env.RESEND_API_KEY,
-      })
-    : undefined,
+  // Email (password-reset, form-submission notifications, etc.).
+  // 1. SMTP (Hostinger mailbox) when SMTP_HOST + SMTP_USER + SMTP_PASS are set.
+  // 2. Resend when RESEND_API_KEY is set (needs a verified sender domain there).
+  // 3. Neither: Payload logs emails to the console.
+  email:
+    process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS
+      ? nodemailerAdapter({
+          defaultFromName: process.env.SMTP_FROM_NAME || 'Apturio',
+          defaultFromAddress: process.env.SMTP_FROM_ADDRESS || process.env.SMTP_USER,
+          transport: nodemailer.createTransport({
+            host: process.env.SMTP_HOST,
+            port: Number(process.env.SMTP_PORT || 465),
+            // Port 465 = implicit TLS; 587 = STARTTLS (secure must be false).
+            secure: (process.env.SMTP_PORT || '465') === '465',
+            auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+          }),
+        })
+      : process.env.RESEND_API_KEY
+        ? resendAdapter({
+            defaultFromName: process.env.RESEND_FROM_NAME || 'Apturio',
+            defaultFromAddress: process.env.RESEND_FROM_ADDRESS || 'noreply@aprendoseo.com',
+            apiKey: process.env.RESEND_API_KEY,
+          })
+        : undefined,
   collections: [Posts, Pages, Categories, Authors, Faqs, Media, Users],
   globals: [Navigation],
   localization: {
