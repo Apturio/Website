@@ -2,6 +2,7 @@
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useTranslations, useLocale } from "next-intl";
+import { localePath } from '@/lib/site'
 
 type FaqItem = { q: string; a: string };
 
@@ -38,7 +39,7 @@ export function FAQ({
                 {item.a.includes('[/pay-per-use]') ? (
                   <>
                     {item.a.split('[/pay-per-use]')[0]}
-                    <a href={`/${language}/pay-per-use`} className="text-primary hover:underline">
+                    <a href={localePath(language, `/pay-per-use`)} className="text-primary hover:underline">
                       {language === 'es' ? 'desglose detallado de precios' : 'detailed pricing breakdown'}
                     </a>
                     {item.a.split('[/pay-per-use]')[1]}
@@ -46,7 +47,7 @@ export function FAQ({
                 ) : item.a.includes('[/add-ons]') ? (
                   <>
                     {item.a.split('[/add-ons]')[0]}
-                    <a href={`/${language}/add-ons`} className="text-primary hover:underline">
+                    <a href={localePath(language, `/add-ons`)} className="text-primary hover:underline">
                       {language === 'es' ? 'desglose detallado de precios' : 'detailed pricing breakdown'}
                     </a>
                     {item.a.split('[/add-ons]')[1]}

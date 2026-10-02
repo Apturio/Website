@@ -1,6 +1,6 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { SITE_URL, localizedAlternates } from '@/lib/site'
+import { localeUrl, localizedAlternates } from '@/lib/site'
 import { HOME_MARKER_SLUGS } from '@/lib/hooks'
 
 // ISR — the sitemap does not need per-request freshness (consistent with the
@@ -53,28 +53,28 @@ const COLLECTION_SPECS: CollectionSpec[] = [
     filterPublished: true,
     changefreq: 'weekly',
     priority: '0.7',
-    makeUrl: (locale, slug) => `${SITE_URL}/${locale}/${slug}`,
+    makeUrl: (locale, slug) => localeUrl(locale, `/${slug}`),
   },
   {
     collection: 'posts',
     filterPublished: true,
     changefreq: 'weekly',
     priority: '0.6',
-    makeUrl: (locale, slug) => `${SITE_URL}/${locale}/blog/${slug}`,
+    makeUrl: (locale, slug) => localeUrl(locale, `/blog/${slug}`),
   },
   {
     collection: 'categories',
     filterPublished: false,
     changefreq: 'weekly',
     priority: '0.5',
-    makeUrl: (locale, slug) => `${SITE_URL}/${locale}/blog/category/${slug}`,
+    makeUrl: (locale, slug) => localeUrl(locale, `/blog/category/${slug}`),
   },
   {
     collection: 'authors',
     filterPublished: false,
     changefreq: 'weekly',
     priority: '0.5',
-    makeUrl: (locale, slug) => `${SITE_URL}/${locale}/blog/author/${slug}`,
+    makeUrl: (locale, slug) => localeUrl(locale, `/blog/author/${slug}`),
   },
 ]
 
@@ -103,14 +103,14 @@ function buildStaticEntries(): SitemapEntry[] {
   for (const path of STATIC_PATHS) {
     for (const locale of LOCALES) {
       entries.push({
-        loc: `${SITE_URL}/${locale}${path}`,
+        loc: localeUrl(locale, path),
         lastmod: new Date().toISOString(),
         changefreq: 'weekly',
         priority: path === '' ? '1.0' : '0.7',
         alternates: {
-          en: `${SITE_URL}/en${path}`,
-          es: `${SITE_URL}/es${path}`,
-          'x-default': `${SITE_URL}/en${path}`,
+          en: localeUrl('en', path),
+          es: localeUrl('es', path),
+          'x-default': localeUrl('en', path),
         },
       })
     }
@@ -168,7 +168,7 @@ async function collectCollectionEntries(
         slugMap,
         (loc, slug) =>
           spec.collection === 'pages' && HOME_MARKER_SLUGS.has(slug)
-            ? `${SITE_URL}/${loc}`
+            ? localeUrl(loc)
             : spec.makeUrl(loc, slug),
       )
       entries.push({

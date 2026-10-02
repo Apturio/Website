@@ -48,7 +48,7 @@ export const InlineCTABanner: Block = {
       type: 'text',
       required: true,
       admin: {
-        description: 'Destination URL or anchor (e.g. /en/strategy-call or #cta).',
+        description: 'Destination URL or anchor (e.g. /strategy-call, /es/strategy-call or #cta).',
       },
     },
     {

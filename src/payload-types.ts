@@ -2583,7 +2583,7 @@ export interface Navigation {
                      */
                     description?: string | null;
                     /**
-                     * Optional grouped child links (e.g. Comparativas' 4 comparison pages). One level deep only.
+                     * Optional grouped child links (e.g. Comparativas' 4 comparison pages). One level deep only. NOTE: child links are not currently rendered anywhere on the live site — adding or editing them here has no visible effect until a renderer is built to display them.
                      */
                     children?:
                       | {
@@ -2645,7 +2645,7 @@ export interface Navigation {
          */
         description?: string | null;
         /**
-         * Optional grouped child links (e.g. Comparativas' 4 comparison pages). One level deep only.
+         * Optional grouped child links (e.g. Comparativas' 4 comparison pages). One level deep only. NOTE: child links are not currently rendered anywhere on the live site — adding or editing them here has no visible effect until a renderer is built to display them.
          */
         children?:
           | {
@@ -2710,7 +2710,7 @@ export interface Navigation {
                */
               description?: string | null;
               /**
-               * Optional grouped child links (e.g. Comparativas' 4 comparison pages). One level deep only.
+               * Optional grouped child links (e.g. Comparativas' 4 comparison pages). One level deep only. NOTE: child links are not currently rendered anywhere on the live site — adding or editing them here has no visible effect until a renderer is built to display them.
                */
               children?:
                 | {
@@ -2770,7 +2770,7 @@ export interface Navigation {
                */
               description?: string | null;
               /**
-               * Optional grouped child links (e.g. Comparativas' 4 comparison pages). One level deep only.
+               * Optional grouped child links (e.g. Comparativas' 4 comparison pages). One level deep only. NOTE: child links are not currently rendered anywhere on the live site — adding or editing them here has no visible effect until a renderer is built to display them.
                */
               children?:
                 | {
@@ -2972,7 +2972,7 @@ export interface InlineCTABannerBlock {
   body?: string | null;
   buttonLabel: string;
   /**
-   * Destination URL or anchor (e.g. /en/strategy-call or #cta).
+   * Destination URL or anchor (e.g. /strategy-call, /es/strategy-call or #cta).
    */
   href: string;
   /**

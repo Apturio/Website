@@ -19,16 +19,10 @@ const nextConfig = {
   },
   async redirects() {
     // statusCode: 301 (not `permanent: true`, which emits 308) so old SPA links
-    // resolve with a classic 301 Moved Permanently.
+    // resolve with a classic 301 Moved Permanently. English pages are unprefixed
+    // (/pay-per-use, /add-ons, ...) and are served by the next-intl rewrite in
+    // src/middleware.ts, so only the Spanish-only demo funnel needs a redirect.
     return [
-      // Marketing pages — default to English
-      { source: '/pay-per-use', destination: '/en/pay-per-use', statusCode: 301 },
-      { source: '/add-ons', destination: '/en/add-ons', statusCode: 301 },
-      { source: '/strategy-call', destination: '/en/strategy-call', statusCode: 301 },
-      { source: '/privacy-policy', destination: '/en/privacy-policy', statusCode: 301 },
-      { source: '/terms-of-service', destination: '/en/terms-of-service', statusCode: 301 },
-      { source: '/thank-you', destination: '/en/thank-you', statusCode: 301 },
-      { source: '/checkout/:planId', destination: '/en/checkout/:planId', statusCode: 301 },
       // Demo funnel was Spanish-first — redirect to ES locale
       { source: '/demo-spanish', destination: '/es/demo-spanish', statusCode: 301 },
       { source: '/demo-spanish/thank-you', destination: '/es/demo-spanish/thank-you', statusCode: 301 },

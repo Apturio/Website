@@ -3,6 +3,7 @@ import Link from 'next/link'
 import type { Post } from '@/payload-types'
 import type { AppLocale } from '@/lib/site'
 import { asAuthor, asCategory, asMedia, formatDate, readTimeLabel } from '@/lib/blog'
+import { localePath } from '@/lib/site'
 
 /**
  * Article card for the index / category / author grids. Server Component.
@@ -16,7 +17,7 @@ export function BlogCard({ post, locale }: { post: Post; locale: AppLocale }) {
 
   return (
     <Link
-      href={`/${locale}/blog/${post.slug}`}
+      href={localePath(locale, `/blog/${post.slug}`)}
       className="card"
       data-blog-card
       data-category={category?.slug ?? ''}

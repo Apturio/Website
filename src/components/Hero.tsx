@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Calendar, MessageCircle } from "lucide-react";
 import { getTranslations, getLocale } from "next-intl/server";
 import type { HeroBlock } from "@/payload-types";
+import { localePath } from '@/lib/site'
 
 // Accepts an optional HeroBlock (block-driven home) and falls back to next-intl
 // when rendered without a block (legacy hardcoded path). Markup is unchanged.
@@ -18,7 +19,7 @@ export async function Hero({ block, lang }: { block?: HeroBlock; lang?: string }
   const ctaSecondaryLabel = block?.ctaSecondaryLabel ?? t('hero.ctaSecondary');
   const ctaSecondaryHref =
     block?.ctaSecondaryHref ??
-    (language === 'es' ? 'https://wa.me/15614731298' : `/${language}/strategy-call`);
+    (language === 'es' ? 'https://wa.me/15614731298' : localePath(language, `/strategy-call`));
   const secondaryExternal = /^https?:\/\//.test(ctaSecondaryHref);
 
   return (

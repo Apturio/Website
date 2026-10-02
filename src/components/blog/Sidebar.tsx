@@ -4,6 +4,7 @@ import { getTranslations } from 'next-intl/server'
 
 import type { AppLocale } from '@/lib/site'
 import { NewsletterForm } from '@/components/blog/NewsletterForm'
+import { localePath } from '@/lib/site'
 
 /** Dark CRO offer card (sticky sidebar) — stays dark per design intent. */
 export async function CroCard({ locale }: { locale: AppLocale }) {
@@ -34,7 +35,7 @@ export async function CroCard({ locale }: { locale: AppLocale }) {
           <span>{t('croFeatureSetup')}</span>
         </li>
       </ul>
-      <Link href={`/${locale}/strategy-call`} className="btn btn-primary btn-block btn-pill">
+      <Link href={localePath(locale, `/strategy-call`)} className="btn btn-primary btn-block btn-pill">
         {t('croClaim')}
       </Link>
       <p className="fine">{t('croFine')}</p>

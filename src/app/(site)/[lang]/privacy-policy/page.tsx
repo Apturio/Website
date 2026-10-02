@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { pageMetadata, SITE_URL, type AppLocale } from '@/lib/site'
+import { pageMetadata, SITE_URL, type AppLocale, localeUrl } from '@/lib/site'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { PageJsonLd } from '@/components/PageJsonLd'
@@ -52,7 +52,7 @@ export default async function PrivacyPolicyPage({ params }: { params: Promise<{ 
       <PageJsonLd
         kind="legal"
         locale={lang as AppLocale}
-        url={`${SITE_URL}/${lang}/privacy-policy`}
+        url={localeUrl(lang, `/privacy-policy`)}
         title={t('privacy.title')}
       />
     </div>

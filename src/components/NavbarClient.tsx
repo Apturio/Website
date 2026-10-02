@@ -31,6 +31,7 @@ import { ComingSoonBadge } from "@/components/ComingSoonBadge";
 import type { NavigationView, NavItemView } from "@/lib/navigation";
 import { isExternalHref } from "@/lib/nav-href";
 import { cn } from "@/lib/utils";
+import { localePath, localePrefix } from '@/lib/site'
 
 type TFunction = ReturnType<typeof useTranslations>;
 
@@ -172,7 +173,7 @@ export function NavbarClient({ view }: { view: NavigationView }) {
   const handleLanguageChange = (lang: 'en' | 'es') => {
     if (lang === language) return;
     // Prefer the localized counterpart URL emitted as an hreflang <link> by the
-    // page's generateMetadata — handles localized slugs (e.g. /en/automated-booking
+    // page's generateMetadata — handles localized slugs (e.g. /automated-booking
     // -> /es/agendamiento-automatizado). Fall back to swapping the locale prefix.
     let target: string | null = null;
     if (typeof document !== 'undefined') {
@@ -189,8 +190,12 @@ export function NavbarClient({ view }: { view: NavigationView }) {
       }
     }
     if (!target) {
-      target = pathname.replace(new RegExp(`^/${language}`), `/${lang}`);
+      const bare = pathname.replace(/^\/es(?=\/|$)/, '') || '/';
+      target = localePath(lang, bare);
     }
+    // Persist the explicit choice so the IP-based first-visit redirect on `/`
+    // (src/middleware.ts) never overrides it.
+    document.cookie = `NEXT_LOCALE=${lang}; path=/; max-age=31536000; samesite=lax`;
     router.push(target);
   };
 
@@ -205,18 +210,18 @@ export function NavbarClient({ view }: { view: NavigationView }) {
     };
   }, [isOpen]);
 
-  const home = `/${language}`;
+  const home = localePrefix(language);
 
   // Same CTA route-resolution logic as Hero.tsx's secondary CTA — not reinvented
   // for the navbar (CONTEXT.md decision).
   const ctaHref =
-    language === 'es' ? 'https://wa.me/15614731298' : `/${language}/strategy-call`;
+    language === 'es' ? 'https://wa.me/15614731298' : localePath(language, `/strategy-call`);
   const ctaExternal = /^https?:\/\//.test(ctaHref);
 
   return (
     <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-        <Link href={home} className="flex items-center gap-2">
+        <Link href={home || '/'} className="flex items-center gap-2">
           <img src="https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png" alt="Apturio Logo" className="h-10 w-auto" />
         </Link>
 

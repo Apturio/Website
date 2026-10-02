@@ -6,7 +6,7 @@ import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { SITE_URL, localizedAlternates, type AppLocale } from '@/lib/site'
+import { SITE_URL, localizedAlternates, type AppLocale, localePath, localeUrl } from '@/lib/site'
 import { getPageBySlug } from '@/lib/pages'
 import { findRedirect } from '@/lib/redirects'
 import { getLocalizedSlugMap } from '@/lib/blog'
@@ -56,7 +56,7 @@ export async function generateMetadata({
   const { canonical, languages } = localizedAlternates(
     lang as AppLocale,
     slugMap,
-    (loc, s) => `${SITE_URL}/${loc}/${s}`,
+    (loc, s) => localeUrl(loc, `/${s}`),
   )
 
   return {
@@ -83,7 +83,7 @@ export default async function DynamicPage({
 
   // No matching Page → honor a CMS-managed redirect before 404ing.
   if (!page || !page.layout || page.layout.length === 0) {
-    const requestPath = `/${lang}/${slug.join('/')}`
+    const requestPath = localePath(lang, `/${slug.join('/')}`)
     const hit = await findRedirect(requestPath)
     if (hit) {
       // Permanent (301-class → Next emits 308) vs temporary (302-class → 307).
@@ -108,7 +108,7 @@ export default async function DynamicPage({
       <PageJsonLd
         kind="payload-page"
         locale={lang as AppLocale}
-        url={`${SITE_URL}/${lang}/${slug.join('/')}`}
+        url={localeUrl(lang, `/${slug.join('/')}`)}
         page={page}
       />
     </div>

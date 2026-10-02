@@ -1,10 +1,9 @@
 // The stylesheet is a constant — no DB access, no per-request work.
 export const dynamic = 'force-static'
 
-// First-path-segment locale predicate (origin- and slug-independent): yields
-// 'en' for both https://apturio.com/en and https://apturio.com/en/blog/x,
-// and 'es' for the es URLs, without misclassifying a slug that merely
-// contains the letters "en".
+// First-path-segment predicate (origin- and slug-independent): yields 'es' for
+// https://apturio.com/es and https://apturio.com/es/blog/x, and anything else
+// (https://apturio.com/, /blog/x) is English, which is served unprefixed.
 const LOCALE_PREDICATE =
   "substring-before(concat(substring-after(substring-after(sitemap:loc,'://'),'/'),'/'),'/')"
 
@@ -96,7 +95,7 @@ const XSL = `<?xml version="1.0" encoding="UTF-8"?>
           <img src="https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png" alt="Apturio"/>
           <h1>Sitemap</h1>
         </div>
-        <xsl:if test="sitemap:urlset/sitemap:url[${LOCALE_PREDICATE}='en']">
+        <xsl:if test="sitemap:urlset/sitemap:url[not(${LOCALE_PREDICATE}='es')]">
           <section>
             <h2>English</h2>
             <table>
@@ -108,7 +107,7 @@ const XSL = `<?xml version="1.0" encoding="UTF-8"?>
                 </tr>
               </thead>
               <tbody>
-                <xsl:for-each select="sitemap:urlset/sitemap:url[${LOCALE_PREDICATE}='en']">
+                <xsl:for-each select="sitemap:urlset/sitemap:url[not(${LOCALE_PREDICATE}='es')]">
                   <tr>
                     <td class="url"><a href="{sitemap:loc}"><xsl:value-of select="sitemap:loc"/></a></td>
                     <td><xsl:value-of select="sitemap:lastmod"/></td>

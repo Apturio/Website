@@ -4,7 +4,7 @@ import { ArrowLeft } from 'lucide-react'
 import { setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { pageMetadata, SITE_URL, type AppLocale } from '@/lib/site'
+import { pageMetadata, SITE_URL, type AppLocale, localePath, localeUrl } from '@/lib/site'
 import type { PricingPlan } from '@/lib/schema/builders/product'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
@@ -52,7 +52,7 @@ export default async function AddOnsPage({ params }: { params: Promise<{ lang: s
 
   // One Product per add-on from the page's own visible ADD_ONS (content-match,
   // Pitfall 1). All add-ons bill monthly per the page note above.
-  const url = `${SITE_URL}/${lang}/add-ons`
+  const url = localeUrl(lang, `/add-ons`)
   const plans: PricingPlan[] = ADD_ONS.map((addon) => ({
     name: addon.name,
     price: addon.price,
@@ -66,7 +66,7 @@ export default async function AddOnsPage({ params }: { params: Promise<{ lang: s
       <Navbar />
       <main className="flex-1 pt-32 pb-24">
         <div className="container mx-auto px-4 max-w-4xl">
-          <Link href={`/${lang}`} className="inline-flex items-center text-slate-400 hover:text-white mb-8 transition-colors">
+          <Link href={localePath(lang)} className="inline-flex items-center text-slate-400 hover:text-white mb-8 transition-colors">
             <ArrowLeft className="w-4 h-4 mr-2" />
             {es ? 'Volver al Inicio' : 'Back to Home'}
           </Link>

@@ -18,13 +18,19 @@ export async function findRedirect(fromPath: string): Promise<ResolvedRedirect |
   const payload = await getPayload({ config })
 
   // Match the path as stored, and tolerate a trailing-slash variant.
-  const candidates = Array.from(
-    new Set([fromPath, fromPath.replace(/\/$/, ''), `${fromPath.replace(/\/$/, '')}/`]),
-  )
+  const bare = fromPath.replace(/\/$/, '') || '/'
+  const candidates = new Set([fromPath, bare, `${bare}/`])
+  // English is served unprefixed, but redirects authored while it lived under
+  // /en/... are still stored that way: match those too.
+  if (!/^\/es(\/|$)/.test(bare)) {
+    const legacy = `/en${bare === '/' ? '' : bare}`
+    candidates.add(legacy)
+    candidates.add(`${legacy}/`)
+  }
 
   const { docs } = await payload.find({
     collection: 'redirects',
-    where: { from: { in: candidates } },
+    where: { from: { in: Array.from(candidates) } },
     limit: 1,
     depth: 1,
     pagination: false,
@@ -45,7 +51,8 @@ export async function findRedirect(fromPath: string): Promise<ResolvedRedirect |
   const status = r.type ?? '301'
 
   if (r.to.type === 'custom' && r.to.url) {
-    return { to: r.to.url, type: status }
+    // Targets stored as /en/... point at the unprefixed English URL.
+    return { to: r.to.url.replace(/^\/en(?=[/?#]|$)/, '') || '/', type: status }
   }
 
   if (r.to.type === 'reference' && r.to.reference && typeof r.to.reference.value === 'object') {

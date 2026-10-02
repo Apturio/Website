@@ -5,7 +5,7 @@ import { Check, ArrowLeft, ShieldCheck } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { pageMetadata, type AppLocale } from '@/lib/site'
+import { pageMetadata, type AppLocale, localePath } from '@/lib/site'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 
@@ -87,7 +87,7 @@ export default async function CheckoutPage({
       <Navbar />
       <main className="flex-1 pt-32 pb-20">
         <div className="container mx-auto px-4 max-w-6xl">
-          <Link href={`/${lang}#pricing`} className="inline-flex items-center text-slate-400 hover:text-white mb-8 transition-colors">
+          <Link href={localePath(lang, '#pricing')} className="inline-flex items-center text-slate-400 hover:text-white mb-8 transition-colors">
             <ArrowLeft className="mr-2 h-4 w-4" />
             {t('checkout.back')}
           </Link>

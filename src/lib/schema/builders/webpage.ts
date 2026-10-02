@@ -4,7 +4,7 @@ import { IDS } from '@/lib/schema/ids'
 
 export interface WebPageInput {
   locale: AppLocale
-  /** Full locale-prefixed canonical URL, e.g. `https://apturio.com/en/pay-per-use`. */
+  /** Full canonical URL, e.g. `https://apturio.com/pay-per-use` (English) or `https://apturio.com/es/pay-per-use`. */
   url: string
   title: string
   description?: string

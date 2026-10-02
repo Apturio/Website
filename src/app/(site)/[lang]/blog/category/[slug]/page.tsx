@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { SITE_URL, localizedAlternates, type AppLocale } from '@/lib/site'
+import { SITE_URL, localizedAlternates, type AppLocale, localePath, localeUrl } from '@/lib/site'
 import {
   asMedia,
   getCategories,
@@ -54,7 +54,7 @@ export async function generateMetadata({
   const { canonical, languages } = localizedAlternates(
     lang as AppLocale,
     slugMap,
-    (loc, s) => `${SITE_URL}/${loc}/blog/category/${s}`,
+    (loc, s) => localeUrl(loc, `/blog/category/${s}`),
   )
 
   return {
@@ -92,13 +92,13 @@ export default async function CategoryPage({
       <div className="subnav">
         <div className="wrap">
           <div className="subnav-in">
-            <Link href={`/${lang}/blog`} className="cat-chip">
+            <Link href={localePath(lang, `/blog`)} className="cat-chip">
               {t('all')}
             </Link>
             {categories.map((c) => (
               <Link
                 key={c.id}
-                href={`/${lang}/blog/category/${c.slug}`}
+                href={localePath(lang, `/blog/category/${c.slug}`)}
                 className={`cat-chip${c.id === category.id ? ' on' : ''}`}
               >
                 <span className="ck" />
@@ -113,7 +113,7 @@ export default async function CategoryPage({
       <header className="page-head">
         <div className="wrap inner">
           <div className="breadcrumb" style={{ justifyContent: 'flex-start', marginBottom: 0 }}>
-            <Link href={`/${lang}/blog`}>{t('blog')}</Link>
+            <Link href={localePath(lang, `/blog`)}>{t('blog')}</Link>
             <span className="sep">/</span>
             <span style={{ color: '#E7E8EE' }}>{t('category')}</span>
           </div>
@@ -128,7 +128,7 @@ export default async function CategoryPage({
       {/* lead article */}
       {lead && (
         <section className="wrap">
-          <Link href={`/${lang}/blog/${lead.slug}`} className="cat-hero">
+          <Link href={localePath(lang, `/blog/${lead.slug}`)} className="cat-hero">
             <div className="media">
               {leadHero?.url ? (
                 <img src={leadHero.url} alt={leadHero.alt ?? lead.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -175,7 +175,7 @@ export default async function CategoryPage({
                 {categories.map((c) => (
                   <Link
                     key={c.id}
-                    href={`/${lang}/blog/category/${c.slug}`}
+                    href={localePath(lang, `/blog/category/${c.slug}`)}
                     className={c.id === category.id ? 'on' : undefined}
                   >
                     {c.title} <span className="n">{counts[c.id] ?? 0}</span>
@@ -192,7 +192,7 @@ export default async function CategoryPage({
       <PageJsonLd
         kind="blog-category"
         locale={lang}
-        url={`${SITE_URL}/${lang}/blog/category/${slug}`}
+        url={localeUrl(lang, `/blog/category/${slug}`)}
         title={category.title}
         description={category.description ?? undefined}
       />

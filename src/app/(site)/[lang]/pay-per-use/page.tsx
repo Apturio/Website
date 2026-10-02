@@ -4,7 +4,7 @@ import { ArrowLeft } from 'lucide-react'
 import { setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { pageMetadata, SITE_URL, type AppLocale } from '@/lib/site'
+import { pageMetadata, SITE_URL, type AppLocale, localePath, localeUrl } from '@/lib/site'
 import type { PricingPlan } from '@/lib/schema/builders/product'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
@@ -148,7 +148,7 @@ export default async function PayPerUsePage({ params }: { params: Promise<{ lang
   // Representative variable-usage line items → Product per item (content-match,
   // Pitfall 1: prices come straight from the visible SECTIONS above; unitText reflects
   // the billing unit). Numeric prices use schema.org dot-decimal regardless of ES display.
-  const url = `${SITE_URL}/${lang}/pay-per-use`
+  const url = localeUrl(lang, `/pay-per-use`)
   const plans: PricingPlan[] = [
     { name: 'Making calls per min (US/CAN)', price: '$0.0560', description: 'Outbound calls (US/CAN)', unitText: 'per minute', pageUrl: url },
     { name: 'Receiving calls per min (US/CAN)', price: '$0.0340', description: 'Inbound calls (US/CAN)', unitText: 'per minute', pageUrl: url },
@@ -163,7 +163,7 @@ export default async function PayPerUsePage({ params }: { params: Promise<{ lang
       <Navbar />
       <main className="flex-1 pt-32 pb-24">
         <div className="container mx-auto px-4 max-w-4xl">
-          <Link href={`/${lang}`} className="inline-flex items-center text-slate-400 hover:text-white mb-8">
+          <Link href={localePath(lang)} className="inline-flex items-center text-slate-400 hover:text-white mb-8">
             <ArrowLeft className="w-4 h-4 mr-2" />
             {es ? 'Volver al Inicio' : 'Back to Home'}
           </Link>

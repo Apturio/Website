@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import type { StickyCtaBlock } from '@/payload-types'
+import { cleanHref } from '@/lib/site'
 
 export function StickyCtaBlockComponent({ block }: { block: StickyCtaBlock; lang: string }) {
   const [show, setShow] = useState(false)
@@ -35,7 +36,7 @@ export function StickyCtaBlockComponent({ block }: { block: StickyCtaBlock; lang
               </>
             ) : null}
           </div>
-          <a href={block.ctaHref ?? '#strategy'} className="btn btn-primary btn-pill">
+          <a href={cleanHref(block.ctaHref ?? '#strategy')} className="btn btn-primary btn-pill">
             {block.ctaLabel}
           </a>
           <button

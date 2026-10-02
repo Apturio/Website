@@ -1,6 +1,7 @@
 import Link from 'next/link'
 
 import type { InlineCTABannerBlock as InlineCTABannerData } from '@/payload-types'
+import { cleanHref } from '@/lib/site'
 
 /**
  * Inline CTA banner — dark conversion card inserted mid-article (custom Lexical
@@ -21,7 +22,7 @@ export function InlineCTABanner({ data }: { data: InlineCTABannerData }) {
           {data.body && <p>{data.body}</p>}
         </div>
         <div className="act">
-          <Link href={data.href} className="btn btn-primary btn-lg btn-pill">
+          <Link href={cleanHref(data.href)} className="btn btn-primary btn-lg btn-pill">
             {data.buttonLabel}
           </Link>
         </div>

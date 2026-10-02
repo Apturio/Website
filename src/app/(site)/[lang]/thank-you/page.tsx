@@ -5,7 +5,7 @@ import { CheckCircle2 } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { pageMetadata, type AppLocale } from '@/lib/site'
+import { pageMetadata, type AppLocale, localePath } from '@/lib/site'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { Button } from '@/components/ui/button'
@@ -66,7 +66,7 @@ export default async function ThankYouPage({ params }: { params: Promise<{ lang:
           </div>
 
           <div className="pt-8">
-            <Link href={`/${lang}`}>
+            <Link href={localePath(lang)}>
               <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 px-8 py-6 text-lg rounded-xl">
                 {t('thankyou.button')}
               </Button>

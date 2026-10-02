@@ -5,7 +5,7 @@ import { Bell, Globe } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { SITE_URL, pageMetadata, type AppLocale } from '@/lib/site'
+import { SITE_URL, pageMetadata, type AppLocale, localePath, localeUrl } from '@/lib/site'
 import {
   asCategory,
   asMedia,
@@ -109,7 +109,7 @@ export default async function AuthorPage({
       <header className="author-hero">
         <div className="wrap inner">
           <div className="breadcrumb" style={{ justifyContent: 'flex-start', marginBottom: 28 }}>
-            <Link href={`/${lang}/blog`}>{t('blog')}</Link>
+            <Link href={localePath(lang, `/blog`)}>{t('blog')}</Link>
             <span className="sep">/</span>
             <span style={{ color: '#A6A7AE' }}>{t('authors')}</span>
             <span className="sep">/</span>
@@ -216,7 +216,7 @@ export default async function AuthorPage({
       <PageJsonLd
         kind="author"
         locale={lang}
-        url={`${SITE_URL}/${lang}/blog/author/${author.slug}`}
+        url={localeUrl(lang, `/blog/author/${author.slug}`)}
         author={authorInput}
       />
     </main>

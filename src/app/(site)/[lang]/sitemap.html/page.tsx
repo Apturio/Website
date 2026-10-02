@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { pageMetadata, type AppLocale } from '@/lib/site'
+import { pageMetadata, type AppLocale, localePrefix } from '@/lib/site'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
 import { ComingSoonBadge } from '@/components/ComingSoonBadge'
@@ -78,7 +78,7 @@ export default async function SitemapPage({ params }: { params: Promise<{ lang: 
   setRequestLocale(lang)
   const t = await getTranslations({ locale: lang })
   const view = await getNavigationView(lang, t)
-  const home = `/${lang}`
+  const home = localePrefix(lang)
   const comingSoonLabel = t('nav.comingSoon')
 
   return (

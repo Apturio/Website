@@ -22,6 +22,7 @@ import { Categories } from './collections/Categories'
 import { Authors } from './collections/Authors'
 import { Faqs } from './collections/Faqs'
 import { Navigation } from './globals/Navigation'
+import { localePath } from './lib/site'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -36,7 +37,7 @@ const hasS3 = Boolean(
 )
 
 // Front-end origin used for live-preview iframes. Falls back to localhost in dev.
-// Trailing slashes are stripped so `${SERVER_URL}/${locale}` never yields `//`.
+// Trailing slashes are stripped so `${SERVER_URL}${path}` never yields `//`.
 const SERVER_URL = (process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000').replace(
   /\/+$/,
   '',
@@ -74,10 +75,10 @@ const buildPreviewURL = (
 ): string => {
   const slug = typeof data?.slug === 'string' ? data.slug : ''
   if (kind === 'posts') {
-    return `${SERVER_URL}/${localeCode}/blog/${slug}?draft=true`
+    return `${SERVER_URL}${localePath(localeCode, `/blog/${slug}`)}?draft=true`
   }
-  if (!slug || slug === 'home') return `${SERVER_URL}/${localeCode}?draft=true`
-  return `${SERVER_URL}/${localeCode}/${slug}?draft=true`
+  if (!slug || slug === 'home') return `${SERVER_URL}${localePath(localeCode)}?draft=true`
+  return `${SERVER_URL}${localePath(localeCode, `/${slug}`)}?draft=true`
 }
 
 // Core plugins (SEO, Form Builder, Redirects). S3 storage is appended only when

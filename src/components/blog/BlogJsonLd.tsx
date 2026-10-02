@@ -1,6 +1,6 @@
 import type { Post } from '@/payload-types'
 import type { AppLocale } from '@/lib/site'
-import { SITE_URL } from '@/lib/site'
+import { SITE_URL, localeUrl } from '@/lib/site'
 import { asAuthor, asCategory, asMedia } from '@/lib/blog'
 import { countWordsInLexical } from '@/lib/hooks'
 import { buildBlogPosting } from '@/lib/schema/builders/article'
@@ -20,7 +20,7 @@ import { JsonLdScript } from '@/components/JsonLdScript'
  * post node references the global Organization/Person nodes by `@id`.
  */
 export function BlogPostJsonLd({ post, locale }: { post: Post; locale: AppLocale }) {
-  const url = `${SITE_URL}/${locale}/blog/${post.slug}`
+  const url = localeUrl(locale, `/blog/${post.slug}`)
   const author = asAuthor(post.author)
   const category = asCategory(post.category)
   const hero = asMedia(post.heroImage)
@@ -56,10 +56,10 @@ export function BlogPostJsonLd({ post, locale }: { post: Post; locale: AppLocale
 
   // Home-first breadcrumb: Home → Blog → Category? → Post (caller builds the full list).
   const items: BreadcrumbItem[] = [
-    { name: HOME_LABEL[locale], url: `${SITE_URL}/${locale}` },
-    { name: 'Blog', url: `${SITE_URL}/${locale}/blog` },
+    { name: HOME_LABEL[locale], url: localeUrl(locale) },
+    { name: 'Blog', url: localeUrl(locale, `/blog`) },
     ...(category
-      ? [{ name: category.title, url: `${SITE_URL}/${locale}/blog/category/${category.slug}` }]
+      ? [{ name: category.title, url: localeUrl(locale, `/blog/category/${category.slug}`) }]
       : []),
     { name: post.title, url },
   ]
