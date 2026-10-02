@@ -19,6 +19,7 @@
     "test:icons": "node scripts/test-icon-parity.ts",
     "test:geo": "node --test scripts/test-geo.ts",
     "test:locale": "node --test scripts/test-locale-paths.ts",
+    "test:content": "node --test scripts/test-localized-content.ts",
     "generate:previews": "payload run scripts/generate-block-previews.ts",
     "verify:previews": "node scripts/verify-block-previews.ts",
     "generate:variant-previews": "payload run scripts/generate-variant-previews.ts",
