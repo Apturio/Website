@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { SITE_URL, pageMetadata, type AppLocale } from '@/lib/site'
+import { SITE_URL, pageMetadata, type AppLocale, localePath, localeUrl } from '@/lib/site'
 import {
   asAuthor,
   asCategory,
@@ -79,7 +79,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ lang
       {/* featured */}
       {featured && (
         <section className="wrap">
-          <Link href={`/${lang}/blog/${featured.slug}`} className="featured">
+          <Link href={localePath(lang, `/blog/${featured.slug}`)} className="featured">
             <div className="media">
               <span className="tag tag-chip">
                 <span className="d" />
@@ -143,7 +143,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ lang
       <PageJsonLd
         kind="blog-index"
         locale={lang}
-        url={`${SITE_URL}/${lang}/blog`}
+        url={localeUrl(lang, `/blog`)}
         title={t('indexTitle')}
         description={t('indexSubtitle')}
       />

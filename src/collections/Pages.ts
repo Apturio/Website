@@ -34,7 +34,8 @@ import { ComparisonTableBlock } from '@/blocks/ComparisonTableBlock/config'
 export const Pages: CollectionConfig = {
   slug: 'pages',
   access: {
-    read: () => true,
+    // Anonymous REST/GraphQL readers only see published docs; admins see drafts.
+    read: ({ req }) => (req.user ? true : { _status: { equals: 'published' } }),
   },
   admin: {
     useAsTitle: 'title',

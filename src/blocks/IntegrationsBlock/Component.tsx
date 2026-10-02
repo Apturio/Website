@@ -1,5 +1,6 @@
 import type { IntegrationsBlock } from '@/payload-types'
 import type { Media } from '@/payload-types'
+import { cleanHref } from '@/lib/site'
 
 export function IntegrationsBlockComponent({ block }: { block: IntegrationsBlock; lang: string }) {
   return (
@@ -24,7 +25,7 @@ export function IntegrationsBlockComponent({ block }: { block: IntegrationsBlock
                 </div>
               )
               return it.href ? (
-                <a href={it.href} key={it.id ?? i} className="feat-card-link">
+                <a href={cleanHref(it.href)} key={it.id ?? i} className="feat-card-link">
                   {card}
                 </a>
               ) : (

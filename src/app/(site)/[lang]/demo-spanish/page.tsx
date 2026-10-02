@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { pageMetadata, SITE_URL, type AppLocale } from '@/lib/site'
+import { pageMetadata, SITE_URL, type AppLocale, localeUrl } from '@/lib/site'
 import { DemoForm } from '@/components/DemoForm'
 import { PageJsonLd } from '@/components/PageJsonLd'
 
@@ -39,7 +39,7 @@ export default async function DemoSpanishPage({ params }: { params: Promise<{ la
         kind="demo"
         noindex
         locale={lang as AppLocale}
-        url={`${SITE_URL}/${lang}/demo-spanish`}
+        url={localeUrl(lang, `/demo-spanish`)}
         title="Solicita tu Demo"
       />
     </div>

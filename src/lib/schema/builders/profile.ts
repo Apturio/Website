@@ -1,6 +1,6 @@
 import type { AppLocale } from '@/lib/site'
 import type { Person, ProfilePage, WithContext } from 'schema-dts'
-import { SITE_URL } from '@/lib/site'
+import { SITE_URL, localeUrl } from '@/lib/site'
 import { IDS } from '@/lib/schema/ids'
 
 /**
@@ -56,7 +56,7 @@ export function buildPerson(
  * WebSite; `inLanguage` is required (Pitfall 7).
  */
 export function buildProfilePage(author: AuthorInput, locale: AppLocale): WithContext<ProfilePage> {
-  const authorUrl = `${SITE_URL}/${locale}/blog/author/${author.slug}`
+  const authorUrl = localeUrl(locale, `/blog/author/${author.slug}`)
   return {
     '@context': 'https://schema.org',
     '@type': 'ProfilePage',

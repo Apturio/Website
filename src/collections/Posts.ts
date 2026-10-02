@@ -7,7 +7,8 @@ import { jsonLdOverrideField } from './fields/jsonLdOverride'
 export const Posts: CollectionConfig = {
   slug: 'posts',
   access: {
-    read: () => true,
+    // Anonymous REST/GraphQL readers only see published docs; admins see drafts.
+    read: ({ req }) => (req.user ? true : { _status: { equals: 'published' } }),
   },
   admin: {
     useAsTitle: 'title',

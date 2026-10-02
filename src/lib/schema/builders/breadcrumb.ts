@@ -3,7 +3,7 @@ import type { BreadcrumbList, WithContext } from 'schema-dts'
 
 /**
  * Localized label for the breadcrumb root. Callers MUST pass
- * `{ name: HOME_LABEL[locale], url: `${SITE_URL}/${locale}` }` as `items[0]` —
+ * `{ name: HOME_LABEL[locale], url: localeUrl(locale) }` as `items[0]` —
  * this builder NEVER silently injects Home (Anti-Pattern: breadcrumb sin Home).
  */
 export const HOME_LABEL: Record<AppLocale, string> = { en: 'Home', es: 'Inicio' }

@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bot } from "lucide-react";
+import { localePath } from '@/lib/site'
 
 export function DemoForm({ locale }: { locale: string }) {
   const router = useRouter();
@@ -54,7 +55,7 @@ export function DemoForm({ locale }: { locale: string }) {
 
     setTimeout(() => {
       setIsLoading(false);
-      router.push(`/${locale}/demo-spanish/thank-you`);
+      router.push(localePath(locale, `/demo-spanish/thank-you`));
     }, 1000);
   };
 

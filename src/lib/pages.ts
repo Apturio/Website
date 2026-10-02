@@ -1,5 +1,8 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { hasLocale } from 'next-intl'
+
+import { routing } from '@/i18n/routing'
 
 import type { Page } from '@/payload-types'
 
@@ -13,6 +16,9 @@ export async function getPageBySlug(
   slug: string,
   opts: { draft?: boolean } = {},
 ): Promise<Page | null> {
+  // Bot probes like `/favicon.ico` or `/xmlrpc.php` land in `[lang]`; an invalid
+  // locale would make Postgres throw (invalid enum) and surface as a 500.
+  if (!hasLocale(routing.locales, lang)) return null
   const payload = await getPayload({ config })
   const { draft = false } = opts
   const { docs } = await payload.find({

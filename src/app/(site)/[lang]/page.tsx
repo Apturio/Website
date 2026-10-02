@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
+import { hasLocale } from 'next-intl'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
+import { notFound } from 'next/navigation'
 
 import { routing } from '@/i18n/routing'
-import { pageMetadata, SITE_URL, type AppLocale } from '@/lib/site'
+import { pageMetadata, SITE_URL, type AppLocale, localeUrl } from '@/lib/site'
 import { getPageBySlug } from '@/lib/pages'
 import type { PricingPlan } from '@/lib/schema/builders/product'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
@@ -28,6 +30,7 @@ export async function generateMetadata({
   params: Promise<{ lang: string }>
 }): Promise<Metadata> {
   const { lang } = await params
+  if (!hasLocale(routing.locales, lang)) return {}
   const page = await getPageBySlug(lang, 'home')
   const t = await getTranslations({ locale: lang, namespace: 'seo.home' })
 
@@ -41,6 +44,7 @@ export async function generateMetadata({
 
 export default async function HomePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
+  if (!hasLocale(routing.locales, lang)) notFound()
   setRequestLocale(lang)
   const t = await getTranslations({ locale: lang })
 
@@ -50,7 +54,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: str
   // otherwise fall back to the i18n plan names + current monthly prices. Plans are
   // monthly subscriptions, so unitText is "per month"; pageUrl is the home canonical.
   const locale = lang as AppLocale
-  const homeUrl = `${SITE_URL}/${lang}`
+  const homeUrl = localeUrl(lang)
   const pricingBlock = page?.layout?.find((b) => b.blockType === 'pricing')
   const plans: PricingPlan[] =
     pricingBlock && 'plans' in pricingBlock && pricingBlock.plans?.length

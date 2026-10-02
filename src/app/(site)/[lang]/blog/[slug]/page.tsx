@@ -5,7 +5,7 @@ import { ArrowRight, Link2 } from 'lucide-react'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 import { routing } from '@/i18n/routing'
-import { SITE_URL, SITE_NAME, localizedAlternates, type AppLocale } from '@/lib/site'
+import { SITE_URL, SITE_NAME, localizedAlternates, type AppLocale, localePath, localeUrl } from '@/lib/site'
 import {
   asAuthor,
   asCategory,
@@ -66,7 +66,7 @@ export async function generateMetadata({
   const { canonical: selfUrl, languages } = localizedAlternates(
     lang,
     slugMap,
-    (loc, s) => `${SITE_URL}/${loc}/blog/${s}`,
+    (loc, s) => localeUrl(loc, `/blog/${s}`),
   )
 
   const title = post.meta?.title ?? `${post.title} | ${SITE_NAME}`
@@ -119,7 +119,7 @@ export default async function BlogPostPage({
     related = related.slice(0, 3)
   }
 
-  const shareUrl = `${SITE_URL}/${lang}/blog/${post.slug}`
+  const shareUrl = localeUrl(lang, `/blog/${post.slug}`)
   const xShare = `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(post.title)}`
   const liShare = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`
 
@@ -131,11 +131,11 @@ export default async function BlogPostPage({
       <header className="post-head">
         <div className="wrap inner">
           <div className="breadcrumb">
-            <Link href={`/${lang}/blog`}>{t('blog')}</Link>
+            <Link href={localePath(lang, `/blog`)}>{t('blog')}</Link>
             <span className="sep">/</span>
             {category && (
               <>
-                <Link href={`/${lang}/blog/category/${category.slug}`}>{category.title}</Link>
+                <Link href={localePath(lang, `/blog/category/${category.slug}`)}>{category.title}</Link>
                 <span className="sep">/</span>
               </>
             )}
@@ -227,7 +227,7 @@ export default async function BlogPostPage({
                     )}
                   </span>
                   <div>
-                    <Link href={`/${lang}/blog/author/${author.slug}`} className="nm" style={{ display: 'block' }}>
+                    <Link href={localePath(lang, `/blog/author/${author.slug}`)} className="nm" style={{ display: 'block' }}>
                       {author.name}
                     </Link>
                     {author.role && <div className="role">{author.role} · Apturio</div>}
@@ -254,7 +254,7 @@ export default async function BlogPostPage({
               <div>
                 <h2>{t('keepReading')}</h2>
               </div>
-              <Link href={`/${lang}/blog`} className="more">
+              <Link href={localePath(lang, `/blog`)} className="more">
                 {t('allArticles')} <ArrowRight />
               </Link>
             </div>

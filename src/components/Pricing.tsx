@@ -5,6 +5,7 @@ import { getTranslations, getLocale } from "next-intl/server";
 import { PricingTable } from "./PricingTable";
 import { PricingTableToggle } from "./PricingTableToggle";
 import type { PricingBlock } from "@/payload-types";
+import { localePath, cleanHref } from '@/lib/site'
 
 type Tier = {
   id: string;
@@ -48,7 +49,7 @@ export async function Pricing({ block, lang }: { block?: PricingBlock; lang?: st
       description: p.description ?? '',
       features: (p.features ?? []).map((f) => f.feature),
       cta: p.ctaLabel,
-      link: p.ctaHref ?? `/${language}/checkout/${p.planId}`,
+      link: p.ctaHref ? cleanHref(p.ctaHref) : localePath(language, `/checkout/${p.planId}`),
       badge: p.planId === 'engine' ? (p.bonus ?? t('pricing.bonus')) : undefined,
       badgeStyle: p.planId === 'engine' ? ENGINE_BADGE_STYLE : undefined,
       ctaColor: CTA_COLOR[p.planId] ?? CTA_COLOR.foundation,
@@ -63,7 +64,7 @@ export async function Pricing({ block, lang }: { block?: PricingBlock; lang?: st
         description: t('pricing.plans.foundation.description'),
         features: t.raw('pricing.plans.foundation.features') as string[],
         cta: t('pricing.plans.foundation.cta'),
-        link: `/${language}/checkout/foundation`,
+        link: localePath(language, `/checkout/foundation`),
         ctaColor: CTA_COLOR.foundation,
         subText: t('pricing.plans.foundation.subText'),
       },
@@ -74,7 +75,7 @@ export async function Pricing({ block, lang }: { block?: PricingBlock; lang?: st
         description: t('pricing.plans.engine.description'),
         features: t.raw('pricing.plans.engine.features') as string[],
         cta: t('pricing.plans.engine.cta'),
-        link: `/${language}/checkout/engine`,
+        link: localePath(language, `/checkout/engine`),
         badge: t('pricing.bonus'),
         badgeStyle: ENGINE_BADGE_STYLE,
         ctaColor: CTA_COLOR.engine,
@@ -86,7 +87,7 @@ export async function Pricing({ block, lang }: { block?: PricingBlock; lang?: st
         description: t('pricing.plans.growth.description'),
         features: t.raw('pricing.plans.growth.features') as string[],
         cta: t('pricing.plans.growth.cta'),
-        link: `/${language}/checkout/growth`,
+        link: localePath(language, `/checkout/growth`),
         ctaColor: CTA_COLOR.growth,
       },
     ];
@@ -218,7 +219,7 @@ export async function Pricing({ block, lang }: { block?: PricingBlock; lang?: st
               </Button>
             ) : (
               <Button asChild variant="outline" className="rounded-full border-white/20 hover:bg-white/10 text-white font-bold px-8">
-                <Link href={`/${language}/strategy-call`}>
+                <Link href={localePath(language, `/strategy-call`)}>
                   {t('pricing.enterprise.cta')}
                 </Link>
               </Button>

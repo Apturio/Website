@@ -2,7 +2,7 @@ import type { AppLocale } from '@/lib/site'
 import type { Page } from '@/payload-types'
 import type { Thing, WithContext } from 'schema-dts'
 
-import { SITE_URL } from '@/lib/site'
+import { SITE_URL, localeUrl } from '@/lib/site'
 import { buildBreadcrumbList, HOME_LABEL, type BreadcrumbItem } from './builders/breadcrumb'
 import { buildCollectionPage } from './builders/collection'
 import { buildContactPage } from './builders/contact'
@@ -32,12 +32,12 @@ export type PageJsonLdProps =
 
 /** The Home crumb every breadcrumb list starts with (Home-first — Pitfall 12). */
 function homeCrumb(locale: AppLocale): BreadcrumbItem {
-  return { name: HOME_LABEL[locale], url: `${SITE_URL}/${locale}` }
+  return { name: HOME_LABEL[locale], url: localeUrl(locale) }
 }
 
 /** The Blog crumb, used by blog-scoped breadcrumb trails (category, author). */
 function blogCrumb(locale: AppLocale): BreadcrumbItem {
-  return { name: 'Blog', url: `${SITE_URL}/${locale}/blog` }
+  return { name: 'Blog', url: localeUrl(locale, `/blog`) }
 }
 
 /**

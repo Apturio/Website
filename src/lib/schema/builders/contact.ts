@@ -4,7 +4,7 @@ import { IDS } from '@/lib/schema/ids'
 
 export interface ContactPageInput {
   locale: AppLocale
-  /** Full locale-prefixed canonical URL, e.g. `https://apturio.com/en/strategy-call`. */
+  /** Full canonical URL, e.g. `https://apturio.com/strategy-call` (English) or `https://apturio.com/es/strategy-call`. */
   url: string
   title: string
   description?: string

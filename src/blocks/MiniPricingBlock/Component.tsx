@@ -1,5 +1,6 @@
 import type { MiniPricingBlock } from '@/payload-types'
 import { Icon } from '../_shared/Icon'
+import { cleanHref } from '@/lib/site'
 
 type Plan = NonNullable<MiniPricingBlock['plans']>[number]
 
@@ -22,7 +23,7 @@ function PlanCard({ p }: { p: Plan }) {
         ))}
       </ul>
       <a
-        href={p.ctaHref ?? '#strategy'}
+        href={cleanHref(p.ctaHref ?? '#strategy')}
         className={`btn ${p.featured ? 'btn-primary' : 'btn-dark'} btn-block btn-pill`}
       >
         {p.ctaLabel}

@@ -80,19 +80,29 @@ export const computeReadTime: CollectionBeforeChangeHook = ({ data }) => {
  * swallow that error so seed/migration never crash; the ISR time-based fallback
  * (`revalidate: 3600`) still refreshes content in those cases.
  *
- * NOTE: `revalidatePath` takes the URL PATH (e.g. `/en/blog/foo`), never the
+ * NOTE: `revalidatePath` takes the URL PATH (e.g. `/es/blog/foo`), never the
  * filesystem route (`(site)/[lang]/blog/[slug]`). Route groups are invisible.
+ * English is public WITHOUT a prefix but renders from the internal `/en/...`
+ * route (next-intl rewrite), so callers pass `/en/...` and both the internal
+ * and the public unprefixed path are invalidated (revalidating an unknown path
+ * is harmless).
  */
 function safeRevalidate(urlPath: string): void {
-  try {
-    revalidatePath(urlPath)
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.warn(
-      `[Payload] revalidatePath("${urlPath}") skipped (outside request scope): ${
-        err instanceof Error ? err.message : String(err)
-      }`,
-    )
+  const paths = [urlPath]
+  if (urlPath === '/en') paths.push('/')
+  else if (urlPath.startsWith('/en/')) paths.push(urlPath.slice(3))
+
+  for (const path of paths) {
+    try {
+      revalidatePath(path)
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[Payload] revalidatePath("${path}") skipped (outside request scope): ${
+          err instanceof Error ? err.message : String(err)
+        }`,
+      )
+    }
   }
 }
 
@@ -212,7 +222,7 @@ export const revalidatePostPaths: CollectionAfterChangeHook = async ({ doc, req 
   return doc
 }
 
-// Slugs that map to the locale root (`/en`, `/es`) rather than `/en/<slug>`.
+// Slugs that map to the locale root (`/`, `/es`) rather than `/<slug>` (`/es/<slug>`).
 // NOTE: '' is intentionally NOT included here. Both call sites that read a
 // slug value before checking this set (this file's own `getLocalizedSlugs`,
 // line ~121, and sitemap.xml/route.ts's `normalizeSlugMap`) already strip

@@ -1,6 +1,6 @@
 import type { AppLocale } from '@/lib/site'
 import type { BlogPosting, WithContext } from 'schema-dts'
-import { SITE_URL } from '@/lib/site'
+import { SITE_URL, localeUrl } from '@/lib/site'
 import { IDS } from '@/lib/schema/ids'
 
 /**
@@ -37,7 +37,7 @@ export interface BlogPostingInput {
  */
 export function buildBlogPosting(input: BlogPostingInput): WithContext<BlogPosting> {
   const authorUrl = input.author
-    ? `${SITE_URL}/${input.locale}/blog/author/${input.author.slug}`
+    ? localeUrl(input.locale, `/blog/author/${input.author.slug}`)
     : null
 
   return {
