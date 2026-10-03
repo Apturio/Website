@@ -32,6 +32,7 @@ import type { NavigationView, NavItemView } from "@/lib/navigation";
 import { isExternalHref } from "@/lib/nav-href";
 import { cn } from "@/lib/utils";
 import { localePath, localePrefix } from '@/lib/site'
+import { OptImage } from '@/components/OptImage'
 
 type TFunction = ReturnType<typeof useTranslations>;
 
@@ -155,9 +156,9 @@ function MobileMegaMenuRow({
   return (
     <div aria-disabled="true" className="flex min-h-[44px] items-center gap-4 rounded-xl p-4 cursor-default">
       {item.icon && (
-        <Icon name={item.icon} className="h-5 w-5 shrink-0 text-slate-500 opacity-50" />
+        <Icon name={item.icon} className="h-5 w-5 shrink-0 text-slate-400 opacity-50" />
       )}
-      <span className="text-[16px] font-semibold text-slate-500">{item.label}</span>
+      <span className="text-[16px] font-semibold text-slate-400">{item.label}</span>
       <ComingSoonBadge label={t("nav.comingSoon")} />
     </div>
   );
@@ -222,7 +223,7 @@ export function NavbarClient({ view }: { view: NavigationView }) {
     <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href={home || '/'} className="flex items-center gap-2">
-          <img src="https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png" alt="Apturio Logo" className="h-10 w-auto" />
+          <OptImage src="https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png" alt="Apturio Logo" className="h-10 w-auto" width={138} height={40} sizes="138px" priority />
         </Link>
 
         <NavigationMenu className="hidden lg:flex" delayDuration={150}>
@@ -310,12 +311,16 @@ export function NavbarClient({ view }: { view: NavigationView }) {
             {ctaExternal ? (
               <a href={ctaHref} target="_blank" rel="noopener noreferrer">
                 {t('nav.getStarted')}
+                <span className="sr-only">{language === 'es' ? ' con Apturio' : ' with Apturio'}</span>
               </a>
             ) : (
-              <Link href={ctaHref}>{t('nav.getStarted')}</Link>
+              <Link href={ctaHref}>
+                {t('nav.getStarted')}
+                <span className="sr-only">{language === 'es' ? ' con Apturio' : ' with Apturio'}</span>
+              </Link>
             )}
           </Button>
-          <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setIsOpen(true)}>
+          <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setIsOpen(true)} aria-label={language === 'es' ? 'Abrir menú' : 'Open menu'} aria-expanded={isOpen}>
             <Menu className="h-6 w-6 text-foreground" />
           </Button>
         </div>
@@ -323,13 +328,13 @@ export function NavbarClient({ view }: { view: NavigationView }) {
 
       {isOpen && (
         <div className="fixed inset-0 z-[99999] bg-black w-screen h-screen flex flex-col pt-[80px] px-[24px] pb-8 animate-in slide-in-from-right duration-300 overflow-y-auto lg:hidden">
-          <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="absolute top-4 right-4 hover:bg-white/10">
+          <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="absolute top-4 right-4 hover:bg-white/10" aria-label={language === 'es' ? 'Cerrar menú' : 'Close menu'}>
             <X className="h-8 w-8 text-white" />
           </Button>
 
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between px-4 mb-4">
-              <span className="text-sm font-medium text-slate-500 uppercase tracking-widest">{t('nav.language')}</span>
+              <span className="text-sm font-medium text-slate-400 uppercase tracking-widest">{t('nav.language')}</span>
               <div className="flex gap-2">
                 <Button
                   variant={language === 'en' ? 'default' : 'outline'}
@@ -409,7 +414,7 @@ export function NavbarClient({ view }: { view: NavigationView }) {
                     aria-disabled="true"
                     className="flex min-h-[44px] items-center gap-4 p-4 rounded-xl cursor-default"
                   >
-                    <span className="text-[18px] font-bold text-slate-500">{link.label}</span>
+                    <span className="text-[18px] font-bold text-slate-400">{link.label}</span>
                     <ComingSoonBadge label={t("nav.comingSoon")} />
                   </div>
                 ),
@@ -421,20 +426,20 @@ export function NavbarClient({ view }: { view: NavigationView }) {
 
           {ctaExternal ? (
             <a href={ctaHref} target="_blank" rel="noopener noreferrer" onClick={() => setIsOpen(false)} className="w-full">
-              <Button className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-14 text-[18px] shadow-[0_0_15px_rgba(120,125,255,0.4)] hover:shadow-[0_0_25px_rgba(120,125,255,0.6)] transition-all">
+              <Button className="w-full rounded-full bg-primary-solid hover:bg-primary-solid/90 text-primary-foreground font-bold h-14 text-[18px] shadow-[0_0_15px_rgba(120,125,255,0.4)] hover:shadow-[0_0_25px_rgba(120,125,255,0.6)] transition-all">
                 {t('nav.getStarted')}
               </Button>
             </a>
           ) : (
             <Link href={ctaHref} onClick={() => setIsOpen(false)} className="w-full">
-              <Button className="w-full rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold h-14 text-[18px] shadow-[0_0_15px_rgba(120,125,255,0.4)] hover:shadow-[0_0_25px_rgba(120,125,255,0.6)] transition-all">
+              <Button className="w-full rounded-full bg-primary-solid hover:bg-primary-solid/90 text-primary-foreground font-bold h-14 text-[18px] shadow-[0_0_15px_rgba(120,125,255,0.4)] hover:shadow-[0_0_25px_rgba(120,125,255,0.6)] transition-all">
                 {t('nav.getStarted')}
               </Button>
             </Link>
           )}
 
           <div className="mt-auto text-center">
-            <span className="text-[12px] uppercase text-slate-500 font-medium tracking-widest">{t('footer.copyright')} • {new Date().getFullYear()}</span>
+            <span className="text-[12px] uppercase text-slate-400 font-medium tracking-widest">{t('footer.copyright')} • {new Date().getFullYear()}</span>
           </div>
         </div>
       )}

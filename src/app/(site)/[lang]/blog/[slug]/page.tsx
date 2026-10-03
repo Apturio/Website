@@ -27,6 +27,7 @@ import { TOC } from '@/components/blog/TOC'
 import { CroCard } from '@/components/blog/Sidebar'
 import { BlogCard } from '@/components/blog/BlogCard'
 import { BlogPostJsonLd } from '@/components/blog/BlogJsonLd'
+import { OptImage } from '@/components/OptImage'
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -159,7 +160,7 @@ export default async function BlogPostPage({
           <div className="post-meta">
             <span className="avatar">
               {asMedia(author?.avatar)?.url ? (
-                <img src={asMedia(author?.avatar)!.url!} alt={author?.name ?? ''} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <OptImage src={asMedia(author?.avatar)!.url!} alt={author?.name ?? ''} sizes="48px" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
                 <span className="img-slot circle" />
               )}
@@ -187,9 +188,12 @@ export default async function BlogPostPage({
               // Frame follows the upload's intrinsic ratio (portrait, square or
               // panorama all render uncropped); CSS caps the height so a very
               // tall image can't push the article below the fold.
-              <img
+              <OptImage
                 src={hero.url}
                 alt={hero.alt ?? post.title}
+                intrinsicWidth={hero.width}
+                sizes="(max-width: 1100px) 100vw, 1080px"
+                priority
                 width={hero.width ?? undefined}
                 height={hero.height ?? undefined}
                 className="post-hero-img"
@@ -228,7 +232,7 @@ export default async function BlogPostPage({
                 <div className="author-box">
                   <span className="avatar">
                     {asMedia(author.avatar)?.url ? (
-                      <img src={asMedia(author.avatar)!.url!} alt={author.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <OptImage src={asMedia(author.avatar)!.url!} alt={author.name} sizes="96px" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     ) : (
                       <span className="img-slot circle" />
                     )}

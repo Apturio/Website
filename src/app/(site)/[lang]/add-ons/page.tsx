@@ -79,7 +79,7 @@ export default async function AddOnsPage({ params }: { params: Promise<{ lang: s
                 ? 'Desglose detallado de nuestros complementos premium (Actualizado Mayo 2026).'
                 : 'Detailed breakdown of our premium add-ons (Updated May 2026).'}
             </p>
-            <p className="text-xs text-slate-500 mt-4 italic">
+            <p className="text-xs text-slate-400 mt-4 italic">
               {es ? 'Nota: Todos los precios son por mes y están sujetos a cambios.' : 'Note: All prices are per month and subject to change.'}
             </p>
           </div>
@@ -104,7 +104,7 @@ export default async function AddOnsPage({ params }: { params: Promise<{ lang: s
               </Table>
             </section>
             <div className="mt-8">
-              <p className="text-xs text-slate-500 italic">
+              <p className="text-xs text-slate-400 italic">
                 * {es
                   ? 'El uso de Empleados IA (IA Ilimitada) está sujeto a una política de uso justo (fair usage policy).'
                   : 'AI Employee (Unlimited AI) is subject to a fair usage policy.'}

@@ -26,7 +26,7 @@ type Tier = {
 const CTA_COLOR: Record<string, string> = {
   foundation: "bg-secondary text-secondary-foreground hover:bg-secondary/90",
   engine:
-    "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_15px_rgba(120,125,255,0.4)] hover:shadow-[0_0_25px_rgba(120,125,255,0.6)]",
+    "bg-primary-solid text-primary-foreground hover:bg-primary-solid/90 shadow-[0_0_15px_rgba(120,125,255,0.4)] hover:shadow-[0_0_25px_rgba(120,125,255,0.6)]",
   growth: "bg-[#1f2937] text-white hover:bg-[#111827] shadow-none",
 };
 const ENGINE_BADGE_STYLE =
@@ -151,14 +151,14 @@ export async function Pricing({ block, lang }: { block?: PricingBlock; lang?: st
               </ul>
 
               {tier.subText && (
-                <p className="text-xs text-slate-500 mb-6 mt-auto text-center">{tier.subText}</p>
+                <p className="text-xs text-slate-400 mb-6 mt-auto text-center">{tier.subText}</p>
               )}
 
               <Button
                 asChild
                 className={`w-full h-14 text-sm md:text-base font-bold rounded-[20px] transition-all ${tier.ctaColor} mt-auto`}
               >
-                <Link href={tier.link}>{tier.cta}</Link>
+                <Link href={tier.link}>{tier.cta}<span className="sr-only"> {tier.name}</span></Link>
               </Button>
             </div>
             );
@@ -200,7 +200,7 @@ export async function Pricing({ block, lang }: { block?: PricingBlock; lang?: st
             </div>
           </div>
 
-          <p className="text-xs text-slate-500 mt-6 max-w-2xl mx-auto border-t border-border/50 pt-6">
+          <p className="text-xs text-slate-400 mt-6 max-w-2xl mx-auto border-t border-border/50 pt-6">
             {t('pricing.implementation.note')}
           </p>
 

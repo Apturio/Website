@@ -37,7 +37,7 @@
 
   --fg: #F5F5F7;
   --fg-muted: #A6A7AE;
-  --fg-faint: #6A6B73;
+  --fg-faint: #8b8c95;
 
   --border: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.15);
@@ -53,8 +53,8 @@
   --glow-green: 0 0 0 1px rgba(47, 211, 94, 0.45), 0 0 24px -4px rgba(47, 211, 94, 0.5);
 
   /* ---- type ---- */
-  --font-display: 'Outfit', system-ui, -apple-system, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-outfit), 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-body: var(--font-inter), 'Inter', system-ui, -apple-system, sans-serif;
 
   --display-xl: 700 78px/1.0 var(--font-display);
   --display-lg: 700 60px/1.04 var(--font-display);

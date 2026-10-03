@@ -6,6 +6,7 @@ import { AdvantageCTA } from "@/components/AdvantageCTA";
 import { ComingSoonBadge } from "@/components/ComingSoonBadge";
 import { getNavigationView, isExternalHref, type NavItemView } from "@/lib/navigation";
 import { localePrefix } from '@/lib/site'
+import { OptImage } from '@/components/OptImage'
 
 // Shared live/comingSoon row renderer for the 3 registry-driven columns —
 // mirrors Navbar.tsx's DesktopMegaMenuRow / MobileMegaMenuRow treatment so
@@ -79,7 +80,7 @@ export async function Footer({ showAdvantage = true }: { showAdvantage?: boolean
         <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 pt-8 border-t border-border/50">
           <div>
             <Link href={home || '/'} className="flex items-center gap-2">
-              <img src="https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png" alt="Apturio Logo" className="h-10 w-auto" />
+              <OptImage src="https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png" alt="Apturio Logo" className="h-10 w-auto" width={138} height={40} sizes="138px" />
             </Link>
             <p className="mt-4 text-sm text-slate-400">{t('footer.tagline')}</p>
           </div>
@@ -95,7 +96,7 @@ export async function Footer({ showAdvantage = true }: { showAdvantage?: boolean
 
               {column.subgroup && (
                 <>
-                  <p className="mt-6 text-[10px] uppercase text-muted-foreground/70">{column.subgroup.heading}</p>
+                  <p className="mt-6 text-[10px] uppercase text-muted-foreground">{column.subgroup.heading}</p>
                   <ul className="mt-4 space-y-2">
                     {column.subgroup.items.map((item) => (
                       <FooterLinkRow key={item.id ?? item.label} item={item} home={home} comingSoonLabel={comingSoonLabel} />

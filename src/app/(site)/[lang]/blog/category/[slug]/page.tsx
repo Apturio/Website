@@ -18,6 +18,7 @@ import {
 import { BlogCard } from '@/components/blog/BlogCard'
 import { CroCard, NewsletterMini } from '@/components/blog/Sidebar'
 import { PageJsonLd } from '@/components/PageJsonLd'
+import { OptImage } from '@/components/OptImage'
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -132,7 +133,7 @@ export default async function CategoryPage({
           <Link href={localePath(lang, `/blog/${lead.slug}`)} className="cat-hero">
             <div className="media">
               {leadHero?.url ? (
-                <img src={leadHero.url} alt={leadHero.alt ?? lead.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <OptImage src={leadHero.url} alt={leadHero.alt ?? lead.title} intrinsicWidth={leadHero.width} sizes="(max-width: 1024px) 100vw, 720px" priority width={leadHero.width ?? undefined} height={leadHero.height ?? undefined} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
                 <div className="img-slot" />
               )}

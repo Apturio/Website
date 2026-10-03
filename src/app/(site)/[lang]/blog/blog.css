@@ -19,7 +19,7 @@
   /* dark semantic */
   --fg: #f5f5f7;
   --fg-muted: #a6a7ae;
-  --fg-faint: #6a6b73;
+  --fg-faint: #8b8c95;
   --border: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.15);
 
@@ -38,8 +38,8 @@
   --shadow-lg: 0 18px 40px -12px rgba(12, 16, 32, 0.18), 0 6px 14px -8px rgba(12, 16, 32, 0.12);
 
   /* type */
-  --font-display: 'Outfit', system-ui, -apple-system, sans-serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-outfit), 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-body: var(--font-inter), 'Inter', system-ui, -apple-system, sans-serif;
   --display-lg: 700 60px/1.04 var(--font-display);
   --h1: 700 47px/1.06 var(--font-display);
   --h2: 700 37px/1.1 var(--font-display);
@@ -125,7 +125,7 @@
   font-family: var(--font-body);
 }
 .apt-blog .cat-chip:hover { border-color: var(--border-strong); color: #fff; }
-.apt-blog .cat-chip.on { background: var(--brand); color: #fff; border-color: transparent; box-shadow: 0 8px 24px -10px rgba(122, 127, 255, 0.8); }
+.apt-blog .cat-chip.on { background: #575dff; color: #fff; border-color: transparent; box-shadow: 0 8px 24px -10px rgba(122, 127, 255, 0.8); }
 .apt-blog .cat-chip .ck { width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.6; }
 
 /* ---- page header ---- */

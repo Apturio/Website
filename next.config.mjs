@@ -11,7 +11,16 @@ const nextConfig = {
   output: 'standalone',
   images: {
     // Cloudflare R2 public bucket hostname (media offload — wired for later phases)
-    remotePatterns: [{ protocol: 'https', hostname: '*.r2.dev' }],
+    remotePatterns: [
+      { protocol: 'https', hostname: '*.r2.dev' },
+      // Brand assets (logo, hero background, client logos) still live here.
+      { protocol: 'https', hostname: 'vibe.filesafe.space' },
+    ],
+    // Uploads served by Payload (`/api/media/file/...`) go through the optimizer too.
+    localPatterns: [{ pathname: '/api/media/file/**' }, { pathname: '/**' }],
+    // Keep in sync with IMAGE_WIDTHS in src/lib/image-loader.ts.
+    deviceSizes: [480, 640, 768, 1024, 1280, 1600],
+    imageSizes: [64, 128, 256, 384],
     // Un solo formato (evita duplicar transformaciones avif+webp) y cache
     // largo: las imágenes no cambian de URL al editarse.
     formats: ['image/webp'],
