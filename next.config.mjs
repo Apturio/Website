@@ -5,6 +5,8 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Inline the (small) critical CSS into the HTML instead of 3 render-blocking stylesheets.
+  experimental: { inlineCss: true },
   // Self-hosted (Hostinger VPS / Node app). Emits a self-contained
   // `.next/standalone/server.js` with traced deps — no full node_modules needed
   // at runtime. `.next/static` and `public/` must be copied in alongside it.

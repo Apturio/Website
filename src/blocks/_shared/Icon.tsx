@@ -1,18 +1,17 @@
 import { Check } from 'lucide-react'
 import type { LucideProps } from 'lucide-react'
 
-import { getIcon } from '@/fields/IconPicker/icons'
+import { LazyIcon } from './LazyIcon'
+import { PUBLIC_ICONS } from './icon-set'
 
 /**
- * Render a lucide icon by its kebab-case design name (e.g. "calendar-check"),
- * resolved dynamically against the full lucide-react export set via getIcon.
- * Falls back to a check icon when the name is missing or doesn't resolve.
+ * Render a lucide icon by its kebab-case design name (e.g. "calendar-check").
+ * Known icons come from the tree-shaken PUBLIC_ICONS map; any other valid lucide name is
+ * loaded on demand (LazyIcon). Falls back to a check icon when the name is empty.
  */
 export function Icon({ name, ...props }: { name?: string | null } & LucideProps) {
-  const resolved = name ? getIcon(name) : undefined
-  if (name && !resolved && process.env.NODE_ENV !== 'production') {
-    console.warn(`[Icon] Unresolved icon name "${name}", falling back to Check.`)
-  }
-  const Cmp = resolved || Check
-  return <Cmp {...props} />
+  if (!name) return <Check {...props} />
+  const Known = PUBLIC_ICONS[name]
+  if (Known) return <Known {...props} />
+  return <LazyIcon name={name} {...props} />
 }

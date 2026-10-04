@@ -11,8 +11,8 @@
     --popover: 0 0% 0%;
     --popover-foreground: 0 0% 100%;
     --primary: 238 100% 74%;
-    /* Fill for surfaces that carry white text: #575dff, 4.7:1 (the lighter --primary is 3.3:1). */
-    --primary-solid: 238 100% 67%;
+    /* Fill for surfaces that carry white text: #474eff, 5.1:1 (the lighter --primary is 3.3:1). */
+    --primary-solid: 238 100% 64%;
     --primary-foreground: 0 0% 100%;
     --secondary: 215 16% 20%;
     --secondary-foreground: 0 0% 100%;
@@ -44,8 +44,8 @@
     --popover: 0 0% 0%;
     --popover-foreground: 0 0% 100%;
     --primary: 238 100% 74%;
-    /* Fill for surfaces that carry white text: #575dff, 4.7:1 (the lighter --primary is 3.3:1). */
-    --primary-solid: 238 100% 67%;
+    /* Fill for surfaces that carry white text: #474eff, 5.1:1 (the lighter --primary is 3.3:1). */
+    --primary-solid: 238 100% 64%;
     --primary-foreground: 0 0% 100%;
     --secondary: 215 16% 20%;
     --secondary-foreground: 0 0% 100%;
