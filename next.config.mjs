@@ -7,6 +7,9 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
 const nextConfig = {
   // Inline the (small) critical CSS into the HTML instead of 3 render-blocking stylesheets.
   experimental: { inlineCss: true },
+  // Blog pages run several CMS queries each at build time (Neon over the network, 7 workers sharing
+  // a small pool). The 60 s default aborted the whole deploy when the DB was a little slow.
+  staticPageGenerationTimeout: 180,
   // Self-hosted (Hostinger VPS / Node app). Emits a self-contained
   // `.next/standalone/server.js` with traced deps — no full node_modules needed
   // at runtime. `.next/static` and `public/` must be copied in alongside it.
