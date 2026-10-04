@@ -44,7 +44,7 @@ export async function Hero({ block, lang }: { block?: HeroBlock; lang?: string }
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-secondary/30 rounded-full blur-[100px] opacity-40 pointer-events-none z-0" />
 
       <div className="container mx-auto px-4 relative z-10 text-center">
-        <div className="max-w-4xl mx-auto animate-fade-in-up">
+        <div className="max-w-4xl mx-auto animate-rise-in">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent/20 border border-accent/30 mb-8 backdrop-blur-sm">
             <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse" />
             <span className="text-sm font-medium text-white">{badge}</span>
