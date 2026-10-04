@@ -198,7 +198,7 @@ export default async function AuthorPage({
             <CroCard locale={lang} />
             {Array.isArray(author.expertise) && author.expertise.length > 0 && (
               <div className="side-block">
-                <h4>{t('writesAbout')}</h4>
+                <h2>{t('writesAbout')}</h2>
                 <div className="topic-tags">
                   {author.expertise.map((e, i) => (
                     <span key={e.id ?? i} className="topic">

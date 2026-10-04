@@ -48,7 +48,7 @@ export async function NewsletterMini({ locale }: { locale: AppLocale }) {
   const t = await getTranslations({ locale, namespace: 'blog' })
   return (
     <div className="news-mini">
-      <h4>{t('newsTitle')}</h4>
+      <h2>{t('newsTitle')}</h2>
       <p>{t('newsBody')}</p>
       <NewsletterForm
         placeholder={t('newsPlaceholder')}

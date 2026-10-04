@@ -15,8 +15,8 @@ import '../../globals.css'
 import '@/styles/service-blocks.css'
 
 // Self-hosted at build time (no render-blocking request to fonts.googleapis.com).
-const inter = Inter({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800', '900'], display: 'swap', variable: '--font-inter' })
-const outfit = Outfit({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800', '900'], display: 'swap', variable: '--font-outfit' })
+const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' })
+const outfit = Outfit({ subsets: ['latin'], display: 'swap', variable: '--font-outfit' })
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
