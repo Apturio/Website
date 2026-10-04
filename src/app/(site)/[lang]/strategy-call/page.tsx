@@ -41,10 +41,11 @@ export default async function StrategyCallPage({ params }: { params: Promise<{ l
             <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white">{t('strategy.title')}</h1>
             <p className="text-slate-400 text-lg">{t('strategy.subtitle')}</p>
           </div>
-          <div className="bg-card border border-border rounded-[20px] overflow-hidden shadow-[0_0_30px_rgba(120,125,255,0.05)]">
+          {/* min-h reserves the booking widget's final height: its embed script resizes the iframe after load, which pushed the footer down (CLS 0.49). */}
+          <div className="bg-card border border-border rounded-[20px] overflow-hidden shadow-[0_0_30px_rgba(120,125,255,0.05)] min-h-[1100px]">
             <iframe
               src="https://links.apturio.com/widget/bookings/apturio-consulting-session"
-              style={{ width: '100%', border: 'none', overflow: 'hidden', minHeight: '800px' }}
+              style={{ width: '100%', border: 'none', overflow: 'hidden', minHeight: '800px', display: 'block' }}
               scrolling="no"
               id="msgsndr-calendar"
               title="Apturio Strategy Call Booking"

@@ -16,7 +16,8 @@ import '@/styles/service-blocks.css'
 
 // Self-hosted at build time (no render-blocking request to fonts.googleapis.com).
 const inter = Inter({ subsets: ['latin'], display: 'swap', variable: '--font-inter' })
-const outfit = Outfit({ subsets: ['latin'], display: 'swap', variable: '--font-outfit' })
+// `optional`: headings never swap fonts mid-paint (swap re-flowed the hero: CLS + a late LCP candidate).
+const outfit = Outfit({ subsets: ['latin'], display: 'optional', variable: '--font-outfit' })
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -49,7 +50,12 @@ export default async function LocaleLayout({
   // Enable static rendering for this locale.
   setRequestLocale(lang)
 
-  const messages = await getMessages()
+  // Only the namespaces read by Client Components (NavbarClient: nav + footer, FAQ: faq) are
+  // serialized into the page; the rest of the catalog is used on the server only.
+  const allMessages = (await getMessages()) as Record<string, unknown>
+  const messages = Object.fromEntries(
+    ['nav', 'footer', 'faq'].filter((ns) => ns in allMessages).map((ns) => [ns, allMessages[ns]]),
+  )
 
   return (
     <html lang={lang} data-scroll-behavior="smooth" className={`${inter.variable} ${outfit.variable}`}>
