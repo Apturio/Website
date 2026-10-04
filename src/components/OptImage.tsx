@@ -40,7 +40,7 @@ export function OptImage({ src, alt, sizes = '100vw', intrinsicWidth, priority, 
       sizes={sizes}
       alt={alt}
       loading={priority ? 'eager' : 'lazy'}
-      decoding="async"
+      decoding={priority ? 'auto' : 'async'}
       {...(priority ? { fetchPriority: 'high' as const } : {})}
       {...rest}
     />

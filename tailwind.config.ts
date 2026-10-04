@@ -98,6 +98,11 @@ export default {
   					height: '0'
   				}
   			},
+  			// Transform-only entrance: the hero text (the page's LCP element) must never start at opacity 0.
+  			'rise-in': {
+  				'0%': { transform: 'translateY(16px)' },
+  				'100%': { transform: 'translateY(0)' }
+  			},
   			'fade-in-up': {
   				'0%': {
   					opacity: '0',
@@ -142,6 +147,7 @@ export default {
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
+  			'rise-in': 'rise-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both',
   			'fade-in-up': 'fade-in-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
   			glow: 'glow 2s ease-in-out infinite',
   			'color-shift': 'color-shift 12s ease-in-out infinite',
