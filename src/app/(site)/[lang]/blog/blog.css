@@ -125,7 +125,7 @@
   font-family: var(--font-body);
 }
 .apt-blog .cat-chip:hover { border-color: var(--border-strong); color: #fff; }
-.apt-blog .cat-chip.on { background: #575dff; color: #fff; border-color: transparent; box-shadow: 0 8px 24px -10px rgba(122, 127, 255, 0.8); }
+.apt-blog .cat-chip.on { background: #474eff; color: #fff; border-color: transparent; box-shadow: 0 8px 24px -10px rgba(122, 127, 255, 0.8); }
 .apt-blog .cat-chip .ck { width: 7px; height: 7px; border-radius: 50%; background: currentColor; opacity: 0.6; }
 
 /* ---- page header ---- */
