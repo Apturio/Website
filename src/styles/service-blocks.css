@@ -112,7 +112,7 @@
 }
 .svc .btn:active { transform: scale(.98); }
 .svc .btn svg { width: 18px; height: 18px; }
-.svc .btn-primary { background: var(--brand); color: #fff; box-shadow: 0 10px 30px -12px rgba(122, 127, 255, .9); }
+.svc .btn-primary { background: #474eff; color: #fff; box-shadow: 0 10px 30px -12px rgba(122, 127, 255, .9); }
 .svc .btn-primary:hover { background: var(--brand-hover); }
 .svc .btn-dark { background: #1B1C22; color: #fff; border-color: var(--border-strong); }
 .svc .btn-dark:hover { background: #23242B; border-color: rgba(255, 255, 255, .28); }

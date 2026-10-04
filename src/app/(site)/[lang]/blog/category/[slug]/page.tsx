@@ -172,7 +172,7 @@ export default async function CategoryPage({
           <aside className="sidebar">
             <CroCard locale={lang} />
             <div className="side-block">
-              <h4>{t('categoriesHeading')}</h4>
+              <h2>{t('categoriesHeading')}</h2>
               <div className="side-cats">
                 {categories.map((c) => (
                   <Link

@@ -30,7 +30,7 @@ export function AdvantageCTA({
         {badge}
       </div>
       <Rocket className="h-12 w-12 text-primary mx-auto mb-4 drop-shadow-[0_0_10px_rgba(120,125,255,0.5)]" />
-      <h3 className="text-2xl md:text-3xl font-bold mb-4 text-[#FFFFFF]">{title}</h3>
+      <h2 className="text-2xl md:text-3xl font-bold mb-4 text-[#FFFFFF]">{title}</h2>
       <p className="text-[#94a3b8] text-lg mb-4 max-w-2xl mx-auto">
         {body}
       </p>

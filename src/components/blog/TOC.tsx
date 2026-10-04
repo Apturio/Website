@@ -35,7 +35,7 @@ export function TOC({ headings, title }: { headings: TocHeading[]; title: string
 
   return (
     <nav className="toc">
-      <h4>{title}</h4>
+      <h2>{title}</h2>
       {headings.map((h) => (
         <a
           key={h.id}

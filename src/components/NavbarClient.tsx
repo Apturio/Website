@@ -223,7 +223,7 @@ export function NavbarClient({ view }: { view: NavigationView }) {
     <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link href={home || '/'} className="flex items-center gap-2">
-          <OptImage src="https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png" alt="Apturio Logo" className="h-10 w-auto" width={138} height={40} sizes="138px" priority />
+          <OptImage src="https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png" alt="Apturio Logo" className="h-10 w-[138px] object-contain" width={138} height={40} sizes="138px" priority />
         </Link>
 
         <NavigationMenu className="hidden lg:flex" delayDuration={150}>

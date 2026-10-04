@@ -96,7 +96,7 @@ export function StrategyFormBlockComponent({ block }: { block: StrategyFormBlock
                   </div>
                   <div className="frow">
                     <label>{l.leads ?? 'Monthly leads'}</label>
-                    <select name="leads" className="fld">
+                    <select name="leads" className="fld" aria-label={l.leads ?? 'Monthly leads'}>
                       {leadOptions.map((o, i) => (
                         <option key={i}>{o}</option>
                       ))}

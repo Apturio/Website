@@ -80,7 +80,7 @@ export async function Footer({ showAdvantage = true }: { showAdvantage?: boolean
         <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-12 pt-8 border-t border-border/50">
           <div>
             <Link href={home || '/'} className="flex items-center gap-2">
-              <OptImage src="https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png" alt="Apturio Logo" className="h-10 w-auto" width={138} height={40} sizes="138px" />
+              <OptImage src="https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png" alt="Apturio Logo" className="h-10 w-[138px] object-contain" width={138} height={40} sizes="138px" />
             </Link>
             <p className="mt-4 text-sm text-slate-400">{t('footer.tagline')}</p>
           </div>
