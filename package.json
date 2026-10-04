@@ -21,6 +21,7 @@
     "test:locale": "node --test scripts/test-locale-paths.ts",
     "test:content": "node --test scripts/test-localized-content.ts",
     "test:media": "node --test scripts/test-media-dir.ts",
+    "test:images": "node --test scripts/test-image-loader.ts",
     "generate:previews": "payload run scripts/generate-block-previews.ts",
     "verify:previews": "node scripts/verify-block-previews.ts",
     "generate:variant-previews": "payload run scripts/generate-variant-previews.ts",

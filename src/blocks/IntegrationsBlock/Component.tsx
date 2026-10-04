@@ -1,6 +1,7 @@
 import type { IntegrationsBlock } from '@/payload-types'
 import type { Media } from '@/payload-types'
 import { cleanHref } from '@/lib/site'
+import { OptImage } from '@/components/OptImage'
 
 export function IntegrationsBlockComponent({ block }: { block: IntegrationsBlock; lang: string }) {
   return (
@@ -18,7 +19,7 @@ export function IntegrationsBlockComponent({ block }: { block: IntegrationsBlock
               const card = (
                 <div className="feat-card" key={it.id ?? i}>
                   <div className="ic">
-                    {logo?.url ? <img src={logo.url} alt={logo.alt ?? it.name} /> : null}
+                    {logo?.url ? <OptImage src={logo.url} alt={logo.alt ?? it.name} sizes="96px" /> : null}
                   </div>
                   <h3>{it.name}</h3>
                   <p>{it.description}</p>

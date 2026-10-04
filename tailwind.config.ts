@@ -20,10 +20,12 @@ export default {
   	extend: {
   		fontFamily: {
   			sans: [
+  				'var(--font-inter)',
   				'Inter',
   				'sans-serif'
   			],
   			heading: [
+  				'var(--font-outfit)',
   				'Outfit',
   				'sans-serif'
   			]
@@ -34,6 +36,7 @@ export default {
   			ring: 'hsl(var(--ring))',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
+  			'primary-solid': 'hsl(var(--primary-solid))',
   			primary: {
   				DEFAULT: 'hsl(var(--primary))',
   				foreground: 'hsl(var(--primary-foreground))'

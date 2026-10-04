@@ -207,7 +207,7 @@ export async function PricingTable() {
   };
 
   const renderValue = (value: boolean | string, isEngine: boolean) => {
-    if (value === true) return <Check className={`h-5 w-5 mx-auto ${isEngine ? 'text-primary' : 'text-slate-500'}`} />;
+    if (value === true) return <Check className={`h-5 w-5 mx-auto ${isEngine ? 'text-primary' : 'text-slate-400'}`} />;
     if (value === false || value === "ADDON" || value === "_") return <Minus className="h-5 w-5 mx-auto text-slate-700" />;
     if (typeof value === 'string' && value.includes("(WAIVED)")) {
       const text = value.replace("(WAIVED)", "").trim();
@@ -226,7 +226,7 @@ export async function PricingTable() {
       if (text === "/ _" || text === "/_") {
         return (
           <div className="flex flex-col items-center justify-center gap-1">
-            <Check className={`h-5 w-5 ${isEngine ? 'text-primary' : 'text-slate-500'}`} />
+            <Check className={`h-5 w-5 ${isEngine ? 'text-primary' : 'text-slate-400'}`} />
             <div className="flex items-center gap-1 text-slate-700">
                <span>/</span>
                <Minus className="h-4 w-4" />
@@ -237,7 +237,7 @@ export async function PricingTable() {
 
       return (
         <div className="flex flex-col items-center gap-0.5">
-          <Check className={`h-4 w-4 ${isEngine ? 'text-primary' : 'text-slate-500'}`} />
+          <Check className={`h-4 w-4 ${isEngine ? 'text-primary' : 'text-slate-400'}`} />
           <span className={`text-[11px] font-medium leading-tight ${isEngine ? 'text-white' : 'text-slate-400'}`}>
             {text}
           </span>
@@ -249,7 +249,7 @@ export async function PricingTable() {
 
   return (
     <div className="mt-16 border border-border rounded-[20px] bg-card/30 backdrop-blur-sm overflow-hidden">
-      <div className="md:hidden px-4 py-2 bg-muted/50 text-[10px] uppercase tracking-widest text-slate-500 font-bold flex items-center justify-center gap-2 border-b border-border">
+      <div className="md:hidden px-4 py-2 bg-muted/50 text-[10px] uppercase tracking-widest text-slate-400 font-bold flex items-center justify-center gap-2 border-b border-border">
         <span className="animate-pulse">←</span> {t('pricing.table.scrollHint') || "Desliza para comparar"} <span className="animate-pulse">→</span>
       </div>
       <div className="overflow-auto custom-scrollbar max-h-[75vh] md:max-h-[85vh]">

@@ -1,15 +1,16 @@
 import { getTranslations } from "next-intl/server";
 import type { LogosBlock } from "@/payload-types";
+import { OptImage } from '@/components/OptImage'
 
 const DEFAULT_LOGOS = [
-  { name: "Sportsmed Academy", src: "https://vibe.filesafe.space/1775831502235366632/attachments/40dbb601-c692-4abc-b2a9-6b77e3b414ea.png", old: true },
-  { name: "SM Privé", src: "https://vibe.filesafe.space/1775831502235366632/attachments/112147e9-ed3a-4f3c-92e9-47c6f1c6cf81.png", old: true },
-  { name: "Venxel", src: "https://vibe.filesafe.space/1775831502235366632/attachments/b5f01474-d965-4589-a2b4-d84fc8860b36.png", old: true },
-  { name: "En Otro Idioma", src: "https://vibe.filesafe.space/1775831502235366632/attachments/6139c761-d36d-4240-8a90-ccec4045bec9.png", old: true },
-  { name: "Aprendo SEO", src: "https://vibe.filesafe.space/1775831502235366632/attachments/7d0ff8ad-4917-46be-b2a4-501c8f5b0c9b.png", old: true },
-  { name: "Forja Group", src: "https://vibe.filesafe.space/1775831502235366632/attachments/07fed6fa-f329-4106-b0a6-eaa6156111eb.png", old: false },
-  { name: "New Cargo Express", src: "https://vibe.filesafe.space/1775831502235366632/attachments/2f4d42da-e799-4211-ae7e-7d72ed9b95e4.png", old: false },
-  { name: "Dharma Health", src: "https://vibe.filesafe.space/1775831502235366632/attachments/b59b13fc-6550-45b1-8e9a-4ae25904dcf7.png", old: false },
+  { name: "Sportsmed Academy", src: "https://vibe.filesafe.space/1775831502235366632/attachments/40dbb601-c692-4abc-b2a9-6b77e3b414ea.png", w: 436, h: 202, old: true },
+  { name: "SM Privé", src: "https://vibe.filesafe.space/1775831502235366632/attachments/112147e9-ed3a-4f3c-92e9-47c6f1c6cf81.png", w: 414, h: 224, old: true },
+  { name: "Venxel", src: "https://vibe.filesafe.space/1775831502235366632/attachments/b5f01474-d965-4589-a2b4-d84fc8860b36.png", w: 360, h: 242, old: true },
+  { name: "En Otro Idioma", src: "https://vibe.filesafe.space/1775831502235366632/attachments/6139c761-d36d-4240-8a90-ccec4045bec9.png", w: 418, h: 246, old: true },
+  { name: "Aprendo SEO", src: "https://vibe.filesafe.space/1775831502235366632/attachments/7d0ff8ad-4917-46be-b2a4-501c8f5b0c9b.png", w: 386, h: 268, old: true },
+  { name: "Forja Group", src: "https://vibe.filesafe.space/1775831502235366632/attachments/07fed6fa-f329-4106-b0a6-eaa6156111eb.png", w: 347, h: 180, old: false },
+  { name: "New Cargo Express", src: "https://vibe.filesafe.space/1775831502235366632/attachments/2f4d42da-e799-4211-ae7e-7d72ed9b95e4.png", w: 1200, h: 288, old: false },
+  { name: "Dharma Health", src: "https://vibe.filesafe.space/1775831502235366632/attachments/b59b13fc-6550-45b1-8e9a-4ae25904dcf7.png", w: 2378, h: 3145, old: false },
 ];
 
 export const TrustedBy = async ({ block }: { block?: LogosBlock } = {}) => {
@@ -17,7 +18,7 @@ export const TrustedBy = async ({ block }: { block?: LogosBlock } = {}) => {
 
   const heading = block?.heading ?? t('trustedBy.title');
   const globalOperations = block?.globalOperations ?? t('trustedBy.globalOperations');
-  const logos: { name: string; src: string; old?: boolean | null }[] =
+  const logos: { name: string; src: string; old?: boolean | null; w?: number; h?: number }[] =
     block?.logos && block.logos.length > 0 ? block.logos : DEFAULT_LOGOS;
   const countries: { name: string; code: string }[] =
     block?.countries && block.countries.length > 0
@@ -41,9 +42,12 @@ export const TrustedBy = async ({ block }: { block?: LogosBlock } = {}) => {
           <div className="flex gap-12 md:gap-20 items-center w-max animate-marquee hover:[animation-play-state:paused]">
             {[...logos, ...logos].map((logo, index) => (
               <div key={index} className="flex items-center justify-center shrink-0">
-                <img
+                <OptImage
                   src={logo.src}
                   alt={logo.name}
+                  width={logo.w ?? 160}
+                  height={logo.h ?? 48}
+                  sizes="160px"
                   className={`max-h-[28px] md:max-h-[32px] w-auto object-contain opacity-55 transition-all duration-300 hover:opacity-100 ${
                     logo.old ? "grayscale contrast-200 brightness-200 mix-blend-screen" : "brightness-0 invert"
                   }`}
@@ -54,7 +58,7 @@ export const TrustedBy = async ({ block }: { block?: LogosBlock } = {}) => {
         </div>
 
         <div className="mt-12 text-center">
-          <h3 className="text-[10px] md:text-xs font-bold tracking-[0.2em] text-primary/80 uppercase mb-6">
+          <h3 className="text-[10px] md:text-xs font-bold tracking-[0.2em] text-primary uppercase mb-6">
             {globalOperations}
           </h3>
           <div className="flex flex-wrap justify-center gap-3 md:gap-4 w-full max-w-5xl mx-auto">
@@ -67,6 +71,10 @@ export const TrustedBy = async ({ block }: { block?: LogosBlock } = {}) => {
                   <img
                     src={`https://flagcdn.com/w40/${country.code}.png`}
                     alt={`${country.name} flag`}
+                    width={20}
+                    height={20}
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
                 </div>

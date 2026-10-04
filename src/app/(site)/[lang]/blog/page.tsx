@@ -17,6 +17,7 @@ import {
 import { BlogCard } from '@/components/blog/BlogCard'
 import { CategoryFilter, type FilterChip } from '@/components/blog/CategoryFilter'
 import { PageJsonLd } from '@/components/PageJsonLd'
+import { OptImage } from '@/components/OptImage'
 
 export const revalidate = 3600
 
@@ -86,7 +87,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ lang
                 {t('featured')}
               </span>
               {featHero?.url ? (
-                <img src={featHero.url} alt={featHero.alt ?? featured.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                <OptImage src={featHero.url} alt={featHero.alt ?? featured.title} intrinsicWidth={featHero.width} sizes="(max-width: 1024px) 100vw, 720px" priority width={featHero.width ?? undefined} height={featHero.height ?? undefined} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               ) : (
                 <div className="img-slot" />
               )}
@@ -106,7 +107,7 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ lang
               <div className="meta">
                 <span className="avatar">
                   {asMedia(featAuthor?.avatar)?.url ? (
-                    <img src={asMedia(featAuthor?.avatar)!.url!} alt={featAuthor?.name ?? ''} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <OptImage src={asMedia(featAuthor?.avatar)!.url!} alt={featAuthor?.name ?? ''} sizes="48px" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   ) : (
                     <span className="img-slot circle" />
                   )}

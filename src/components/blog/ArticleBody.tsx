@@ -7,6 +7,7 @@ import { slugify } from '@/lib/slugify'
 import { lexicalNodeText } from '@/lib/blog'
 import { CalloutBlock } from '@/components/blog/blocks/CalloutBlock'
 import { InlineCTABanner } from '@/components/blog/blocks/InlineCTABanner'
+import { OptImage } from '@/components/OptImage'
 
 /**
  * Renders Payload Lexical `content` to JSX with custom converters:
@@ -50,7 +51,7 @@ const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
       // No fixed frame: width/height are the file's own dimensions and CSS
       // (max-width/max-height, height:auto) shrinks it while keeping the ratio.
       <figure className="prose-figure">
-        <img src={doc.url} alt={alt} width={doc.width ?? undefined} height={doc.height ?? undefined} />
+        <OptImage src={doc.url} alt={alt} intrinsicWidth={doc.width} sizes="(max-width: 900px) 100vw, 820px" width={doc.width ?? undefined} height={doc.height ?? undefined} />
         {doc.caption ? <figcaption>{doc.caption}</figcaption> : null}
       </figure>
     )

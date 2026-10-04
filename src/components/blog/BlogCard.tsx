@@ -4,13 +4,14 @@ import type { Post } from '@/payload-types'
 import type { AppLocale } from '@/lib/site'
 import { asAuthor, asCategory, asMedia, formatDate, readTimeLabel } from '@/lib/blog'
 import { localePath } from '@/lib/site'
+import { OptImage } from '@/components/OptImage'
 
 /**
  * Article card for the index / category / author grids. Server Component.
  * Carries `data-blog-card` + `data-category` so the client CategoryFilter can
  * toggle visibility without making the card itself a Client Component.
  */
-export function BlogCard({ post, locale }: { post: Post; locale: AppLocale }) {
+export function BlogCard({ post, locale, priority = false }: { post: Post; locale: AppLocale; priority?: boolean }) {
   const category = asCategory(post.category)
   const author = asAuthor(post.author)
   const hero = asMedia(post.heroImage)
@@ -30,7 +31,7 @@ export function BlogCard({ post, locale }: { post: Post; locale: AppLocale }) {
           </span>
         )}
         {hero?.url ? (
-          <img src={hero.url} alt={hero.alt ?? post.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <OptImage src={hero.url} alt={hero.alt ?? post.title} intrinsicWidth={hero.width} sizes="(max-width: 768px) 100vw, 420px" priority={priority} width={hero.width ?? undefined} height={hero.height ?? undefined} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         ) : (
           <div className="img-slot" />
         )}
@@ -41,7 +42,7 @@ export function BlogCard({ post, locale }: { post: Post; locale: AppLocale }) {
         <div className="meta">
           <span className="avatar">
             {asMedia(author?.avatar)?.url ? (
-              <img src={asMedia(author?.avatar)!.url!} alt={author?.name ?? ''} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              <OptImage src={asMedia(author?.avatar)!.url!} alt={author?.name ?? ''} sizes="48px" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             ) : (
               <span className="img-slot circle" />
             )}

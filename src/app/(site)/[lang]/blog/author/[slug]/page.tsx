@@ -17,6 +17,7 @@ import { BlogCard } from '@/components/blog/BlogCard'
 import { CroCard, NewsletterMini } from '@/components/blog/Sidebar'
 import { PageJsonLd } from '@/components/PageJsonLd'
 import type { AuthorInput } from '@/lib/schema/builders/profile'
+import { OptImage } from '@/components/OptImage'
 
 export const revalidate = 3600
 export const dynamicParams = true
@@ -119,7 +120,7 @@ export default async function AuthorPage({
           <div className="author-top">
             <div className="author-avatar">
               {avatar?.url ? (
-                <img src={avatar.url} alt={author.name} style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%', border: '3px solid #000' }} />
+                <OptImage src={avatar.url} alt={author.name} sizes="160px" priority style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%', border: '3px solid #000' }} />
               ) : (
                 <span className="img-slot circle" />
               )}

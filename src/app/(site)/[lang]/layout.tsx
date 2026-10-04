@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { NextIntlClientProvider, hasLocale } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
+import { Inter, Outfit } from 'next/font/google'
 
 import { routing } from '@/i18n/routing'
 import { SITE_URL } from '@/lib/site'
@@ -12,6 +13,10 @@ import { WhatsAppFloat } from '@/components/WhatsAppFloat'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import '../../globals.css'
 import '@/styles/service-blocks.css'
+
+// Self-hosted at build time (no render-blocking request to fonts.googleapis.com).
+const inter = Inter({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800', '900'], display: 'swap', variable: '--font-inter' })
+const outfit = Outfit({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800', '900'], display: 'swap', variable: '--font-outfit' })
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -47,7 +52,7 @@ export default async function LocaleLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={lang} data-scroll-behavior="smooth">
+    <html lang={lang} data-scroll-behavior="smooth" className={`${inter.variable} ${outfit.variable}`}>
       <body>
         <NextIntlClientProvider messages={messages}>
           <LivePreviewListener />

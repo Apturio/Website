@@ -4,6 +4,7 @@ import { ArrowRight, Calendar, MessageCircle } from "lucide-react";
 import { getTranslations, getLocale } from "next-intl/server";
 import type { HeroBlock } from "@/payload-types";
 import { localePath } from '@/lib/site'
+import { OptImage } from '@/components/OptImage'
 
 // Accepts an optional HeroBlock (block-driven home) and falls back to next-intl
 // when rendered without a block (legacy hardcoded path). Markup is unchanged.
@@ -25,13 +26,15 @@ export async function Hero({ block, lang }: { block?: HeroBlock; lang?: string }
   return (
     <section className="relative pt-32 pb-20 md:pt-48 md:pb-32 overflow-hidden">
       {/* Background Image */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: 'url(https://vibe.filesafe.space/1775831502235366632/attachments/a728337c-2406-49d0-8723-db4b1ee16241.png)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
+      <OptImage
+        src="https://vibe.filesafe.space/1775831502235366632/attachments/a728337c-2406-49d0-8723-db4b1ee16241.png"
+        alt=""
+        aria-hidden="true"
+        width={1140}
+        height={638}
+        sizes="100vw"
+        priority
+        className="absolute inset-0 z-0 h-full w-full object-cover object-center"
       />
       {/* Darker Overlay for Better Text Readability */}
       <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/70 to-background z-0" />
@@ -56,7 +59,7 @@ export async function Hero({ block, lang }: { block?: HeroBlock; lang?: string }
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20 w-full max-w-md mx-auto sm:max-w-none">
-            <Button asChild size="lg" className="w-full sm:w-auto h-14 px-8 text-lg font-bold bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] transition-all rounded-[20px]">
+            <Button asChild size="lg" className="w-full sm:w-auto h-14 px-8 text-lg font-bold bg-primary-solid text-primary-foreground hover:bg-primary-solid/90 shadow-[0_0_20px_rgba(99,102,241,0.4)] hover:shadow-[0_0_30px_rgba(99,102,241,0.6)] transition-all rounded-[20px]">
               <a href={ctaPrimaryHref}>
                 {ctaPrimaryLabel}
                 <ArrowRight className="ml-2 h-5 w-5" />

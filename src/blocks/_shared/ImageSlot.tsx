@@ -1,4 +1,5 @@
 import type { Media } from '@/payload-types'
+import { OptImage } from '@/components/OptImage'
 
 /**
  * Presentational stand-in for the prototype's <image-slot> custom element.
@@ -21,7 +22,7 @@ export function ImageSlot({
       className={`img-slot${url ? ' has-img' : ''}${className ? ` ${className}` : ''}`}
       data-placeholder={placeholder ?? 'Image'}
     >
-      {url ? <img src={url} alt={media?.alt ?? ''} /> : null}
+      {url ? <OptImage src={url} alt={media?.alt ?? ''} intrinsicWidth={media?.width} sizes="(max-width: 768px) 100vw, 720px" /> : null}
     </div>
   )
 }
