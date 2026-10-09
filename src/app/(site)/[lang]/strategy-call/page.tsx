@@ -41,20 +41,22 @@ export default async function StrategyCallPage({ params }: { params: Promise<{ l
             <h1 className="text-3xl md:text-5xl font-bold mb-4 text-white">{t('strategy.title')}</h1>
             <p className="text-slate-400 text-lg">{t('strategy.subtitle')}</p>
           </div>
-          {/* min-h reserves the booking widget's final height: its embed script resizes the iframe after load, which pushed the footer down (CLS 0.49). */}
-          <div className="bg-card border border-border rounded-[20px] overflow-hidden shadow-[0_0_30px_rgba(120,125,255,0.05)] min-h-[1100px]">
+          {/* iframe minHeight is a modest floor: the embed script resizes the iframe to its content after load. A large fixed min-h left empty space above and below the new widget. min-[1016px]:-mt/-mb (widget switches to 2 columns at 1016px viewport) crop the widget's built-in 2-column padding (~64px top, ~21px bottom); container overflow-hidden clips it. */}
+          <div className="bg-card border border-border rounded-[20px] overflow-hidden shadow-[0_0_30px_rgba(120,125,255,0.05)]">
             <iframe
-              src="https://links.apturio.com/widget/bookings/apturio-consulting-session"
-              style={{ width: '100%', border: 'none', overflow: 'hidden', minHeight: '800px', display: 'block' }}
+              src="https://links.apturio.com/widget/booking/kfKcUMF3aoKUMlLsb5wS"
+              allow="payment"
+              className="min-[1016px]:-mt-16 min-[1016px]:-mb-[21px]"
+              style={{ width: '100%', border: 'none', overflow: 'hidden', minHeight: '600px', display: 'block' }}
               scrolling="no"
-              id="msgsndr-calendar"
+              id="fsHSGroQjhK72Afnk3jH_1791407419219"
               title="Apturio Strategy Call Booking"
             />
           </div>
         </div>
       </main>
       <Footer />
-      <Script src="https://link.msgsndr.com/js/form_embed.js" strategy="afterInteractive" />
+      <Script src="https://links.apturio.com/js/form_embed.js" strategy="afterInteractive" />
       <PageJsonLd
         kind="strategy-call"
         locale={lang as AppLocale}
