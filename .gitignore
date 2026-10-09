@@ -41,3 +41,6 @@ payload-generated-schema.ts
 # Local admin recovery script (not versioned)
 scripts/reset-admin.mjs
 scripts/reconcile-migrations.mjs
+
+# Uploads locales de Payload (viven en el servidor)
+/media/
