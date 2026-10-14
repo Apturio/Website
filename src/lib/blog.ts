@@ -22,6 +22,19 @@ export function asAuthor(v: Post['author']): Author | null {
 export function asCategory(v: Post['category']): Category | null {
   return v && typeof v === 'object' ? v : null
 }
+// Author photos shipped with the site (public/team) for people whose upload was not added to
+// the CMS media library yet. A CMS avatar always wins.
+const STATIC_AUTHOR_AVATARS: Record<string, string> = {
+  'carlos-ramon-burgues-capasso': '/team/carlos-burgues.jpg',
+}
+
+/** Photo URL for an author: the CMS avatar, else the bundled one, else null. */
+export function authorAvatarUrl(author: { slug?: string | null; avatar?: Author['avatar'] } | null | undefined): string | null {
+  if (!author) return null
+  const media = author.avatar && typeof author.avatar === 'object' ? author.avatar : null
+  return media?.url ?? (author.slug ? (STATIC_AUTHOR_AVATARS[author.slug] ?? null) : null)
+}
+
 export function asMedia(v: Post['heroImage'] | undefined): Media | null {
   return v && typeof v === 'object' ? v : null
 }
