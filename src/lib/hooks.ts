@@ -219,6 +219,8 @@ export const revalidatePostPaths: CollectionAfterChangeHook = async ({ doc, req 
   }
 
   safeRevalidate('/sitemap.xml')
+  // Menus mark links to pages with no content in a language as "coming soon".
+  safeRevalidateTag('navigation')
   return doc
 }
 
@@ -250,6 +252,8 @@ export const revalidatePagePaths: CollectionAfterChangeHook = async ({ doc, req 
   }
 
   safeRevalidate('/sitemap.xml')
+  // Menus mark links to pages with no content in a language as "coming soon".
+  safeRevalidateTag('navigation')
   return doc
 }
 
