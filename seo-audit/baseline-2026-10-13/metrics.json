@@ -1,0 +1,802 @@
+{
+  "label": "baseline-2026-10-13-median",
+  "site": "https://apturio.com",
+  "capturedAt": "2026-10-14T01:05:05.377Z",
+  "notes": "Lighthouse values are the median of 3 lab run(s) with simulated throttling. Run-to-run noise is still +/- 10 score points; compare trends, not single numbers.",
+  "headers": {
+    "strict-transport-security": null,
+    "x-content-type-options": null,
+    "x-frame-options": null,
+    "referrer-policy": null,
+    "permissions-policy": null,
+    "content-security-policy": "upgrade-insecure-requests",
+    "x-powered-by": "Next.js, Payload",
+    "x-middleware-rewrite": "/en"
+  },
+  "sitemap": {
+    "status": 200,
+    "contentType": "application/xml; charset=utf-8",
+    "urlCount": 68,
+    "withPriority": 68,
+    "withChangefreq": 68,
+    "lastmodDistinct": 42,
+    "lastmodWithin2hOfNow": 12,
+    "hasXmlStylesheet": true,
+    "locs": [
+      "https://apturio.com/",
+      "https://apturio.com/es",
+      "https://apturio.com/pay-per-use",
+      "https://apturio.com/es/pay-per-use",
+      "https://apturio.com/add-ons",
+      "https://apturio.com/es/add-ons",
+      "https://apturio.com/strategy-call",
+      "https://apturio.com/es/strategy-call",
+      "https://apturio.com/privacy-policy",
+      "https://apturio.com/es/privacy-policy",
+      "https://apturio.com/terms-of-service",
+      "https://apturio.com/es/terms-of-service",
+      "https://apturio.com/es/crm-para-esteticas",
+      "https://apturio.com/es/crm-para-academias",
+      "https://apturio.com/es/crm-para-clinicas",
+      "https://apturio.com/recordatorios-automaticos",
+      "https://apturio.com/es/recordatorios-automaticos",
+      "https://apturio.com/sistema-reservas",
+      "https://apturio.com/es/sistema-reservas",
+      "https://apturio.com/chatbot-instagram",
+      "https://apturio.com/es/chatbot-instagram",
+      "https://apturio.com/chatbot-whatsapp",
+      "https://apturio.com/es/chatbot-whatsapp",
+      "https://apturio.com/chatbot-ia",
+      "https://apturio.com/es/chatbot-ia",
+      "https://apturio.com/implementacion",
+      "https://apturio.com/es/implementacion",
+      "https://apturio.com/precios",
+      "https://apturio.com/es/precios",
+      "https://apturio.com/implementacion-crm",
+      "https://apturio.com/es/implementacion-crm",
+      "https://apturio.com/automatizaciones-crm",
+      "https://apturio.com/es/automatizaciones-crm",
+      "https://apturio.com/pipeline-crm",
+      "https://apturio.com/es/pipeline-crm",
+      "https://apturio.com/unified-crm",
+      "https://apturio.com/es/crm-unificado",
+      "https://apturio.com/automated-booking",
+      "https://apturio.com/es/agendamiento-automatizado",
+      "https://apturio.com/es/blog/chatbot-vs-atencion-humana",
+      "https://apturio.com/es/blog/reducir-no-shows-chatbot",
+      "https://apturio.com/es/blog/confirmar-citas-automaticamente-whatsapp",
+      "https://apturio.com/es/blog/atencion-cliente-24-7",
+      "https://apturio.com/es/blog/vender-whatsapp-mientras-duermes",
+      "https://apturio.com/es/blog/cliente-agenda-solo-whatsapp",
+      "https://apturio.com/es/blog/calificar-leads-automaticamente",
+      "https://apturio.com/es/blog/mejores-chatbots-whatsapp-business",
+      "https://apturio.com/es/blog/respuestas-automaticas-whatsapp-business",
+      "https://apturio.com/es/blog/ia-cierra-ventas-whatsapp",
+      "https://apturio.com/es/blog/alternativas-a-kommo",
+      "https://apturio.com/es/blog/como-pasar-de-excel-a-un-crm",
+      "https://apturio.com/es/blog/como-implementar-un-crm-en-tu-negocio",
+      "https://apturio.com/es/blog/mejores-crm-venezuela",
+      "https://apturio.com/es/blog/recordatorios-por-whatsapp",
+      "https://apturio.com/es/blog/unificar-mensajeria",
+      "https://apturio.com/es/blog/automatizar-whatsapp",
+      "https://apturio.com/es/blog/respuestas-automaticas-whatsapp",
+      "https://apturio.com/es/blog/organizar-clientes-muchos-mensajes",
+      "https://apturio.com/blog/speed-to-lead-wins-deals",
+      "https://apturio.com/es/blog/velocidad-de-respuesta-gana-ventas",
+      "https://apturio.com/es/blog/category/estrategia-de-crecimiento",
+      "https://apturio.com/es/blog/category/casos-de-exito",
+      "https://apturio.com/es/blog/category/generacion-de-leads",
+      "https://apturio.com/es/blog/category/automatizacion-ia",
+      "https://apturio.com/blog/category/sales-pipeline",
+      "https://apturio.com/es/blog/category/ventas-pipeline",
+      "https://apturio.com/blog/author/arianna-lupi",
+      "https://apturio.com/es/blog/author/arianna-lupi"
+    ]
+  },
+  "pages": [
+    {
+      "path": "/es",
+      "status": 200,
+      "htmlBytes": 732030,
+      "words": 1231,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/es",
+      "metaDescription": "Apturio es tu Máquina de Ventas impulsada por IA, construida por expertos. Obtén una configuración completa de CRM valorada en $2,000.",
+      "hreflangInHtml": 3,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [],
+      "jsonLdBlocks": 8,
+      "jsonLdTypes": [
+        "BreadcrumbList",
+        "ContactPoint",
+        "ListItem",
+        "Offer",
+        "Organization",
+        "Product",
+        "SoftwareApplication",
+        "UnitPriceSpecification",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "s-maxage=31536000",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/precios",
+      "status": 200,
+      "htmlBytes": 566493,
+      "words": 708,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/precios",
+      "metaDescription": "Compare Apturio plans and pick the AI CRM that fits your business. No long contracts, cancel anytime. See pricing.",
+      "hreflangInHtml": 3,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [],
+      "jsonLdBlocks": 7,
+      "jsonLdTypes": [
+        "Answer",
+        "BreadcrumbList",
+        "ContactPoint",
+        "FAQPage",
+        "ListItem",
+        "Organization",
+        "Question",
+        "Service",
+        "SoftwareApplication",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/es/precios",
+      "status": 200,
+      "htmlBytes": 574555,
+      "words": 793,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/es/precios",
+      "metaDescription": "Compara los planes de Apturio y elige el CRM con IA que se ajusta a tu negocio. Sin contratos largos, cancela cuando quieras. Ve los precios.",
+      "hreflangInHtml": 3,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [],
+      "jsonLdBlocks": 7,
+      "jsonLdTypes": [
+        "Answer",
+        "BreadcrumbList",
+        "ContactPoint",
+        "FAQPage",
+        "ListItem",
+        "Organization",
+        "Question",
+        "Service",
+        "SoftwareApplication",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/chatbot-whatsapp",
+      "status": 200,
+      "htmlBytes": 343471,
+      "words": 680,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/chatbot-whatsapp",
+      "metaDescription": "AI-powered WhatsApp chatbot: responds instantly, qualifies leads, and books appointments 24/7 without adding headcount. Turnkey implementation. Book your demo.",
+      "hreflangInHtml": 3,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [],
+      "jsonLdBlocks": 7,
+      "jsonLdTypes": [
+        "Answer",
+        "BreadcrumbList",
+        "ContactPoint",
+        "FAQPage",
+        "ListItem",
+        "Organization",
+        "Question",
+        "Service",
+        "SoftwareApplication",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/es/chatbot-whatsapp",
+      "status": 200,
+      "htmlBytes": 357001,
+      "words": 792,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/es/chatbot-whatsapp",
+      "metaDescription": "Chatbot de WhatsApp con IA: responde al instante, califica leads y agenda citas 24/7 sin agregar personal. Implementación llave en mano. Agenda tu demo.",
+      "hreflangInHtml": 3,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [],
+      "jsonLdBlocks": 7,
+      "jsonLdTypes": [
+        "Answer",
+        "BreadcrumbList",
+        "ContactPoint",
+        "FAQPage",
+        "ListItem",
+        "Organization",
+        "Question",
+        "Service",
+        "SoftwareApplication",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/pay-per-use",
+      "status": 200,
+      "htmlBytes": 367010,
+      "words": 573,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/pay-per-use",
+      "metaDescription": "Detailed breakdown of our pay-per-use variable pricing.",
+      "hreflangInHtml": 3,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [],
+      "jsonLdBlocks": 11,
+      "jsonLdTypes": [
+        "BreadcrumbList",
+        "ContactPoint",
+        "ListItem",
+        "Offer",
+        "Organization",
+        "Product",
+        "SoftwareApplication",
+        "UnitPriceSpecification",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "s-maxage=31536000",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/unified-crm",
+      "status": 200,
+      "htmlBytes": 392079,
+      "words": 605,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/unified-crm",
+      "metaDescription": "The Cerebro unifies your entire stack into one centralized hub with real-time data and a $2,000 done-for-you setup.",
+      "hreflangInHtml": 3,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [
+        {
+          "href": "https://apturio.com/es/unified-crm",
+          "hreflang": "es",
+          "status": 404
+        }
+      ],
+      "jsonLdBlocks": 6,
+      "jsonLdTypes": [
+        "BreadcrumbList",
+        "ContactPoint",
+        "ListItem",
+        "Organization",
+        "Service",
+        "SoftwareApplication",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/es/crm-unificado",
+      "status": 200,
+      "htmlBytes": 396926,
+      "words": 624,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/es/crm-unificado",
+      "metaDescription": "El Cerebro unifica todo tu stack en un hub centralizado con datos en tiempo real y un setup de $2,000 hecho para ti.",
+      "hreflangInHtml": 3,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [
+        {
+          "href": "https://apturio.com/crm-unificado",
+          "hreflang": "en",
+          "status": 404
+        },
+        {
+          "href": "https://apturio.com/crm-unificado",
+          "hreflang": "x-default",
+          "status": 404
+        }
+      ],
+      "jsonLdBlocks": 6,
+      "jsonLdTypes": [
+        "BreadcrumbList",
+        "ContactPoint",
+        "ListItem",
+        "Organization",
+        "Service",
+        "SoftwareApplication",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/es/crm-para-clinicas",
+      "status": 200,
+      "htmlBytes": 432940,
+      "words": 1035,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/es/crm-para-clinicas",
+      "metaDescription": "¿Tu clínica pierde pacientes por WhatsApp sin responder? Conoce el CRM para clinicas de Apturio  atiende, agenda y reactiva.  Agenda tu demo.\n\n",
+      "hreflangInHtml": 2,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [
+        {
+          "href": "https://apturio.com/crm-para-clinicas",
+          "hreflang": "en",
+          "status": 404
+        },
+        {
+          "href": "https://apturio.com/crm-para-clinicas",
+          "hreflang": "x-default",
+          "status": 404
+        }
+      ],
+      "jsonLdBlocks": 7,
+      "jsonLdTypes": [
+        "Answer",
+        "BreadcrumbList",
+        "ContactPoint",
+        "FAQPage",
+        "ListItem",
+        "Organization",
+        "Question",
+        "Service",
+        "SoftwareApplication",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/es/crm-para-esteticas",
+      "status": 200,
+      "htmlBytes": 439581,
+      "words": 1233,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/es/crm-para-esteticas",
+      "metaDescription": "¿Pierdes clientas por falta de seguimiento? Apturio es el CRM para estéticas con IA que atiende, recuerda y reactiva. Agenda tu demo.",
+      "hreflangInHtml": 2,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [
+        {
+          "href": "https://apturio.com/crm-para-esteticas",
+          "hreflang": "en",
+          "status": 404
+        },
+        {
+          "href": "https://apturio.com/crm-para-esteticas",
+          "hreflang": "x-default",
+          "status": 404
+        }
+      ],
+      "jsonLdBlocks": 7,
+      "jsonLdTypes": [
+        "Answer",
+        "BreadcrumbList",
+        "ContactPoint",
+        "FAQPage",
+        "ListItem",
+        "Organization",
+        "Question",
+        "Service",
+        "SoftwareApplication",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/blog/speed-to-lead-wins-deals",
+      "status": 200,
+      "htmlBytes": 375493,
+      "words": 480,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/blog/speed-to-lead-wins-deals",
+      "metaDescription": "Responding to leads in under five minutes makes you 21x more likely to qualify them. Learn how to automate the first touch.",
+      "hreflangInHtml": 3,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [
+        {
+          "href": "https://apturio.com/es/blog/speed-to-lead-wins-deals",
+          "hreflang": "es",
+          "status": 404
+        }
+      ],
+      "jsonLdBlocks": 5,
+      "jsonLdTypes": [
+        "BlogPosting",
+        "BreadcrumbList",
+        "ContactPoint",
+        "ListItem",
+        "Organization",
+        "SoftwareApplication",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "s-maxage=3600, stale-while-revalidate=31532400",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/es/blog/velocidad-de-respuesta-gana-ventas",
+      "status": 200,
+      "htmlBytes": 396355,
+      "words": 637,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/es/blog/velocidad-de-respuesta-gana-ventas",
+      "metaDescription": "Responder a los leads en menos de cinco minutos te hace 21 veces más probable de calificarlos. Aprende a automatizar el primer contacto.",
+      "hreflangInHtml": 3,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [
+        {
+          "href": "https://apturio.com/blog/velocidad-de-respuesta-gana-ventas",
+          "hreflang": "en",
+          "status": 404
+        },
+        {
+          "href": "https://apturio.com/blog/velocidad-de-respuesta-gana-ventas",
+          "hreflang": "x-default",
+          "status": 404
+        }
+      ],
+      "jsonLdBlocks": 5,
+      "jsonLdTypes": [
+        "BlogPosting",
+        "BreadcrumbList",
+        "ContactPoint",
+        "ListItem",
+        "Organization",
+        "SoftwareApplication",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "s-maxage=3600, stale-while-revalidate=31532400",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/es/blog/alternativas-a-kommo",
+      "status": 200,
+      "htmlBytes": 416974,
+      "words": 1815,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/es/blog/alternativas-a-kommo",
+      "metaDescription": "Buscas alternativas a Kommo, aquí comparamos precio, WhatsApp nativo y qué tan fácil es empezar con cada opción. Solicita tu demo hoy\n\n",
+      "hreflangInHtml": 2,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [
+        {
+          "href": "https://apturio.com/blog/alternativas-a-kommo",
+          "hreflang": "en",
+          "status": 404
+        },
+        {
+          "href": "https://apturio.com/blog/alternativas-a-kommo",
+          "hreflang": "x-default",
+          "status": 404
+        }
+      ],
+      "jsonLdBlocks": 5,
+      "jsonLdTypes": [
+        "BlogPosting",
+        "BreadcrumbList",
+        "ContactPoint",
+        "ListItem",
+        "Organization",
+        "SoftwareApplication",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "s-maxage=3600, stale-while-revalidate=31532400",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/es/blog/mejores-crm-venezuela",
+      "status": 200,
+      "htmlBytes": 425757,
+      "words": 1960,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/es/blog/mejores-crm-venezuela",
+      "metaDescription": "Guía completa de los mejores CRM en Venezuela: cuál elegir según tu tipo de negocio y presupuesto. Empieza gratis hoy. \n",
+      "hreflangInHtml": 2,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [
+        {
+          "href": "https://apturio.com/blog/mejores-crm-venezuela",
+          "hreflang": "en",
+          "status": 404
+        },
+        {
+          "href": "https://apturio.com/blog/mejores-crm-venezuela",
+          "hreflang": "x-default",
+          "status": 404
+        }
+      ],
+      "jsonLdBlocks": 5,
+      "jsonLdTypes": [
+        "BlogPosting",
+        "BreadcrumbList",
+        "ContactPoint",
+        "ListItem",
+        "Organization",
+        "SoftwareApplication",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "s-maxage=3600, stale-while-revalidate=31532400",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/es/blog/reducir-no-shows-chatbot",
+      "status": 200,
+      "htmlBytes": 447659,
+      "words": 2208,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/es/blog/reducir-no-shows-chatbot",
+      "metaDescription": "Aprende cómo un chatbot de recordatorio automático por WhatsApp reduce los no-shows en tu clínica o consultorio y cuida tu agenda sin esfuerzo extra.",
+      "hreflangInHtml": 2,
+      "hreflangBrokenInHtml": [],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [
+        {
+          "href": "https://apturio.com/blog/reducir-no-shows-chatbot",
+          "hreflang": "en",
+          "status": 404
+        },
+        {
+          "href": "https://apturio.com/blog/reducir-no-shows-chatbot",
+          "hreflang": "x-default",
+          "status": 404
+        }
+      ],
+      "jsonLdBlocks": 5,
+      "jsonLdTypes": [
+        "BlogPosting",
+        "BreadcrumbList",
+        "ContactPoint",
+        "ListItem",
+        "Organization",
+        "SoftwareApplication",
+        "WebPage",
+        "WebSite"
+      ],
+      "cacheControl": "s-maxage=3600, stale-while-revalidate=31532400",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "/es/blog/category/estrategia-de-crecimiento",
+      "status": 200,
+      "htmlBytes": 378476,
+      "words": 383,
+      "h1Count": 1,
+      "canonical": "https://apturio.com/es/blog/category/estrategia-de-crecimiento",
+      "metaDescription": "Artículos sobre Estrategia de Crecimiento.",
+      "hreflangInHtml": 3,
+      "hreflangBrokenInHtml": [
+        {
+          "href": "https://apturio.com/blog/category/growth-strategy",
+          "status": 404
+        }
+      ],
+      "hreflangInLinkHeader": 3,
+      "hreflangBrokenInLinkHeader": [
+        {
+          "href": "https://apturio.com/blog/category/estrategia-de-crecimiento",
+          "hreflang": "en",
+          "status": 404
+        },
+        {
+          "href": "https://apturio.com/blog/category/estrategia-de-crecimiento",
+          "hreflang": "x-default",
+          "status": 404
+        }
+      ],
+      "jsonLdBlocks": 5,
+      "jsonLdTypes": [
+        "BreadcrumbList",
+        "CollectionPage",
+        "ContactPoint",
+        "ListItem",
+        "Organization",
+        "SoftwareApplication",
+        "WebSite"
+      ],
+      "cacheControl": "s-maxage=3600, stale-while-revalidate=31532400",
+      "contentEncoding": "gzip"
+    }
+  ],
+  "lighthouse": [
+    {
+      "path": "/es",
+      "formFactor": "mobile",
+      "finalUrl": "https://apturio.com/es",
+      "score": 64,
+      "fcpMs": 1879,
+      "lcpMs": 3346,
+      "tbtMs": 1498,
+      "cls": 0,
+      "speedIndexMs": 2664,
+      "ttfbMs": 216,
+      "transferKiB": 532,
+      "unusedJsKiB": 101,
+      "lighthouseVersion": "13.4.1",
+      "runs": 3,
+      "scoreRange": [
+        52,
+        80
+      ]
+    },
+    {
+      "path": "/es",
+      "formFactor": "desktop",
+      "finalUrl": "https://apturio.com/es",
+      "score": 96,
+      "fcpMs": 776,
+      "lcpMs": 1204,
+      "tbtMs": 0,
+      "cls": 0,
+      "speedIndexMs": 1027,
+      "ttfbMs": 256,
+      "transferKiB": 583,
+      "unusedJsKiB": 80,
+      "lighthouseVersion": "13.4.1",
+      "runs": 3,
+      "scoreRange": [
+        96,
+        97
+      ]
+    },
+    {
+      "path": "/precios",
+      "formFactor": "mobile",
+      "finalUrl": "https://apturio.com/precios",
+      "score": 97,
+      "fcpMs": 1813,
+      "lcpMs": 2281,
+      "tbtMs": 55,
+      "cls": 0,
+      "speedIndexMs": 2520,
+      "ttfbMs": 338,
+      "transferKiB": 648,
+      "unusedJsKiB": 78,
+      "lighthouseVersion": "13.4.1",
+      "runs": 3,
+      "scoreRange": [
+        90,
+        98
+      ]
+    },
+    {
+      "path": "/precios",
+      "formFactor": "desktop",
+      "finalUrl": "https://apturio.com/precios",
+      "score": 99,
+      "fcpMs": 644,
+      "lcpMs": 644,
+      "tbtMs": 13,
+      "cls": 0.002,
+      "speedIndexMs": 1037,
+      "ttfbMs": 326,
+      "transferKiB": 650,
+      "unusedJsKiB": 78,
+      "lighthouseVersion": "13.4.1",
+      "runs": 3,
+      "scoreRange": [
+        89,
+        99
+      ]
+    },
+    {
+      "path": "/chatbot-whatsapp",
+      "formFactor": "mobile",
+      "finalUrl": "https://apturio.com/chatbot-whatsapp",
+      "score": 85,
+      "fcpMs": 1704,
+      "lcpMs": 2847,
+      "tbtMs": 379,
+      "cls": 0,
+      "speedIndexMs": 2527,
+      "ttfbMs": 228,
+      "transferKiB": 545,
+      "unusedJsKiB": 77,
+      "lighthouseVersion": "13.4.1",
+      "runs": 3,
+      "scoreRange": [
+        64,
+        95
+      ]
+    },
+    {
+      "path": "/chatbot-whatsapp",
+      "formFactor": "desktop",
+      "finalUrl": "https://apturio.com/chatbot-whatsapp",
+      "score": 99,
+      "fcpMs": 598,
+      "lcpMs": 822,
+      "tbtMs": 0,
+      "cls": 0,
+      "speedIndexMs": 901,
+      "ttfbMs": 234,
+      "transferKiB": 553,
+      "unusedJsKiB": 77,
+      "lighthouseVersion": "13.4.1",
+      "runs": 3,
+      "scoreRange": [
+        99,
+        100
+      ]
+    },
+    {
+      "path": "/es/blog/alternativas-a-kommo",
+      "formFactor": "mobile",
+      "finalUrl": "https://apturio.com/es/blog/alternativas-a-kommo",
+      "score": 96,
+      "fcpMs": 1611,
+      "lcpMs": 2018,
+      "tbtMs": 175,
+      "cls": 0.055,
+      "speedIndexMs": 2036,
+      "ttfbMs": 245,
+      "transferKiB": 586,
+      "unusedJsKiB": 80,
+      "lighthouseVersion": "13.4.1",
+      "runs": 3,
+      "scoreRange": [
+        75,
+        98
+      ]
+    },
+    {
+      "path": "/es/blog/alternativas-a-kommo",
+      "formFactor": "desktop",
+      "finalUrl": "https://apturio.com/es/blog/alternativas-a-kommo",
+      "score": 93,
+      "fcpMs": 575,
+      "lcpMs": 944,
+      "tbtMs": 0,
+      "cls": 0.154,
+      "speedIndexMs": 815,
+      "ttfbMs": 246,
+      "transferKiB": 607,
+      "unusedJsKiB": 80,
+      "lighthouseVersion": "13.4.1",
+      "runs": 3,
+      "scoreRange": [
+        93,
+        93
+      ]
+    }
+  ]
+}
