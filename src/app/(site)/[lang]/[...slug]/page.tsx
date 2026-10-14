@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { draftMode } from 'next/headers'
 import { notFound, permanentRedirect, redirect } from 'next/navigation'
 import { hasLocale } from 'next-intl'
 import { setRequestLocale } from 'next-intl/server'
@@ -70,14 +71,15 @@ export async function generateMetadata({
 
 export default async function DynamicPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ lang: string; slug: string[] }>
-  searchParams: Promise<{ draft?: string }>
 }) {
   const { lang, slug } = await params
-  const { draft } = await searchParams
-  const isDraft = draft === 'true'
+  // Draft Mode (cookie set by /api/draft after an admin auth check). Reading
+  // `searchParams` here made EVERY page of this route dynamic (no ISR, no edge cache) and let
+  // anyone read unpublished drafts with `?draft=true`. Regular visitors never carry the
+  // bypass cookie, so they keep getting the statically generated page.
+  const { isEnabled: isDraft } = await draftMode()
   if (!hasLocale(routing.locales, lang)) notFound()
   setRequestLocale(lang)
 

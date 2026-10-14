@@ -22,7 +22,9 @@ import { OptImage } from '@/components/OptImage'
 const converters: JSXConvertersFunction = ({ defaultConverters }) => ({
   ...defaultConverters,
   heading: ({ node, nodesToJSX }) => {
-    const tag = (node.tag as string) || 'h2'
+    // The post title is already the page's single <h1>; an h1 pasted into the body becomes h2.
+    const rawTag = (node.tag as string) || 'h2'
+    const tag = rawTag === 'h1' ? 'h2' : rawTag
     const children = nodesToJSX({ nodes: node.children })
     if (tag === 'h2' || tag === 'h3') {
       const id = slugify(lexicalNodeText(node as { children?: unknown[] }))

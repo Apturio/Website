@@ -1,6 +1,10 @@
 import type { AppLocale } from '@/lib/site'
 import type { Product, WithContext } from 'schema-dts'
 import { IDS } from '@/lib/schema/ids'
+import { SITE_URL } from '@/lib/site'
+
+/** Plans carry no image of their own, so the brand logo (served from this domain) stands in. */
+const DEFAULT_PLAN_IMAGE = `${SITE_URL}/brand/apturio-logo.png`
 
 /**
  * Input for a single pricing plan → one `Product` node.
@@ -51,12 +55,8 @@ export function buildProduct(
     '@type': 'Product',
     name: plan.name,
     description: plan.description,
-    // WR-03 / SCHEMA-08: Google requires `image` per plan for the Product rich result.
-    // `imageUrl` is intentionally OPTIONAL today, so a missing image is NOT a compile-time
-    // error — it surfaces at the CI gate (validate-jsonld.mjs) at deploy instead. The
-    // conditional spread is correct (omit rather than emit an empty image). Populating
-    // `imageUrl` on the pay-per-use / add-ons plans is the deploy-time follow-up.
-    ...(plan.imageUrl ? { image: plan.imageUrl } : {}),
+    // Google requires `image` per plan for the Product rich result.
+    image: plan.imageUrl ?? DEFAULT_PLAN_IMAGE,
     // @id ref to the canonical Organization node — never inline (Pitfall 5).
     brand: { '@id': IDS.organization },
     inLanguage: locale,

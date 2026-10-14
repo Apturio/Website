@@ -1,19 +1,26 @@
 'use client'
 
-import { RefreshRouteOnSave } from '@payloadcms/live-preview-react'
-import { useRouter } from 'next/navigation'
+import dynamic from 'next/dynamic'
+import { useEffect, useState } from 'react'
 
 /**
- * Bridges Payload's admin live-preview iframe to the Next.js router. When an
- * editor saves (or autosaves a draft) in the admin, Payload posts a message to
- * the previewed URL; this listener calls `router.refresh()` so the server
- * components re-fetch and the preview reflects the change. Rendered globally in
- * the locale layout — a no-op outside the admin preview iframe.
+ * Payload's live-preview client only matters inside the admin preview iframe, so it is
+ * split into its own chunk and loaded only when the page is framed (and the browser has
+ * Draft Mode's bypass cookie). Everyone else downloads and runs none of it.
  */
+const RefreshRoute = dynamic(() => import('./LivePreviewRefresh'), { ssr: false })
+
 export function LivePreviewListener() {
-  const router = useRouter()
-  const serverURL =
-    process.env.NEXT_PUBLIC_SERVER_URL ||
-    (typeof window !== 'undefined' ? window.location.origin : '')
-  return <RefreshRouteOnSave refresh={() => router.refresh()} serverURL={serverURL} />
+  const [framed, setFramed] = useState(false)
+
+  useEffect(() => {
+    try {
+      setFramed(window.self !== window.top)
+    } catch {
+      // Cross-origin parent access throws: that also means we are inside a frame.
+      setFramed(true)
+    }
+  }, [])
+
+  return framed ? <RefreshRoute /> : null
 }

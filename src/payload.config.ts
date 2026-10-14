@@ -64,9 +64,10 @@ const ALLOWED_ORIGINS = Array.from(
 )
 
 /**
- * Build the front-end preview URL for a Pages/Posts document. Includes the
- * active locale + `?draft=true` so the route renders the draft version inside
- * the admin live-preview iframe. Home page maps to the locale root.
+ * Build the front-end preview URL for a Pages/Posts document. Goes through `/api/draft`,
+ * which checks the admin session, turns on Next.js Draft Mode and redirects to the page for
+ * the active locale, so the route renders the draft version inside the admin live-preview
+ * iframe. Home page maps to the locale root.
  */
 const buildPreviewURL = (
   kind: 'pages' | 'posts',
@@ -74,11 +75,11 @@ const buildPreviewURL = (
   localeCode: string,
 ): string => {
   const slug = typeof data?.slug === 'string' ? data.slug : ''
-  if (kind === 'posts') {
-    return `${SERVER_URL}${localePath(localeCode, `/blog/${slug}`)}?draft=true`
-  }
-  if (!slug || slug === 'home') return `${SERVER_URL}${localePath(localeCode)}?draft=true`
-  return `${SERVER_URL}${localePath(localeCode, `/${slug}`)}?draft=true`
+  let target: string
+  if (kind === 'posts') target = localePath(localeCode, `/blog/${slug}`)
+  else if (!slug || slug === 'home') target = localePath(localeCode)
+  else target = localePath(localeCode, `/${slug}`)
+  return `${SERVER_URL}/api/draft?path=${encodeURIComponent(target)}`
 }
 
 // Core plugins (SEO, Form Builder, Redirects). S3 storage is appended only when

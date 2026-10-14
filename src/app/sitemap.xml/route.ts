@@ -17,15 +17,21 @@ const STATIC_PATHS = [
   '/strategy-call',
   '/privacy-policy',
   '/terms-of-service',
+  // Indexable blog hub (EN and ES both render).
+  '/blog',
 ] as const
 
 const LOCALES = ['en', 'es'] as const
 
+// Static routes have no CMS document to take a date from. Using the process start (a new
+// process per deploy) keeps `lastmod` stable between deploys instead of "now" on every hourly
+// regeneration, which teaches Google to ignore the field. Google also ignores `priority` and
+// `changefreq`, so they are not emitted.
+const STATIC_LASTMOD = new Date().toISOString()
+
 interface SitemapEntry {
   loc: string
   lastmod: string
-  changefreq: string
-  priority: string
   alternates: Record<string, string>
 }
 
@@ -96,8 +102,6 @@ function localeHasContent(
 interface CollectionSpec {
   collection: DynamicCollection
   filterPublished: boolean
-  changefreq: string
-  priority: string
   makeUrl: (locale: string, slug: string) => string
 }
 
@@ -105,29 +109,21 @@ const COLLECTION_SPECS: CollectionSpec[] = [
   {
     collection: 'pages',
     filterPublished: true,
-    changefreq: 'weekly',
-    priority: '0.7',
     makeUrl: (locale, slug) => localeUrl(locale, `/${slug}`),
   },
   {
     collection: 'posts',
     filterPublished: true,
-    changefreq: 'weekly',
-    priority: '0.6',
     makeUrl: (locale, slug) => localeUrl(locale, `/blog/${slug}`),
   },
   {
     collection: 'categories',
     filterPublished: false,
-    changefreq: 'weekly',
-    priority: '0.5',
     makeUrl: (locale, slug) => localeUrl(locale, `/blog/category/${slug}`),
   },
   {
     collection: 'authors',
     filterPublished: false,
-    changefreq: 'weekly',
-    priority: '0.5',
     makeUrl: (locale, slug) => localeUrl(locale, `/blog/author/${slug}`),
   },
 ]
@@ -158,9 +154,7 @@ function buildStaticEntries(): SitemapEntry[] {
     for (const locale of LOCALES) {
       entries.push({
         loc: localeUrl(locale, path),
-        lastmod: new Date().toISOString(),
-        changefreq: 'weekly',
-        priority: path === '' ? '1.0' : '0.7',
+        lastmod: STATIC_LASTMOD,
         alternates: {
           en: localeUrl('en', path),
           es: localeUrl('es', path),
@@ -235,8 +229,6 @@ async function collectCollectionEntries(
       entries.push({
         loc: canonical,
         lastmod,
-        changefreq: spec.changefreq,
-        priority: spec.priority,
         alternates: languages,
       })
     }
@@ -305,8 +297,6 @@ function serializeSitemap(entries: SitemapEntry[]): string {
         '  <url>',
         `    <loc>${escapeXml(entry.loc)}</loc>`,
         `    <lastmod>${entry.lastmod}</lastmod>`,
-        `    <changefreq>${entry.changefreq}</changefreq>`,
-        `    <priority>${entry.priority}</priority>`,
         alternates,
         '  </url>',
       ].join('\n')
