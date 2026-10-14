@@ -12,6 +12,7 @@ import {
   getAuthorBySlug,
   getPayloadClient,
   getPostsByAuthor,
+  authorAvatarUrl,
 } from '@/lib/blog'
 import { BlogCard } from '@/components/blog/BlogCard'
 import { CroCard, NewsletterMini } from '@/components/blog/Sidebar'
@@ -68,7 +69,7 @@ export default async function AuthorPage({
     posts.map((p) => asCategory(p.category)?.id).filter((v): v is number => typeof v === 'number'),
   ).size
   const reads = author.stats?.reads
-  const avatar = asMedia(author.avatar)
+  const avatarUrl = authorAvatarUrl(author)
   const socials = author.socials
 
   // Map the `socials` GROUP { linkedin, x, website } to a filtered, non-empty
@@ -96,7 +97,7 @@ export default async function AuthorPage({
     name: author.name,
     slug: author.slug,
     bio: author.bio ?? undefined,
-    avatarUrl: avatar?.url ?? undefined,
+    avatarUrl: avatarUrl ? (avatarUrl.startsWith('/') ? `${SITE_URL}${avatarUrl}` : avatarUrl) : undefined,
     role: author.role ?? undefined,
     ...(sameAs.length > 0 ? { sameAs } : {}),
   }
@@ -119,8 +120,8 @@ export default async function AuthorPage({
 
           <div className="author-top">
             <div className="author-avatar">
-              {avatar?.url ? (
-                <OptImage src={avatar.url} alt={author.name} sizes="160px" priority style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%', border: '3px solid #000' }} />
+              {avatarUrl ? (
+                <OptImage src={avatarUrl} alt={author.name} sizes="160px" priority style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%', border: '3px solid #000' }} />
               ) : (
                 <span className="img-slot circle" />
               )}

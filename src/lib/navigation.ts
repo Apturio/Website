@@ -21,6 +21,9 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 
 import type { Navigation } from '@/payload-types'
+import { hasLocaleContent } from '@/lib/localized-content'
+import { getCategoryBySlug, getPostBySlug } from '@/lib/blog'
+import type { AppLocale } from '@/lib/site'
 import {
   navMenus as staticNavMenus,
   navDirectLinks as staticNavDirectLinks,
@@ -196,6 +199,114 @@ function getStaticNavigationView(t: Translator): NavigationView {
   }
 }
 
+// ---------- automatic "coming soon" for links with no page in this language ----------
+
+/** Routes rendered by code (not CMS pages): always available in every language. */
+const CODE_ROUTES = new Set([
+  '/',
+  '/pay-per-use',
+  '/add-ons',
+  '/strategy-call',
+  '/privacy-policy',
+  '/terms-of-service',
+  '/blog',
+  '/sitemap.html',
+  '/thank-you',
+])
+
+/**
+ * Locale-relative path of an internal nav link (`/chatbot-whatsapp`), or null for links this
+ * check does not own: external URLs, anchors, checkout and the demo funnel.
+ */
+function navPath(href: string): string | null {
+  if (!href.startsWith('/') || href.startsWith('//')) return null
+  const path = href.split(/[?#]/)[0].replace(/^\/(en|es)(?=\/|$)/, '') || '/'
+  if (path.startsWith('/checkout') || path.startsWith('/demo-spanish')) return null
+  return path
+}
+
+/**
+ * Of the given locale-relative paths, the ones that really exist in `locale`: a published CMS
+ * page / post / category with its own content in that language (no fallback to the other
+ * language). Cached under the `navigation` tag, which page/post saves also invalidate.
+ */
+const getCachedAvailablePaths = unstable_cache(
+  async (locale: string, paths: string[]): Promise<string[]> => {
+    const payload = await getPayload({ config })
+    const lang = locale as AppLocale
+    const pageSlugs: string[] = []
+    const available: string[] = []
+
+    for (const path of paths) {
+      if (CODE_ROUTES.has(path)) {
+        available.push(path)
+      } else if (path.startsWith('/blog/category/')) {
+        if (await getCategoryBySlug(lang, path.slice('/blog/category/'.length))) available.push(path)
+      } else if (path.startsWith('/blog/author/')) {
+        available.push(path)
+      } else if (path.startsWith('/blog/')) {
+        if (await getPostBySlug(lang, path.slice('/blog/'.length))) available.push(path)
+      } else {
+        pageSlugs.push(path.slice(1))
+      }
+    }
+
+    if (pageSlugs.length > 0) {
+      const { docs } = await payload.find({
+        collection: 'pages',
+        locale: locale as 'en' | 'es',
+        fallbackLocale: false,
+        where: { and: [{ slug: { in: pageSlugs } }, { _status: { equals: 'published' } }] },
+        limit: pageSlugs.length,
+        depth: 0,
+        pagination: false,
+      })
+      for (const doc of docs as unknown as Array<{ slug?: string; title?: string; layout?: unknown }>) {
+        if (doc.slug && hasLocaleContent('pages', doc)) available.push(`/${doc.slug}`)
+      }
+    }
+    return available
+  },
+  ['navigation-available-paths'],
+  { tags: ['navigation'] },
+)
+
+/**
+ * Marks a live internal link as `comingSoon` when its page has no content in this language,
+ * so Spanish-only pages show "Próximamente" in the English menu (and the reverse) instead of a
+ * link that 404s. Any failure leaves the view untouched.
+ */
+async function withAvailability(view: NavigationView, locale: string): Promise<NavigationView> {
+  const walk = (items: NavItemView[], visit: (item: NavItemView) => void) => {
+    for (const item of items) {
+      visit(item)
+      if (item.children) walk(item.children, visit)
+    }
+  }
+  const all: NavItemView[] = []
+  const collect = (item: NavItemView) => all.push(item)
+  for (const menu of view.megaMenus) for (const col of menu.columns) walk(col.items, collect)
+  walk(view.directLinks, collect)
+  for (const col of view.footerColumns) {
+    walk(col.items, collect)
+    if (col.subgroup) walk(col.subgroup.items, collect)
+  }
+
+  const candidates = all.filter((i) => i.status === 'live' && i.href && navPath(i.href))
+  const paths = [...new Set(candidates.map((i) => navPath(i.href as string) as string))].sort()
+  if (paths.length === 0) return view
+
+  try {
+    const available = new Set(await getCachedAvailablePaths(locale, paths))
+    for (const item of candidates) {
+      if (!available.has(navPath(item.href as string) as string)) item.status = 'comingSoon'
+    }
+  } catch (error) {
+    console.warn('[lib/navigation] link availability check failed; leaving links as configured.', error)
+  }
+  return view
+}
+
 /**
  * Returns the resolved NavigationView for `locale`: the editable Payload
  * Global when it can be read and has usable content, otherwise the static
@@ -209,7 +320,7 @@ export async function getNavigationView(
   try {
     const raw = await getCachedNavigationGlobal(locale)
     if (Array.isArray(raw?.megaMenus) && raw.megaMenus.length > 0) {
-      return adaptGlobalToView(raw)
+      return withAvailability(adaptGlobalToView(raw), locale)
     }
     console.warn(
       `[lib/navigation] Navigation Global has no usable megaMenus for locale "${locale}" — falling back to static nav-links.ts registry.`,
@@ -220,5 +331,5 @@ export async function getNavigationView(
       error,
     )
   }
-  return getStaticNavigationView(t)
+  return withAvailability(getStaticNavigationView(t), locale)
 }
