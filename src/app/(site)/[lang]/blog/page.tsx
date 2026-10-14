@@ -9,6 +9,7 @@ import {
   asAuthor,
   asCategory,
   asMedia,
+  authorAvatarUrl,
   formatDate,
   getCategories,
   getPublishedPosts,
@@ -106,8 +107,8 @@ export default async function BlogIndexPage({ params }: { params: Promise<{ lang
               {featured.excerpt && <p className="excerpt">{featured.excerpt}</p>}
               <div className="meta">
                 <span className="avatar">
-                  {asMedia(featAuthor?.avatar)?.url ? (
-                    <OptImage src={asMedia(featAuthor?.avatar)!.url!} alt={featAuthor?.name ?? ''} sizes="48px" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  {authorAvatarUrl(featAuthor) ? (
+                    <OptImage src={authorAvatarUrl(featAuthor)!} alt={featAuthor?.name ?? ''} sizes="48px" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   ) : (
                     <span className="img-slot circle" />
                   )}

@@ -1,6 +1,6 @@
 import type { AppLocale } from '@/lib/site'
 import type { Organization, WithContext } from 'schema-dts'
-import { SITE_URL, SITE_NAME } from '@/lib/site'
+import { SITE_URL, SITE_NAME, localeUrl } from '@/lib/site'
 import { IDS } from '@/lib/schema/ids'
 
 /**
@@ -58,6 +58,16 @@ export function buildOrganization(locale: AppLocale): WithContext<Organization> 
       height: '484',
     },
     sameAs: SAME_AS,
+    // Only founders whose role the owners confirmed.
+    founder: [
+      {
+        '@type': 'Person',
+        name: 'Carlos Ramón Burgués Capasso',
+        jobTitle: locale === 'es' ? 'Cofundador y CRO' : 'Cofounder & CRO',
+        url: localeUrl(locale, '/blog/author/carlos-ramon-burgues-capasso'),
+        sameAs: ['https://www.linkedin.com/in/carlosburgues/'],
+      },
+    ],
     contactPoint: {
       '@type': 'ContactPoint',
       contactType: 'customer support',
