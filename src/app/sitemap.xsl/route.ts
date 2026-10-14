@@ -92,7 +92,7 @@ const XSL = `<?xml version="1.0" encoding="UTF-8"?>
       </head>
       <body>
         <div class="header">
-          <img src="https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png" alt="Apturio"/>
+          <img src="/brand/apturio-logo.png" alt="Apturio"/>
           <h1>Sitemap</h1>
         </div>
         <xsl:if test="sitemap:urlset/sitemap:url[not(${LOCALE_PREDICATE}='es')]">
@@ -103,7 +103,6 @@ const XSL = `<?xml version="1.0" encoding="UTF-8"?>
                 <tr>
                   <th>URL</th>
                   <th>Last modified</th>
-                  <th>Priority</th>
                 </tr>
               </thead>
               <tbody>
@@ -111,7 +110,6 @@ const XSL = `<?xml version="1.0" encoding="UTF-8"?>
                   <tr>
                     <td class="url"><a href="{sitemap:loc}"><xsl:value-of select="sitemap:loc"/></a></td>
                     <td><xsl:value-of select="sitemap:lastmod"/></td>
-                    <td><xsl:value-of select="sitemap:priority"/></td>
                   </tr>
                 </xsl:for-each>
               </tbody>
@@ -126,7 +124,6 @@ const XSL = `<?xml version="1.0" encoding="UTF-8"?>
                 <tr>
                   <th>URL</th>
                   <th>Última modificación</th>
-                  <th>Prioridad</th>
                 </tr>
               </thead>
               <tbody>
@@ -134,7 +131,6 @@ const XSL = `<?xml version="1.0" encoding="UTF-8"?>
                   <tr>
                     <td class="url"><a href="{sitemap:loc}"><xsl:value-of select="sitemap:loc"/></a></td>
                     <td><xsl:value-of select="sitemap:lastmod"/></td>
-                    <td><xsl:value-of select="sitemap:priority"/></td>
                   </tr>
                 </xsl:for-each>
               </tbody>

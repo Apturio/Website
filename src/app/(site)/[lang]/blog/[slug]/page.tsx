@@ -183,7 +183,15 @@ export default async function BlogPostPage({
       {/* white paper reading sheet */}
       <div className="post-paper">
         <div className="wrap">
-          <div className="post-hero">
+          <div
+            className="post-hero"
+            // Ratio goes to CSS so the frame is reserved before the image loads (no layout shift).
+            style={
+              hero?.width && hero?.height
+                ? ({ '--hero-ratio': hero.width / hero.height } as React.CSSProperties)
+                : undefined
+            }
+          >
             {hero?.url ? (
               // Frame follows the upload's intrinsic ratio (portrait, square or
               // panorama all render uncropped); CSS caps the height so a very

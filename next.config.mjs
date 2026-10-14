@@ -5,8 +5,9 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Inline the (small) critical CSS into the HTML instead of 3 render-blocking stylesheets.
-  experimental: { inlineCss: true },
+  // CSS is served as cached stylesheets, not inlined. `inlineCss` embedded ~106 KB of CSS in
+  // every HTML response AND repeated it inside the RSC payload (~210 KB extra per page).
+  // experimental: { inlineCss: true },
   // Blog pages run several CMS queries each at build time (Neon over the network, 7 workers sharing
   // a small pool). The 60 s default aborted the whole deploy when the DB was a little slow.
   staticPageGenerationTimeout: 180,
@@ -30,6 +31,23 @@ const nextConfig = {
     // largo: las imágenes no cambian de URL al editarse.
     formats: ['image/webp'],
     minimumCacheTTL: 2678400,
+  },
+  // Do not advertise the framework in every response.
+  poweredByHeader: false,
+  async headers() {
+    // X-Frame-Options / frame-ancestors are left out on purpose: the admin live preview
+    // embeds the site in an iframe and may run from another allowed origin.
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'Strict-Transport-Security', value: 'max-age=31536000' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
+        ],
+      },
+    ]
   },
   async redirects() {
     // statusCode: 301 (not `permanent: true`, which emits 308) so old SPA links

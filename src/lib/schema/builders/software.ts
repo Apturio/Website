@@ -4,13 +4,15 @@ import { SITE_URL, SITE_NAME } from '@/lib/site'
 import { IDS } from '@/lib/schema/ids'
 
 /**
- * Brand logo (R2/filesafe asset) reused as the application screenshot. It is a real,
- * Apturio-owned image URL — never fabricated. Swap for a genuine product UI screenshot
- * once one is published.
- * TODO(v2.2.x): replace with a real product screenshot asset (logo is a placeholder).
+ * Brand logo reused as the application screenshot, served from this domain.
+ * TODO: replace with a real product UI screenshot once one is published.
  */
-const SCREENSHOT =
-  'https://vibe.filesafe.space/1775831502235366632/attachments/965b91f8-1e00-4fc8-acf4-8021d0d6fdcd.png'
+const SCREENSHOT = `${SITE_URL}/brand/apturio-logo.png`
+
+const DESCRIPTION: Record<AppLocale, string> = {
+  en: 'AI CRM with WhatsApp and Instagram chatbots that qualifies leads, manages your sales pipeline and books appointments 24/7.',
+  es: 'CRM con IA y chatbots de WhatsApp e Instagram que califica leads, gestiona tu pipeline de ventas y agenda citas 24/7.',
+}
 
 /**
  * Canonical SoftwareApplication node for the Apturio AI CRM. Pure builder returning
@@ -30,6 +32,8 @@ export function buildSoftwareApplication(
     '@id': IDS.softwareApp,
     name: SITE_NAME,
     url: SITE_URL,
+    description: DESCRIPTION[locale],
+    publisher: { '@id': IDS.organization },
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     inLanguage: locale,
