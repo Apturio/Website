@@ -239,5 +239,13 @@ export async function getLocalizedSlugMap(
       if (typeof val === 'string' && val && docHasLocaleContent(collection, doc, loc)) out[loc] = val
     }
   }
+  // A category page 404s in a language with no posts (see getCategoryBySlug), so it must not
+  // be advertised as an hreflang alternate there either. Same rule the sitemap applies.
+  if (collection === 'categories') {
+    for (const loc of Object.keys(out)) {
+      const posts = await findLocalPosts(loc as AppLocale, [{ category: { equals: id } }], 0)
+      if (posts.length === 0) delete out[loc]
+    }
+  }
   return out
 }
