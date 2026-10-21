@@ -9,12 +9,12 @@ import { HOME_MARKER_SLUGS } from '@/lib/hooks'
 export const revalidate = 3600
 
 // Indexable static routes (paths after the locale segment). noindex routes
-// (checkout, thank-you, demo funnel) are intentionally excluded.
+// (checkout, thank-you, demo funnel) are intentionally excluded. /strategy-call is a booking form
+// with about 20 words of text: it stays reachable from the CTAs but is not worth a crawl slot.
 const STATIC_PATHS = [
   '',
   '/pay-per-use',
   '/add-ons',
-  '/strategy-call',
   '/privacy-policy',
   '/terms-of-service',
   // Indexable blog hub (EN and ES both render).
