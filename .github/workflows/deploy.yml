@@ -1,0 +1,130 @@
+name: Deploy to Hostinger
+
+# Every push to main (a merged release PR) ships to https://apturio.com.
+# Hostinger's own Git integration is not used: this workflow zips the commit, uploads it through
+# the Hostinger API and starts a Node.js build, then waits for it and probes the live site.
+# Needs one repository secret: HOSTINGER_API_TOKEN (hPanel > Account > API).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+env:
+  DOMAIN: apturio.com
+  API: https://developers.hostinger.com
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: |
+          npm run test:locale
+          npm run test:content
+          npm run test:geo
+          npm run test:images
+          npm run test:media
+
+  deploy:
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      HOSTINGER_API_TOKEN: ${{ secrets.HOSTINGER_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check secret
+        run: |
+          [ -n "$HOSTINGER_API_TOKEN" ] || { echo "::error::Missing repository secret HOSTINGER_API_TOKEN"; exit 1; }
+
+      - name: Package source (tracked files only, no node_modules or build output)
+        run: |
+          git archive --format=zip -o app.zip HEAD
+          ls -lh app.zip
+
+      - name: Resolve account username
+        run: |
+          set -euo pipefail
+          resp=$(curl -fsS -H "Authorization: Bearer $HOSTINGER_API_TOKEN" "$API/api/hosting/v1/websites?domain=$DOMAIN")
+          user=$(echo "$resp" | jq -r '(.data // .)[0].username')
+          [ -n "$user" ] && [ "$user" != "null" ] || { echo "::error::No hosting account found for $DOMAIN"; echo "$resp"; exit 1; }
+          echo "HOST_USER=$user" >> "$GITHUB_ENV"
+
+      - name: Upload archive (TUS)
+        run: |
+          set -euo pipefail
+          creds=$(curl -fsS -X POST "$API/api/hosting/v1/files/upload-urls" \
+            -H "Authorization: Bearer $HOSTINGER_API_TOKEN" -H "Content-Type: application/json" \
+            -d "{\"username\":\"$HOST_USER\",\"domain\":\"$DOMAIN\"}")
+          url=$(echo "$creds" | jq -r '(.data // .).url')
+          auth=$(echo "$creds" | jq -r '(.data // .).auth_key')
+          rest=$(echo "$creds" | jq -r '(.data // .).rest_auth_key')
+          FILE=app.zip
+          SIZE=$(wc -c < "$FILE")
+          curl -fsS -o /dev/null -X POST "$url/$FILE?override=true" \
+            -H "X-Auth: $auth" -H "X-Auth-Rest: $rest" -H "Tus-Resumable: 1.0.0" \
+            -H "Upload-Length: $SIZE" -H "Upload-Offset: 0"
+          offset=$(curl -fsS -D - -o /dev/null -X PATCH "$url/$FILE?override=true" \
+            -H "X-Auth: $auth" -H "X-Auth-Rest: $rest" -H "Tus-Resumable: 1.0.0" \
+            -H "Content-Type: application/offset+octet-stream" -H "Upload-Offset: 0" \
+            --data-binary "@$FILE" | tr -d '\r' | awk -F': ' 'tolower($1)=="upload-offset"{print $2}')
+          [ "$offset" = "$SIZE" ] || { echo "::error::Upload incomplete ($offset of $SIZE bytes)"; exit 1; }
+
+      - name: Start build with the settings stored in Hostinger
+        run: |
+          set -euo pipefail
+          base="$API/api/hosting/v1/accounts/$HOST_USER/websites/$DOMAIN/nodejs/builds"
+          stored=$(curl -fsS -H "Authorization: Bearer $HOSTINGER_API_TOKEN" "$base/settings")
+          body=$(echo "$stored" | jq -c '(.data // .) | {node_version, app_type, root_directory, output_directory, build_script, entry_file, package_manager}
+            | with_entries(select(.value != null))
+            | . + {source_type: "archive", source_options: {archive_path: "app.zip"}}')
+          echo "build settings: $(echo "$body" | jq -c 'del(.source_options)')"
+          resp=$(curl -fsS -X POST "$base" -H "Authorization: Bearer $HOSTINGER_API_TOKEN" \
+            -H "Content-Type: application/json" -d "$body")
+          uuid=$(echo "$resp" | jq -r '(.data // .).uuid')
+          [ -n "$uuid" ] && [ "$uuid" != "null" ] || { echo "::error::Build did not start"; echo "$resp"; exit 1; }
+          echo "BUILD_UUID=$uuid" >> "$GITHUB_ENV"
+
+      - name: Wait for the build
+        run: |
+          set -uo pipefail
+          base="$API/api/hosting/v1/accounts/$HOST_USER/websites/$DOMAIN/nodejs/builds"
+          for i in $(seq 1 90); do
+            state=$(curl -fsS -H "Authorization: Bearer $HOSTINGER_API_TOKEN" "$base/$BUILD_UUID" | jq -r '(.data // .).state')
+            echo "[$i] build $BUILD_UUID: $state"
+            case "$state" in
+              completed) exit 0 ;;
+              failed)
+                curl -fsS -H "Authorization: Bearer $HOSTINGER_API_TOKEN" "$base/$BUILD_UUID/logs" | jq -r '(.data // .)' | tail -80
+                echo "::error::Hostinger build failed"; exit 1 ;;
+            esac
+            sleep 20
+          done
+          echo "::error::Build still running after 30 minutes"; exit 1
+
+      - name: Probe the live site
+        run: |
+          set -euo pipefail
+          for path in / /es /precios /robots.txt /sitemap.xml; do
+            ok=""
+            for try in 1 2 3 4 5 6; do
+              code=$(curl -s -o /dev/null -w '%{http_code}' -A "Mozilla/5.0 (compatible; Googlebot/2.1)" "https://$DOMAIN$path")
+              [ "$code" = 200 ] && { ok=1; break; }
+              sleep 15
+            done
+            echo "$path -> $code"
+            [ -n "$ok" ] || { echo "::error::$path did not return 200"; exit 1; }
+          done

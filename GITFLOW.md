@@ -28,6 +28,9 @@ Nadie hace push directo a `main` ni a `develop`. Todo entra por Pull Request.
 4. Crea el tag: `git tag vX.Y.Z && git push --tags`.
 5. PR de `main` hacia `develop` para devolver cualquier ajuste hecho en la release.
 
+Al mergear a `main`, el workflow `Deploy to Hostinger` (`.github/workflows/deploy.yml`) pasa tsc y los tests, sube el código por la API de Hostinger, espera el build y comprueba que el sitio responde. No depende de la integración Git de Hostinger. Sigue el avance en la pestaña Actions de GitHub. Si hace falta redesplegar sin cambios: Actions > Deploy to Hostinger > Run workflow.
+Requiere el secret `HOSTINGER_API_TOKEN` (hPanel > Cuenta > API). El workflow `CI` corre tsc y los tests en cada PR.
+
 ## Hotfix
 
 1. `git checkout main && git pull && git checkout -b hotfix/nombre`.
