@@ -58,6 +58,10 @@ const nextConfig = {
       // Demo funnel was Spanish-first — redirect to ES locale
       { source: '/demo-spanish', destination: '/es/demo-spanish', statusCode: 301 },
       { source: '/demo-spanish/thank-you', destination: '/es/demo-spanish/thank-you', statusCode: 301 },
+      // The homepage document has slug "home" and also answered at /home and /es/home with a
+      // duplicate of "/" (Search Console: "Soft 404"). Send both to the real homepage.
+      { source: '/home', destination: '/', statusCode: 301 },
+      { source: '/es/home', destination: '/es', statusCode: 301 },
     ]
   },
 }
