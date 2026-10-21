@@ -1,0 +1,1072 @@
+{
+  "en": {
+    "id": 1,
+    "megaMenus": [
+      {
+        "id": "6a5fb6387fdadaee1f271167",
+        "columns": [
+          {
+            "id": "6a5fb6387fdadaee1f271160",
+            "items": [
+              {
+                "id": "6a5fb6387fdadaee1f27115c",
+                "href": "/pipeline-crm",
+                "status": "live",
+                "icon": "zap",
+                "children": [],
+                "label": "Pipeline CRM",
+                "description": "Visual sales pipeline to organize and close more deals"
+              },
+              {
+                "id": "6a5fb6387fdadaee1f27115d",
+                "href": "/chatbot-ia",
+                "status": "live",
+                "icon": "bot",
+                "children": [],
+                "label": "AI Chatbot",
+                "description": "Virtual salesperson that engages, sells, and books around the clock"
+              },
+              {
+                "id": "6a5fb6387fdadaee1f27115e",
+                "href": "/automatizaciones-crm",
+                "status": "live",
+                "icon": "refresh-cw",
+                "children": [],
+                "label": "Automations",
+                "description": "Sequences, reminders, bulk messages, and follow up"
+              },
+              {
+                "id": "6a5fb6387fdadaee1f27115f",
+                "href": "/implementacion-crm",
+                "status": "live",
+                "icon": "rocket",
+                "children": [],
+                "label": "Implementation",
+                "description": "Done for you: we set everything up in 72 hours"
+              }
+            ],
+            "columnLabel": "Platform"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271166",
+            "items": [
+              {
+                "id": "6a5fb6387fdadaee1f271161",
+                "href": null,
+                "status": "comingSoon",
+                "icon": null,
+                "children": [],
+                "label": "Sales software",
+                "description": null
+              },
+              {
+                "id": "6a5fb6387fdadaee1f271162",
+                "href": "/chatbot-whatsapp",
+                "status": "live",
+                "icon": null,
+                "children": [],
+                "label": "WhatsApp Chatbot",
+                "description": null
+              },
+              {
+                "id": "6a5fb6387fdadaee1f271163",
+                "href": "/chatbot-instagram",
+                "status": "live",
+                "icon": null,
+                "children": [],
+                "label": "Instagram Chatbot",
+                "description": null
+              },
+              {
+                "id": "6a5fb6387fdadaee1f271164",
+                "href": "/sistema-reservas",
+                "status": "live",
+                "icon": null,
+                "children": [],
+                "label": "Booking management",
+                "description": null
+              },
+              {
+                "id": "6a5fb6387fdadaee1f271165",
+                "href": "/recordatorios-automaticos",
+                "status": "live",
+                "icon": null,
+                "children": [],
+                "label": "Automated reminders",
+                "description": null
+              }
+            ],
+            "columnLabel": "Features"
+          }
+        ],
+        "triggerLabel": "Product"
+      },
+      {
+        "id": "6a5fb6387fdadaee1f27116d",
+        "columns": [
+          {
+            "id": "6a5fb6387fdadaee1f27116c",
+            "items": [
+              {
+                "id": "6a5fb6387fdadaee1f271169",
+                "href": "/crm-para-esteticas",
+                "status": "live",
+                "icon": null,
+                "children": [],
+                "label": "Aesthetics",
+                "description": null
+              },
+              {
+                "id": "6a5fb6387fdadaee1f271168",
+                "href": null,
+                "status": "comingSoon",
+                "icon": null,
+                "children": [],
+                "label": "Clinics",
+                "description": null
+              },
+              {
+                "id": "6a5fb6387fdadaee1f27116b",
+                "href": null,
+                "status": "comingSoon",
+                "icon": null,
+                "children": [],
+                "label": "Academies",
+                "description": null
+              }
+            ]
+          }
+        ],
+        "triggerLabel": "Industries"
+      },
+      {
+        "id": "6a5fb6387fdadaee1f271177",
+        "columns": [
+          {
+            "id": "6a5fb6387fdadaee1f271176",
+            "items": [
+              {
+                "id": "6a5fb6387fdadaee1f27116e",
+                "href": "/blog",
+                "status": "live",
+                "icon": null,
+                "children": [],
+                "label": "Blog",
+                "description": "Guides, tutorials, and sales strategies"
+              },
+              {
+                "id": "6a5fb6387fdadaee1f27116f",
+                "href": null,
+                "status": "comingSoon",
+                "icon": null,
+                "children": [],
+                "label": "Case studies",
+                "description": "Real results from Apturio customers"
+              },
+              {
+                "id": "6a5fb6387fdadaee1f271170",
+                "href": null,
+                "status": "comingSoon",
+                "icon": null,
+                "children": [],
+                "label": "Free tools",
+                "description": "Link generator, ROI calculator, templates"
+              },
+              {
+                "id": "6a5fb6387fdadaee1f271175",
+                "href": null,
+                "status": "comingSoon",
+                "icon": null,
+                "children": [
+                  {
+                    "id": "6a5fb6387fdadaee1f271171",
+                    "href": null,
+                    "status": "comingSoon",
+                    "icon": null,
+                    "label": "Apturio vs LeadSales",
+                    "description": null
+                  },
+                  {
+                    "id": "6a5fb6387fdadaee1f271172",
+                    "href": null,
+                    "status": "comingSoon",
+                    "icon": null,
+                    "label": "Apturio vs Kommo",
+                    "description": null
+                  },
+                  {
+                    "id": "6a5fb6387fdadaee1f271173",
+                    "href": null,
+                    "status": "comingSoon",
+                    "icon": null,
+                    "label": "Apturio vs PipeDrive",
+                    "description": null
+                  },
+                  {
+                    "id": "6a5fb6387fdadaee1f271174",
+                    "href": null,
+                    "status": "comingSoon",
+                    "icon": null,
+                    "label": "Apturio vs HubSpot",
+                    "description": null
+                  }
+                ],
+                "label": "Comparisons",
+                "description": "Apturio vs other CRMs on the market"
+              }
+            ]
+          }
+        ],
+        "triggerLabel": "Resources"
+      }
+    ],
+    "directLinks": [
+      {
+        "id": "6a5fb6387fdadaee1f271178",
+        "href": "/precios",
+        "status": "live",
+        "icon": null,
+        "children": [],
+        "label": "Pricing",
+        "description": null
+      },
+      {
+        "id": "6a5fb6387fdadaee1f271179",
+        "href": null,
+        "status": "comingSoon",
+        "icon": null,
+        "children": [],
+        "label": "About us",
+        "description": null
+      }
+    ],
+    "footerColumns": [
+      {
+        "id": "6a5fb6387fdadaee1f271186",
+        "items": [
+          {
+            "id": "6a5fb6387fdadaee1f27117a",
+            "href": "/pipeline-crm",
+            "status": "live",
+            "icon": "zap",
+            "children": [],
+            "label": "Pipeline CRM",
+            "description": "Visual sales pipeline to organize and close more deals"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27117b",
+            "href": "/chatbot-ia",
+            "status": "live",
+            "icon": "bot",
+            "children": [],
+            "label": "AI Chatbot",
+            "description": "Virtual salesperson that engages, sells, and books around the clock"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27117c",
+            "href": "/automatizaciones-crm",
+            "status": "live",
+            "icon": "refresh-cw",
+            "children": [],
+            "label": "Automations",
+            "description": "Sequences, reminders, bulk messages, and follow up"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27117d",
+            "href": "/implementacion-crm",
+            "status": "live",
+            "icon": "rocket",
+            "children": [],
+            "label": "Implementation",
+            "description": "Done for you: we set everything up in 72 hours"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27117e",
+            "href": "/precios",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Pricing",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27117f",
+            "href": "/pay-per-use",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Pay-Per-Use Pricing",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271180",
+            "href": "/add-ons",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Add-Ons Pricing",
+            "description": null
+          }
+        ],
+        "subgroupItems": [
+          {
+            "id": "6a5fb6387fdadaee1f271181",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Sales software",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271182",
+            "href": "/chatbot-whatsapp",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "WhatsApp Chatbot",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271183",
+            "href": "/chatbot-instagram",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Instagram Chatbot",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271184",
+            "href": "/sistema-reservas",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Booking management",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271185",
+            "href": "/recordatorios-automaticos",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Automated reminders",
+            "description": null
+          }
+        ],
+        "heading": "Product",
+        "subgroupHeading": "Features"
+      },
+      {
+        "id": "6a5fb6387fdadaee1f27118f",
+        "items": [
+          {
+            "id": "6a5fb6387fdadaee1f271188",
+            "href": "/crm-para-esteticas",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Aesthetics",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271189",
+            "href": "/crm-para-bienes-raices",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Real estate",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271187",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Clinics",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27118a",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Academies",
+            "description": null
+          }
+        ],
+        "subgroupItems": [
+          {
+            "id": "6a5fb6387fdadaee1f27118b",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Apturio vs LeadSales",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27118c",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Apturio vs Kommo",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27118d",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Apturio vs PipeDrive",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27118e",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Apturio vs HubSpot",
+            "description": null
+          }
+        ],
+        "heading": "Industries",
+        "subgroupHeading": "Comparisons"
+      },
+      {
+        "id": "6a5fb6387fdadaee1f271199",
+        "items": [
+          {
+            "id": "6a5fb6387fdadaee1f271190",
+            "href": "/blog",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Blog",
+            "description": "Guides, tutorials, and sales strategies"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271191",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Case studies",
+            "description": "Real results from Apturio customers"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271192",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Free tools",
+            "description": "Link generator, ROI calculator, templates"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271193",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Templates",
+            "description": null
+          }
+        ],
+        "subgroupItems": [
+          {
+            "id": "6a5fb6387fdadaee1f271194",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "About us",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271195",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Contact",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271196",
+            "href": "/privacy-policy",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Privacy Policy",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271197",
+            "href": "/terms-of-service",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Terms of Service",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271198",
+            "href": "/sitemap.html",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Sitemap",
+            "description": null
+          }
+        ],
+        "heading": "Resources",
+        "subgroupHeading": "Company"
+      }
+    ],
+    "updatedAt": "2026-07-21T15:29:43.879Z",
+    "createdAt": "2026-07-21T15:29:43.879Z",
+    "globalType": "navigation"
+  },
+  "es": {
+    "id": 1,
+    "megaMenus": [
+      {
+        "id": "6a5fb6387fdadaee1f271167",
+        "columns": [
+          {
+            "id": "6a5fb6387fdadaee1f271160",
+            "items": [
+              {
+                "id": "6a5fb6387fdadaee1f27115c",
+                "href": "/pipeline-crm",
+                "status": "live",
+                "icon": "zap",
+                "children": [],
+                "label": "Pipeline CRM",
+                "description": "Embudo de ventas visual para organizar y cerrar más deals"
+              },
+              {
+                "id": "6a5fb6387fdadaee1f27115d",
+                "href": "/chatbot-ia",
+                "status": "live",
+                "icon": "bot",
+                "children": [],
+                "label": "Chatbot IA",
+                "description": "Vendedor virtual que atiende, vende y agenda 24/7"
+              },
+              {
+                "id": "6a5fb6387fdadaee1f27115e",
+                "href": "/automatizaciones-crm",
+                "status": "live",
+                "icon": "refresh-cw",
+                "children": [],
+                "label": "Automatizaciones",
+                "description": "Secuencias, recordatorios, mensajes masivos y follow-up"
+              },
+              {
+                "id": "6a5fb6387fdadaee1f27115f",
+                "href": "/implementacion-crm",
+                "status": "live",
+                "icon": "rocket",
+                "children": [],
+                "label": "Implementación",
+                "description": "Done-for-you: te configuramos todo en 72 horas"
+              }
+            ],
+            "columnLabel": "Plataforma"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271166",
+            "items": [
+              {
+                "id": "6a5fb6387fdadaee1f271161",
+                "href": null,
+                "status": "comingSoon",
+                "icon": null,
+                "children": [],
+                "label": "Software de ventas",
+                "description": null
+              },
+              {
+                "id": "6a5fb6387fdadaee1f271162",
+                "href": "/chatbot-whatsapp",
+                "status": "live",
+                "icon": null,
+                "children": [],
+                "label": "Chatbot WhatsApp",
+                "description": null
+              },
+              {
+                "id": "6a5fb6387fdadaee1f271163",
+                "href": "/chatbot-instagram",
+                "status": "live",
+                "icon": null,
+                "children": [],
+                "label": "Instagram Chatbot",
+                "description": null
+              },
+              {
+                "id": "6a5fb6387fdadaee1f271164",
+                "href": "/sistema-reservas",
+                "status": "live",
+                "icon": null,
+                "children": [],
+                "label": "Gestión de reservas",
+                "description": null
+              },
+              {
+                "id": "6a5fb6387fdadaee1f271165",
+                "href": "/recordatorios-automaticos",
+                "status": "live",
+                "icon": null,
+                "children": [],
+                "label": "Recordatorios automáticos",
+                "description": null
+              }
+            ],
+            "columnLabel": "Funcionalidades"
+          }
+        ],
+        "triggerLabel": "Producto"
+      },
+      {
+        "id": "6a5fb6387fdadaee1f27116d",
+        "columns": [
+          {
+            "id": "6a5fb6387fdadaee1f27116c",
+            "items": [
+              {
+                "id": "6a5fb6387fdadaee1f271169",
+                "href": "/crm-para-esteticas",
+                "status": "live",
+                "icon": null,
+                "children": [],
+                "label": "Estéticas",
+                "description": null
+              },
+              {
+                "id": "6a5fb6387fdadaee1f271168",
+                "href": "/crm-para-clinicas",
+                "status": "live",
+                "icon": null,
+                "children": [],
+                "label": "Clínicas",
+                "description": null
+              },
+              {
+                "id": "6a5fb6387fdadaee1f27116b",
+                "href": "/crm-para-academias",
+                "status": "live",
+                "icon": null,
+                "children": [],
+                "label": "Academias",
+                "description": null
+              }
+            ]
+          }
+        ],
+        "triggerLabel": "Industrias"
+      },
+      {
+        "id": "6a5fb6387fdadaee1f271177",
+        "columns": [
+          {
+            "id": "6a5fb6387fdadaee1f271176",
+            "items": [
+              {
+                "id": "6a5fb6387fdadaee1f27116e",
+                "href": "/blog",
+                "status": "live",
+                "icon": null,
+                "children": [],
+                "label": "Blog",
+                "description": "Guías, tutoriales y estrategias de ventas"
+              },
+              {
+                "id": "6a5fb6387fdadaee1f27116f",
+                "href": null,
+                "status": "comingSoon",
+                "icon": null,
+                "children": [],
+                "label": "Casos de estudio",
+                "description": "Resultados reales de clientes con Apturio"
+              },
+              {
+                "id": "6a5fb6387fdadaee1f271170",
+                "href": null,
+                "status": "comingSoon",
+                "icon": null,
+                "children": [],
+                "label": "Herramientas gratis",
+                "description": "Link generator, calculadora ROI, plantillas"
+              },
+              {
+                "id": "6a5fb6387fdadaee1f271175",
+                "href": null,
+                "status": "comingSoon",
+                "icon": null,
+                "children": [
+                  {
+                    "id": "6a5fb6387fdadaee1f271171",
+                    "href": null,
+                    "status": "comingSoon",
+                    "icon": null,
+                    "label": "Apturio vs LeadSales",
+                    "description": null
+                  },
+                  {
+                    "id": "6a5fb6387fdadaee1f271172",
+                    "href": null,
+                    "status": "comingSoon",
+                    "icon": null,
+                    "label": "Apturio vs Kommo",
+                    "description": null
+                  },
+                  {
+                    "id": "6a5fb6387fdadaee1f271173",
+                    "href": null,
+                    "status": "comingSoon",
+                    "icon": null,
+                    "label": "Apturio vs PipeDrive",
+                    "description": null
+                  },
+                  {
+                    "id": "6a5fb6387fdadaee1f271174",
+                    "href": null,
+                    "status": "comingSoon",
+                    "icon": null,
+                    "label": "Apturio vs HubSpot",
+                    "description": null
+                  }
+                ],
+                "label": "Comparativas",
+                "description": "Apturio vs otros CRM del mercado"
+              }
+            ]
+          }
+        ],
+        "triggerLabel": "Recursos"
+      }
+    ],
+    "directLinks": [
+      {
+        "id": "6a5fb6387fdadaee1f271178",
+        "href": "/precios",
+        "status": "live",
+        "icon": null,
+        "children": [],
+        "label": "Precios",
+        "description": null
+      },
+      {
+        "id": "6a5fb6387fdadaee1f271179",
+        "href": null,
+        "status": "comingSoon",
+        "icon": null,
+        "children": [],
+        "label": "Sobre nosotros",
+        "description": null
+      }
+    ],
+    "footerColumns": [
+      {
+        "id": "6a5fb6387fdadaee1f271186",
+        "items": [
+          {
+            "id": "6a5fb6387fdadaee1f27117a",
+            "href": "/pipeline-crm",
+            "status": "live",
+            "icon": "zap",
+            "children": [],
+            "label": "Pipeline CRM",
+            "description": "Embudo de ventas visual para organizar y cerrar más deals"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27117b",
+            "href": "/chatbot-ia",
+            "status": "live",
+            "icon": "bot",
+            "children": [],
+            "label": "Chatbot IA",
+            "description": "Vendedor virtual que atiende, vende y agenda 24/7"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27117c",
+            "href": "/automatizaciones-crm",
+            "status": "live",
+            "icon": "refresh-cw",
+            "children": [],
+            "label": "Automatizaciones",
+            "description": "Secuencias, recordatorios, mensajes masivos y follow-up"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27117d",
+            "href": "/implementacion-crm",
+            "status": "live",
+            "icon": "rocket",
+            "children": [],
+            "label": "Implementación",
+            "description": "Done-for-you: te configuramos todo en 72 horas"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27117e",
+            "href": "/precios",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Precios",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27117f",
+            "href": "/pay-per-use",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Precios de Pago por Uso",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271180",
+            "href": "/add-ons",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Precios de Add-Ons",
+            "description": null
+          }
+        ],
+        "subgroupItems": [
+          {
+            "id": "6a5fb6387fdadaee1f271181",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Software de ventas",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271182",
+            "href": "/chatbot-whatsapp",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Chatbot WhatsApp",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271183",
+            "href": "/chatbot-instagram",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Instagram Chatbot",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271184",
+            "href": "/sistema-reservas",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Gestión de reservas",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271185",
+            "href": "/recordatorios-automaticos",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Recordatorios automáticos",
+            "description": null
+          }
+        ],
+        "heading": "Producto",
+        "subgroupHeading": "Features"
+      },
+      {
+        "id": "6a5fb6387fdadaee1f27118f",
+        "items": [
+          {
+            "id": "6a5fb6387fdadaee1f271188",
+            "href": "/crm-para-esteticas",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Estéticas",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271189",
+            "href": "/crm-para-bienes-raices",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Bienes raíces",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271187",
+            "href": "/crm-para-clinicas",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Clínicas",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27118a",
+            "href": "/crm-para-academias",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Academias",
+            "description": null
+          }
+        ],
+        "subgroupItems": [
+          {
+            "id": "6a5fb6387fdadaee1f27118b",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Apturio vs LeadSales",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27118c",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Apturio vs Kommo",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27118d",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Apturio vs PipeDrive",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f27118e",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Apturio vs HubSpot",
+            "description": null
+          }
+        ],
+        "heading": "Industrias",
+        "subgroupHeading": "Comparativas"
+      },
+      {
+        "id": "6a5fb6387fdadaee1f271199",
+        "items": [
+          {
+            "id": "6a5fb6387fdadaee1f271190",
+            "href": "/blog",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Blog",
+            "description": "Guías, tutoriales y estrategias de ventas"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271191",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Casos de estudio",
+            "description": "Resultados reales de clientes con Apturio"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271192",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Herramientas gratis",
+            "description": "Link generator, calculadora ROI, plantillas"
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271193",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Plantillas",
+            "description": null
+          }
+        ],
+        "subgroupItems": [
+          {
+            "id": "6a5fb6387fdadaee1f271194",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Sobre nosotros",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271195",
+            "href": null,
+            "status": "comingSoon",
+            "icon": null,
+            "children": [],
+            "label": "Contacto",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271196",
+            "href": "/privacy-policy",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Política de Privacidad",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271197",
+            "href": "/terms-of-service",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Términos de Servicio",
+            "description": null
+          },
+          {
+            "id": "6a5fb6387fdadaee1f271198",
+            "href": "/sitemap.html",
+            "status": "live",
+            "icon": null,
+            "children": [],
+            "label": "Mapa del sitio",
+            "description": null
+          }
+        ],
+        "heading": "Recursos",
+        "subgroupHeading": "Empresa"
+      }
+    ],
+    "updatedAt": "2026-07-21T15:29:43.879Z",
+    "createdAt": "2026-07-21T15:29:43.879Z",
+    "globalType": "navigation"
+  }
+}
