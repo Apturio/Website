@@ -62,6 +62,10 @@ const nextConfig = {
       // duplicate of "/" (Search Console: "Soft 404"). Send both to the real homepage.
       { source: '/home', destination: '/', statusCode: 301 },
       { source: '/es/home', destination: '/es', statusCode: 301 },
+      // Legacy URL from the old single-page site (Search Console still lists it as a referrer).
+      // It answered 404, so any link equity pointing at it was lost.
+      { source: '/landing-page', destination: '/', statusCode: 301 },
+      { source: '/es/landing-page', destination: '/es', statusCode: 301 },
     ]
   },
 }

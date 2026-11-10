@@ -523,6 +523,8 @@
     ]
   },
   "sitemap": {
+    "pagesHeading": "Páginas",
+    "postsHeading": "Artículos",
     "title": "Mapa del sitio",
     "description": "Explora todas las páginas del sitio de Apturio, agrupadas por sección."
   },
