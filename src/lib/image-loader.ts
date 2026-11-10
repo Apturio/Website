@@ -37,7 +37,15 @@ export function isOptimizable(src: string): boolean {
   return true
 }
 
+const CLD_UPLOAD = /^(https:\/\/res\.cloudinary\.com\/[^/]+\/image\/upload\/)(.+)$/
+
 export default function imageLoader({ src, width, quality }: LoaderArgs): string {
+  // Files already stored on Cloudinary: transform in place, no fetch hop and no env var needed.
+  const hosted = CLD_UPLOAD.exec(src)
+  if (hosted) {
+    const q = quality ? `q_${quality}` : 'q_auto'
+    return `${hosted[1]}f_auto,${q},w_${width},c_limit/${hosted[2]}`
+  }
   const cloud = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
   const local = toLocalPath(src)
   if (cloud) {

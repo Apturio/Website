@@ -133,7 +133,18 @@ and production uses R2 automatically once the vars are set. No code toggle neede
   | `S3_ENDPOINT` | `https://<accountid>.r2.cloudflarestorage.com` | Required for R2 (else SDK targets AWS). |
   | `S3_ACCESS_KEY_ID` | R2 token key id | |
   | `S3_SECRET_ACCESS_KEY` | R2 token secret | |
+  | `NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME` | `avowb6x7` | Image CDN (Cloudinary fetch mode). Public value, must be set at **build** time. No API key/secret needed. Requires `apturio.com` in Cloudinary Settings > Security > Allowed fetch domains. |
+  | `CLOUDINARY_API_KEY` | Cloudinary key | Server only. With the secret, enables Cloudinary as Payload upload storage (priority over R2 and disk). **Set it only after the migration below.** |
+  | `CLOUDINARY_API_SECRET` | Cloudinary secret | Server only, never `NEXT_PUBLIC_`. Rotate if leaked. |
   | `MEDIA_DIR` | `/home/<user>/domains/<domain>/uploads` | Self-hosted only, when R2 is **not** used. Absolute path **outside** the release directory — see below. |
+
+**Cloudinary uploads (migration order matters).**
+1. Set `CLOUDINARY_API_KEY` and `CLOUDINARY_API_SECRET` in the shell where you run the script, not yet in the app.
+2. `npm run migrate:cloudinary` (dry run), then `APPLY=1 npm run migrate:cloudinary`. It uploads every
+   Media file to `apturio/media/` and leaves the DB untouched. Re-runnable.
+3. Add the two vars to the app environment and redeploy. New uploads go to Cloudinary; `url` points at
+   `res.cloudinary.com`; old `/api/media/file/<name>` links keep working through a proxy.
+Enabling step 3 before step 2 makes every existing image 404.
 
 **Local-disk uploads on a self-hosted box (`MEDIA_DIR`).** Without the S3 vars,
 Payload writes uploads to disk. Its default `staticDir` resolves against the
