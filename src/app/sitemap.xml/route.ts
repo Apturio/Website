@@ -269,17 +269,16 @@ async function collectDynamicEntries(
     console.error('[sitemap] posts query failed', err)
   }
 
+  // Category archives ARE listed on purpose: they are part of the content strategy (topic hubs).
   try {
     entries.push(...(await collectCollectionEntries(payload, CATEGORIES_SPEC, index)))
   } catch (err) {
     console.error('[sitemap] categories query failed', err)
   }
 
-  try {
-    entries.push(...(await collectCollectionEntries(payload, AUTHORS_SPEC, index)))
-  } catch (err) {
-    console.error('[sitemap] authors query failed', err)
-  }
+  // Author archives are deliberately NOT listed: a single-author profile page adds no search
+  // value and spends a crawl slot. It stays reachable through internal links.
+  void AUTHORS_SPEC
 
   return entries
 }

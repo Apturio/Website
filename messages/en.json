@@ -523,6 +523,8 @@
     ]
   },
   "sitemap": {
+    "pagesHeading": "Pages",
+    "postsHeading": "Articles",
     "title": "Sitemap",
     "description": "Browse every page on the Apturio site, grouped by section."
   },

@@ -73,5 +73,7 @@ export const config = {
   //  - Static files (anything with a dot)
   // English paths (`/pay-per-use`, `/blog/x`, ...) must pass through so next-intl
   // can rewrite them to the internal `/en/...` route.
-  matcher: ['/', '/((?!admin|api|_next|_vercel|.*\\..*).*)'],
+  //  - `/sitemap.html` is the one dotted path that DOES need the locale rewrite: without it the
+  //    unprefixed English URL (linked from the footer) answers 404.
+  matcher: ['/', '/sitemap.html', '/((?!admin|api|_next|_vercel|.*\\..*).*)'],
 }
