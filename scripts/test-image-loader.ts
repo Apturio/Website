@@ -34,3 +34,10 @@ test('loader: built-in optimizer by default, Cloudinary fetch when configured', 
   )
   delete process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
 })
+
+test('loader: Cloudinary-hosted uploads are transformed in place', () => {
+  assert.equal(
+    imageLoader({ src: 'https://res.cloudinary.com/demo/image/upload/apturio/media/a%20b.png', width: 640 }),
+    'https://res.cloudinary.com/demo/image/upload/f_auto,q_auto,w_640,c_limit/apturio/media/a%20b.png',
+  )
+})

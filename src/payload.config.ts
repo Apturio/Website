@@ -5,6 +5,7 @@ import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { cloudinaryStorage } from './lib/cloudinary-storage'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
@@ -34,6 +35,14 @@ const hasS3 = Boolean(
     process.env.S3_ACCESS_KEY_ID &&
     process.env.S3_SECRET_ACCESS_KEY &&
     process.env.S3_ENDPOINT,
+)
+
+// Cloudinary storage takes priority over R2 and local disk once all three vars are set.
+// Run `npm run migrate:cloudinary` BEFORE enabling it in production, or existing media 404s.
+const hasCloudinary = Boolean(
+  process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME &&
+    process.env.CLOUDINARY_API_KEY &&
+    process.env.CLOUDINARY_API_SECRET,
 )
 
 // Front-end origin used for live-preview iframes. Falls back to localhost in dev.
@@ -198,7 +207,17 @@ export default buildConfig({
   },
   plugins: [
     ...corePlugins,
-    ...(hasS3
+    ...(hasCloudinary
+      ? [
+          cloudinaryStorage({
+            cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME!,
+            apiKey: process.env.CLOUDINARY_API_KEY!,
+            apiSecret: process.env.CLOUDINARY_API_SECRET!,
+            collections: ['media'],
+          }),
+        ]
+      : []),
+    ...(hasS3 && !hasCloudinary
       ? [
           s3Storage({
             collections: { media: true },

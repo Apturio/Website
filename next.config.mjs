@@ -19,6 +19,8 @@ const nextConfig = {
     // Cloudflare R2 public bucket hostname (media offload — wired for later phases)
     remotePatterns: [
       { protocol: 'https', hostname: '*.r2.dev' },
+      // Cloudinary fetch mode (active when NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME is set).
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
       // Brand assets (logo, hero background, client logos) still live here.
       { protocol: 'https', hostname: 'vibe.filesafe.space' },
     ],

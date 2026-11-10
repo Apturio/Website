@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
+import { safeFilename } from '@/lib/cloudinary-paths'
 import { resolveMediaDir } from '@/lib/media-dir'
 
 // Where uploaded files live on disk when S3/R2 is not configured.
@@ -23,6 +24,17 @@ export const Media: CollectionConfig = {
   // `staticDir` is then unused.
   upload: {
     staticDir,
+  },
+  hooks: {
+    // Cloudinary public ids cannot contain ? & # % < > \\ /. Harmless for local/R2 storage too.
+    beforeOperation: [
+      ({ args, operation, req }) => {
+        if ((operation === 'create' || operation === 'update') && req.file) {
+          req.file.name = safeFilename(req.file.name)
+        }
+        return args
+      },
+    ],
   },
   admin: {
     group: 'Content',

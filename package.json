@@ -25,7 +25,9 @@
     "generate:previews": "payload run scripts/generate-block-previews.ts",
     "verify:previews": "node scripts/verify-block-previews.ts",
     "generate:variant-previews": "payload run scripts/generate-variant-previews.ts",
-    "verify:variant-previews": "node scripts/verify-variant-previews.ts"
+    "verify:variant-previews": "node scripts/verify-variant-previews.ts",
+    "migrate:cloudinary": "payload run scripts/migrate-media-to-cloudinary.ts",
+    "test:cloudinary": "node --test scripts/test-cloudinary-paths.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -34,6 +36,7 @@
     "@payloadcms/email-resend": "^3.85.0",
     "@payloadcms/live-preview-react": "^3.85.0",
     "@payloadcms/next": "3.85.0",
+    "@payloadcms/plugin-cloud-storage": "3.85.0",
     "@payloadcms/plugin-form-builder": "^3.85.0",
     "@payloadcms/plugin-redirects": "^3.85.0",
     "@payloadcms/plugin-seo": "^3.85.0",
@@ -74,6 +77,7 @@
     "@types/react-dom": "19.2.3",
     "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",
+    "cloudinary": "^2.11.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^3.6.0",
